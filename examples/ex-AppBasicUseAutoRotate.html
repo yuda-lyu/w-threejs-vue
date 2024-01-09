@@ -43,7 +43,7 @@
     />
 
     <!-- w-threejs-vue -->
-    <script src="https://cdn.jsdelivr.net/npm/w-threejs-vue@1.0.0/dist/w-threejs-vue.umd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/w-threejs-vue@1.0.1/dist/w-threejs-vue.umd.js"></script>
 
     <!-- lodash -->
     <script src="https://cdn.jsdelivr.net/npm/lodash@latest/lodash.min.js"></script>
@@ -70,18 +70,35 @@
     </script>
 
     <style>
-  .option-label {
-    position: absolute;
-    left: 10px;
-    top: -33px;
-    padding: 4px 20px 7px 20px;
-    border-left: 1px solid #ddd;
-    border-top: 1px solid #ddd;
-    border-right: 1px solid #ddd;
-    border-bottom: 1px solid #f6f6f6;
-    border-top-left-radius: 15px;
-    border-top-right-radius: 15px;
-    background: #f6f6f6;
+  .bkh {
+    padding: 20px; /* 寬 */
+  }
+  @media screen and (max-width: 800px) {
+    /* 中 */
+    .bkh {
+      padding: 10px;
+    }
+  }
+  @media screen and (max-width: 400px) {
+    /* 窄 */
+    .bkh {
+      padding: 5px;
+    }
+  }
+  .bkp {
+    padding: 0px 20px; /* 寬 */
+  }
+  @media screen and (max-width: 800px) {
+    /* 中 */
+    .bkp {
+      padding: 0px 10px;
+    }
+  }
+  @media screen and (max-width: 400px) {
+    /* 窄 */
+    .bkp {
+      padding: 0px 5px;
+    }
   }
     </style>
 </head>
@@ -89,7 +106,7 @@
     style="font-family:'Microsoft JhengHei','Avenir','Helvetica'; padding:0px; margin:0px;"
 >
     <div id="app" style="padding:0px 30px;">
-        <div style="padding:20px;">
+        <div class="bkh">
             <div style="font-size:1.5rem;">useAutoRotate</div>
             <a
                 href="//yuda-lyu.github.io/w-threejs-vue/examples/ex-AppBasicUseAutoRotate.html"
@@ -103,7 +120,7 @@
             >code</a>
         </div>
 
-        <div style="padding:0px 20px;">
+        <div class="bkp">
             <div style="display:flex; padding-bottom:40px; overflow-x:auto;">
                 <div style="position:relative;">
                     <div
