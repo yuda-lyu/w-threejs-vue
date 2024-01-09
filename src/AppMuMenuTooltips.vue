@@ -1,0 +1,131 @@
+<template>
+    <div>
+
+        <div style="padding:20px;">
+            <div style="font-size:1.5rem;">menuTooltips</div>
+            <a href="//yuda-lyu.github.io/w-threejs-vue/examples/ex-AppMuMenuTooltips.html" target="_blank" class="item-link">example</a>
+            <a href="//github.com/yuda-lyu/w-threejs-vue/blob/master/docs/examples/ex-AppMuMenuTooltips.html" target="_blank" class="item-link">code</a>
+        </div>
+
+        <div style="padding:0px 20px;">
+
+            <div style="display:flex; padding-bottom:40px; overflow-x:auto;">
+
+                <div style="position:relative;">
+                    <div style="position:absolute; right:2px; top:1px; z-index:1;" v-if="!loading">
+                        <button style="margin:0px 3px 3px 0px;" @click="setMenuTooltips(1)">tooltip for English</button>
+                        <button style="margin:0px 3px 3px 0px;" @click="setMenuTooltips(2)">tooltip for 中文</button>
+                    </div>
+                    <WThreejsVue
+                        :opt="opt"
+                        @init="loading=false"
+                    ></WThreejsVue>
+                </div>
+
+                <div style="padding-left:20px;">
+
+                    <div :style="`border:1px solid #ddd; width:600px; min-width:600px; height:${opt.height}px; overflow-y:auto;`">
+                        <div style="padding-left:5px;">
+                            <div id="optjson" style="font-size:10pt;"></div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</template>
+
+<script>
+import WThreejsVue from './components/WThreejsVue.vue'
+import jv from 'w-jsonview-tree'
+
+export default {
+    components: {
+        WThreejsVue,
+    },
+    data: function() {
+        return {
+            'loading': true,
+            'opt': {
+                width: 800,
+                height: 600,
+                items: [
+                    {
+                        url: 'https://cdn.jsdelivr.net/npm/w-demores@1.0.25/res/model/stl/3d_wheel-hub.stl',
+                        name: 'Wheel Hub',
+                        color: 'rgba(214, 92, 92, 0.9)',
+                    },
+                    {
+                        url: 'https://cdn.jsdelivr.net/npm/w-demores@1.0.25/res/model/stl/3d_ushape-connector.stl',
+                        name: 'Ushape Connector',
+                        color: 'rgba(214, 214, 92, 0.9)',
+                    },
+                ],
+
+                //須先給予預設值, 切換值才能被vue偵測
+                menuSettingTooltip: '設定',
+                menuAutoRotateTooltip: '自動旋轉',
+                menuAxesTooltip: '座標軸',
+                menuGridTooltip: '網格',
+                menuPerspectiveTooltip: '透視投影',
+                menuLegendTooltip: '圖例',
+            },
+            'action': [
+            ],
+        }
+    },
+    mounted: function() {
+        let vo = this
+        vo.showOptJson()
+    },
+    watch: {
+        opt: {
+            handler: function() {
+                let vo = this
+                vo.showOptJson()
+            },
+            deep: true,
+        },
+    },
+    methods: {
+        showOptJson: function() {
+            let vo = this
+            jv(vo.opt, document.querySelector('#optjson'), { expanded: true })
+        },
+        setMenuTooltipsMode1: function() {
+            let vo = this
+            vo.opt.menuSettingTooltip = 'Settings'
+            vo.opt.menuAutoRotateTooltip = 'Auto rotate'
+            vo.opt.menuAxesTooltip = 'Axes'
+            vo.opt.menuGridTooltip = 'Grid'
+            vo.opt.menuPerspectiveTooltip = 'Perspective'
+            vo.opt.menuLegendTooltip = 'Legend'
+        },
+        setMenuTooltipsMode2: function() {
+            let vo = this
+            vo.opt.menuSettingTooltip = '設定'
+            vo.opt.menuAutoRotateTooltip = '自動旋轉'
+            vo.opt.menuAxesTooltip = '座標軸'
+            vo.opt.menuGridTooltip = '網格'
+            vo.opt.menuPerspectiveTooltip = '透視投影'
+            vo.opt.menuLegendTooltip = '圖例'
+        },
+        setMenuTooltips: function(mode) {
+            let vo = this
+            if (mode === 2) {
+                vo.setMenuTooltipsMode2()
+            }
+            else {
+                vo.setMenuTooltipsMode1()
+            }
+        },
+    },
+}
+</script>
+
+<style>
+</style>

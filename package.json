@@ -1,0 +1,74 @@
+{
+  "name": "w-threejs-vue",
+  "version": "1.0.0",
+  "main": "dist/w-threejs-vue.umd.js",
+  "dependencies": {
+    "@mdi/js": "^7.2.96",
+    "camera-controls": "^2.7.3",
+    "lodash-es": "^4.17.21",
+    "three": "^0.159.0",
+    "w-component-vue": "^2.3.73",
+    "w-jsonview-tree": "^1.0.29",
+    "wsemi": "^1.7.41"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "^5.0.8",
+    "@vue/cli-plugin-eslint": "^5.0.8",
+    "@vue/cli-service": "^5.0.8",
+    "cheerio": "^1.0.0-rc.12",
+    "eslint": "^8.37.0",
+    "eslint-config-standard": "^17.0.0",
+    "eslint-friendly-formatter": "^4.0.1",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^6.1.1",
+    "eslint-plugin-standard": "^4.1.0",
+    "eslint-plugin-vue": "^9.10.0",
+    "vue": "^2.6.14",
+    "w-package-tools": "^1.0.71"
+  },
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "test": "mocha --parallel --timeout 60000 --experimental-modules --es-module-specifier-resolution=node",
+    "lint": "vue-cli-service lint",
+    "deploy": "gh-pages -d docs"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "plugin:vue/essential",
+      "eslint:recommended"
+    ],
+    "rules": {},
+    "parserOptions": {
+      "parser": "babel-eslint"
+    }
+  },
+  "postcss": {
+    "plugins": {
+      "autoprefixer": {}
+    }
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yuda-lyu/w-threejs-vue.git"
+  },
+  "keywords": [
+    "component",
+    "vue",
+    "three.js",
+    "model",
+    "stl",
+    "3d"
+  ],
+  "author": "yuda-lyu(semisphere)",
+  "license": "MIT"
+}
