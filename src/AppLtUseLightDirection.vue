@@ -1,13 +1,13 @@
 <template>
     <div>
 
-        <div style="padding:20px;">
+        <div class="bkh">
             <div style="font-size:1.5rem;">useLightDirection</div>
             <a href="//yuda-lyu.github.io/w-threejs-vue/examples/ex-AppLtUseLightDirection.html" target="_blank" class="item-link">example</a>
             <a href="//github.com/yuda-lyu/w-threejs-vue/blob/master/docs/examples/ex-AppLtUseLightDirection.html" target="_blank" class="item-link">code</a>
         </div>
 
-        <div style="padding:0px 20px;">
+        <div class="bkp">
 
             <div style="display:flex; padding-bottom:40px; overflow-x:auto;">
 

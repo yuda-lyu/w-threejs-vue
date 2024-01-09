@@ -1,20 +1,20 @@
 <template>
     <div>
 
-        <div style="padding:20px;">
+        <div class="bkh">
             <div style="font-size:1.5rem;">legnedBackgroundColor</div>
             <a href="//yuda-lyu.github.io/w-threejs-vue/examples/ex-AppLgLegnedBackgroundColor.html" target="_blank" class="item-link">example</a>
             <a href="//github.com/yuda-lyu/w-threejs-vue/blob/master/docs/examples/ex-AppLgLegnedBackgroundColor.html" target="_blank" class="item-link">code</a>
         </div>
 
-        <div style="padding:0px 20px;">
+        <div class="bkp">
 
             <div style="display:flex; padding-bottom:40px; overflow-x:auto;">
 
                 <div style="position:relative;">
                     <div style="position:absolute; right:2px; top:1px; z-index:1;" v-if="!loading">
                         <button style="margin:0px 3px 3px 0px;" @click="setLegnedBackgroundColor('rgba(0,0,0,0.5)')">set to rgba(0,0,0,0.5)</button>
-                        <button style="margin:0px 3px 3px 0px;" @click="setLegnedBackgroundColor('rgba(10,10,10,0.7)')">set to rgba(10,10,10,0.7)</button>
+                        <button style="margin:0px 3px 3px 0px;" @click="setLegnedBackgroundColor('rgba(10,30,30,0.5)')">set to rgba(10,30,30,0.5)</button>
                     </div>
                     <WThreejsVue
                         :opt="opt"

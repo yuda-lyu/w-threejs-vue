@@ -63,18 +63,31 @@ function writeHtml(v) {
         </script>
     
         <style>
-            .option-label {
-                position:absolute;
-                left:10px;
-                top:-33px;
-                padding:4px 20px 7px 20px;
-                border-left:1px solid #ddd;
-                border-top:1px solid #ddd;
-                border-right:1px solid #ddd;
-                border-bottom:1px solid #f6f6f6;
-                border-top-left-radius:15px;
-                border-top-right-radius:15px;
-                background:#f6f6f6;
+            .bkh {
+                padding:20px; /* 寬 */
+            }
+            @media screen and (max-width:800px){ /* 中 */
+                .bkh {
+                    padding:10px;
+                }
+            }
+            @media screen and (max-width:400px){ /* 窄 */
+                .bkh {
+                    padding:5px;
+                }
+            }
+            .bkp {
+                padding:0px 20px; /* 寬 */
+            }
+            @media screen and (max-width:800px){ /* 中 */
+                .bkp {
+                    padding:0px 10px;
+                }
+            }
+            @media screen and (max-width:400px){ /* 窄 */
+                .bkp {
+                    padding:0px 5px;
+                }
             }
         </style>
     

@@ -1,6 +1,6 @@
 {
   "name": "w-threejs-vue",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "dist/w-threejs-vue.umd.js",
   "dependencies": {
     "@mdi/js": "^7.2.96",
