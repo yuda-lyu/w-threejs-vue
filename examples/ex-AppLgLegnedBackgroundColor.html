@@ -1,0 +1,189 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh-tw">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>example for AppLgLegnedBackgroundColor</title>
+
+    <!-- @babel/polyfill -->
+    <script
+        nomodule
+        src="https://cdn.jsdelivr.net/npm/@babel/polyfill/dist/polyfill.min.js"
+    ></script>
+
+    <!-- vue -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.min.js"></script>
+
+    <!-- extractHtml已自動添加@babel/polyfill與vue -->
+
+    <!-- fontawesome -->
+    <link
+        href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.2/css/all.min.css"
+        rel="stylesheet"
+    />
+
+    <!-- mdi, 各組件使用mdi/js會於轉單頁時改為mdi icon, 故需引用mdi/css -->
+    <link
+        href="https://cdn.jsdelivr.net/npm/@mdi/font@7.2.96/css/materialdesignicons.min.css"
+        rel="stylesheet"
+    />
+
+    <!-- google, 各組件使用mdi/js故不需引用 -->
+    <link
+        _href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900"
+        rel="stylesheet"
+    />
+    <link
+        _href="https://fonts.googleapis.com/css?family=Material+Icons"
+        rel="stylesheet"
+    />
+
+    <!-- w-threejs-vue -->
+    <script src="https://cdn.jsdelivr.net/npm/w-threejs-vue@1.0.0/dist/w-threejs-vue.umd.js"></script>
+
+    <!-- lodash -->
+    <script src="https://cdn.jsdelivr.net/npm/lodash@latest/lodash.min.js"></script>
+
+    <!-- wsemi -->
+    <script
+        src="https://cdn.jsdelivr.net/npm/wsemi@latest/dist/wsemi.umd.min.js"
+    ></script>
+
+    <!-- data -->
+    <script
+        src="https://cdn.jsdelivr.net/npm/w-demores@1.0.23/res/data/dataRain.js"
+    ></script>
+    <script
+        src="https://cdn.jsdelivr.net/npm/w-demores@1.0.23/res/data/dataRainClip.js"
+    ></script>
+
+    <!-- w-jsonview-tree -->
+    <script
+        src="https://cdn.jsdelivr.net/npm/w-jsonview-tree@latest/dist/w-jsonview-tree.umd.js"
+    ></script>
+    <script>
+  let jv = window["w-jsonview-tree"];
+    </script>
+
+    <style>
+  .option-label {
+    position: absolute;
+    left: 10px;
+    top: -33px;
+    padding: 4px 20px 7px 20px;
+    border-left: 1px solid #ddd;
+    border-top: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+    border-bottom: 1px solid #f6f6f6;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    background: #f6f6f6;
+  }
+    </style>
+</head>
+<body
+    style="font-family:'Microsoft JhengHei','Avenir','Helvetica'; padding:0px; margin:0px;"
+>
+    <div id="app" style="padding:0px 30px;">
+        <div style="padding:20px;">
+            <div style="font-size:1.5rem;">legnedBackgroundColor</div>
+            <a
+                href="//yuda-lyu.github.io/w-threejs-vue/examples/ex-AppLgLegnedBackgroundColor.html"
+                target="_blank"
+                class="item-link"
+            >example</a>
+            <a
+                href="//github.com/yuda-lyu/w-threejs-vue/blob/master/docs/examples/ex-AppLgLegnedBackgroundColor.html"
+                target="_blank"
+                class="item-link"
+            >code</a>
+        </div>
+
+        <div style="padding:0px 20px;">
+            <div style="display:flex; padding-bottom:40px; overflow-x:auto;">
+                <div style="position:relative;">
+                    <div
+                        style="position:absolute; right:2px; top:1px; z-index:1;"
+                        v-if="!loading"
+                    >
+                        <button
+                            style="margin:0px 3px 3px 0px;"
+                            @click="setLegnedBackgroundColor('rgba(0,0,0,0.5)')"
+                        >set to rgba(0,0,0,0.5)</button>
+                        <button
+                            style="margin:0px 3px 3px 0px;"
+                            @click="setLegnedBackgroundColor('rgba(10,10,10,0.7)')"
+                        >set to rgba(10,10,10,0.7)</button>
+                    </div>
+                    <w-threejs-vue :opt="opt" @init="loading=false"></w-threejs-vue>
+                </div>
+
+                <div style="padding-left:20px;">
+                    <div
+                        :style="`border:1px solid #ddd; width:600px; min-width:600px; height:${opt.height}px; overflow-y:auto;`"
+                    >
+                        <div style="padding-left:5px;">
+                            <div id="optjson" style="font-size:10pt;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+  //install
+  Vue.component("w-threejs-vue", window["w-threejs-vue"]);
+
+  //initialize
+  new Vue({
+    el: "#app",
+
+    data: function() {
+      return {
+        loading: true,
+        opt: {
+          width: 800,
+          height: 600,
+          items: [
+            {
+              url:
+                "https://cdn.jsdelivr.net/npm/w-demores@1.0.25/res/model/stl/3d_wheel-hub.stl",
+              name: "Wheel Hub",
+              color: "rgba(214, 92, 92, 0.9)"
+            },
+            {
+              url:
+                "https://cdn.jsdelivr.net/npm/w-demores@1.0.25/res/model/stl/3d_ushape-connector.stl",
+              name: "Ushape Connector",
+              color: "rgba(214, 214, 92, 0.9)"
+            }
+          ],
+          legnedBackgroundColor: "rgba(10,10,10,0.5)"
+        },
+        action: []
+      };
+    },
+    mounted: function() {
+      let vo = this;
+      vo.showOptJson();
+    },
+    computed: {},
+    methods: {
+      showOptJson: function() {
+        let vo = this;
+        jv(vo.opt, document.querySelector("#optjson"), { expanded: true });
+      },
+      setLegnedBackgroundColor: function(c) {
+        let vo = this;
+        vo.opt.legnedBackgroundColor = c;
+      }
+    }
+  });
+    </script>
+</body>
+</html>
