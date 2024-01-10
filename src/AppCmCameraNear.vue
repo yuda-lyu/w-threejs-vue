@@ -12,7 +12,7 @@
             <div style="display:flex; padding-bottom:40px; overflow-x:auto;">
 
                 <div style="position:relative;">
-                    <div style="position:absolute; right:2px; top:1px; z-index:1;" v-if="!loading">
+                    <div style="position:absolute; right:2px; top:1px; text-align:right; z-index:1;" v-if="!loading">
                         <button style="margin:0px 3px 3px 0px;" @click="setCameraNear(0.1)">set to 0.1</button>
                         <button style="margin:0px 3px 3px 0px;" @click="setCameraNear(1.7)">set to 1.7</button>
                     </div>
@@ -22,9 +22,9 @@
                     ></WThreejsVue>
                 </div>
 
-                <div style="padding-left:20px;">
+                <div style="padding:0px 20px;">
 
-                    <div :style="`border:1px solid #ddd; width:600px; min-width:600px; height:${opt.height}px; overflow-y:auto;`">
+                    <div :style="`border:1px solid #ddd; width:590px; min-width:590px; height:${opt.height}px; overflow-y:auto;`">
                         <div style="padding-left:5px;">
                             <div id="optjson" style="font-size:10pt;"></div>
                         </div>

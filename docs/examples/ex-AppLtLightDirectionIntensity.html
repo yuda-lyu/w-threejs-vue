@@ -43,7 +43,7 @@
     />
 
     <!-- w-threejs-vue -->
-    <script src="https://cdn.jsdelivr.net/npm/w-threejs-vue@1.0.1/dist/w-threejs-vue.umd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/w-threejs-vue@1.0.2/dist/w-threejs-vue.umd.js"></script>
 
     <!-- lodash -->
     <script src="https://cdn.jsdelivr.net/npm/lodash@latest/lodash.min.js"></script>
@@ -70,8 +70,19 @@
     </script>
 
     <style>
+  .item-link {
+    display: inline-block;
+    margin: 10px 10px 0px 0px;
+    padding: 5px 10px;
+    font-size: 0.8rem;
+    color: #fff;
+    background-color: #443a65;
+    cursor: pointer;
+    text-decoration: none;
+  }
   .bkh {
-    padding: 20px; /* 寬 */
+    /* 寬 */
+    padding: 20px;
   }
   @media screen and (max-width: 800px) {
     /* 中 */
@@ -86,7 +97,8 @@
     }
   }
   .bkp {
-    padding: 0px 20px; /* 寬 */
+    /* 寬 */
+    padding: 0px 20px;
   }
   @media screen and (max-width: 800px) {
     /* 中 */
@@ -105,7 +117,7 @@
 <body
     style="font-family:'Microsoft JhengHei','Avenir','Helvetica'; padding:0px; margin:0px;"
 >
-    <div id="app" style="padding:0px 30px;">
+    <div id="app" class="bkh" style>
         <div class="bkh">
             <div style="font-size:1.5rem;">lightDirectionIntensity</div>
             <a
@@ -124,7 +136,7 @@
             <div style="display:flex; padding-bottom:40px; overflow-x:auto;">
                 <div style="position:relative;">
                     <div
-                        style="position:absolute; right:2px; top:1px; z-index:1;"
+                        style="position:absolute; right:2px; top:1px; text-align:right; z-index:1;"
                         v-if="!loading"
                     >
                         <button
@@ -139,9 +151,9 @@
                     <w-threejs-vue :opt="opt" @init="loading=false"></w-threejs-vue>
                 </div>
 
-                <div style="padding-left:20px;">
+                <div style="padding:0px 20px;">
                     <div
-                        :style="`border:1px solid #ddd; width:600px; min-width:600px; height:${opt.height}px; overflow-y:auto;`"
+                        :style="`border:1px solid #ddd; width:590px; min-width:590px; height:${opt.height}px; overflow-y:auto;`"
                     >
                         <div style="padding-left:5px;">
                             <div id="optjson" style="font-size:10pt;"></div>

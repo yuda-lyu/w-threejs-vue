@@ -63,8 +63,18 @@ function writeHtml(v) {
         </script>
     
         <style>
-            .bkh {
-                padding:20px; /* 寬 */
+            .item-link {
+                display: inline-block;
+                margin: 10px 10px 0px 0px;
+                padding: 5px 10px;
+                font-size: 0.8rem;
+                color: #fff;
+                background-color: #443a65;
+                cursor: pointer;
+                text-decoration: none;
+            }
+            .bkh { /* 寬 */
+                padding:20px;
             }
             @media screen and (max-width:800px){ /* 中 */
                 .bkh {
@@ -76,8 +86,8 @@ function writeHtml(v) {
                     padding:5px;
                 }
             }
-            .bkp {
-                padding:0px 20px; /* 寬 */
+            .bkp { /* 寬 */
+                padding:0px 20px;
             }
             @media screen and (max-width:800px){ /* 中 */
                 .bkp {
@@ -93,7 +103,8 @@ function writeHtml(v) {
     
         `,
         appTag: `div`,
-        appStyle: `padding:0px 30px;`,
+        appClass: `bkh`,
+        appStyle: ``,
         appTmp: getAppTmp(),
         installVue: `Vue.component('w-threejs-vue', window['w-threejs-vue'])`,
         newVue: ``,

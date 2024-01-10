@@ -729,6 +729,9 @@ export default {
                 //kpSet
                 let kpSet = {
 
+                    width: '', //由vue處理不需要另外處理
+                    height: '', //由vue處理不需要另外處理
+
                     backgroundColor: 'ev.setBackgroundColor',
                     useAutoRotate: 'ev.setUseAutoRotate',
                     autoRotateDeg: 'ev.setAutoRotateDeg',
@@ -785,11 +788,13 @@ export default {
                         let cf = kpSet[k]
                         // console.log('call', k, cf)
                         let fun = get(vo, cf)
-                        try {
-                            fun(v.vNew)
-                        }
-                        catch (err) {
-                            console.log(err)
+                        if (isfun(fun)) {
+                            try {
+                                fun(v.vNew)
+                            }
+                            catch (err) {
+                                console.log(err)
+                            }
                         }
                     }
                     else {

@@ -389,14 +389,13 @@ async function plot3d(items, opt = {}) {
     }
 
     let setUseHelperAxes = (b) => {
-        //可直接變更visible
         useHelperAxes = b
         helperAxes.visible = b
         render()
     }
 
     let setHelperAxesLengthRatio = (r) => {
-        //因無直接設定AxesHelper size函數, 故使用重產給予
+        //因無直接設定AxesHelper size函數, 故使用重產
         helperAxesLengthRatio = r
         disposeHelperAxes()
         createHelperAxes()
@@ -600,6 +599,7 @@ async function plot3d(items, opt = {}) {
         if (h > 0) {
             r = w / h
         }
+        // console.log('gasp', 'w', w, 'h', h, 'r', r)
         return r
     }
 

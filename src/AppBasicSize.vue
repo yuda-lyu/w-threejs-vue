@@ -12,14 +12,21 @@
             <div style="display:flex; padding-bottom:40px; overflow-x:auto;">
 
                 <div style="position:relative;">
+                    <div style="position:absolute; right:2px; top:1px; text-align:right; z-index:1;" v-if="!loading">
+                        <button style="margin:0px 3px 3px 0px;" @click="setWidth(800)">set width to 800</button>
+                        <button style="margin:0px 3px 3px 0px;" @click="setWidth(300)">set width to 300</button>
+                        <button style="margin:0px 3px 3px 0px;" @click="setHeight(600)">set height to 600</button>
+                        <button style="margin:0px 3px 3px 0px;" @click="setHeight(300)">set height to 300</button>
+                    </div>
                     <WThreejsVue
                         :opt="opt"
+                        @init="loading=false"
                     ></WThreejsVue>
                 </div>
 
-                <div style="padding-left:20px;">
+                <div style="padding:0px 20px;">
 
-                    <div :style="`border:1px solid #ddd; width:600px; min-width:600px; height:${opt.height}px; overflow-y:auto;`">
+                    <div :style="`border:1px solid #ddd; width:590px; min-width:590px; height:${opt.height}px; overflow-y:auto;`">
                         <div style="padding-left:5px;">
                             <div id="optjson" style="font-size:10pt;"></div>
                         </div>
@@ -44,6 +51,7 @@ export default {
     },
     data: function() {
         return {
+            'loading': true,
             'opt': {
                 width: 800,
                 height: 600,
@@ -81,6 +89,14 @@ export default {
         showOptJson: function() {
             let vo = this
             jv(vo.opt, document.querySelector('#optjson'), { expanded: true })
+        },
+        setWidth: function(r) {
+            let vo = this
+            vo.opt.width = r
+        },
+        setHeight: function(r) {
+            let vo = this
+            vo.opt.height = r
         },
     },
 }

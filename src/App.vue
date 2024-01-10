@@ -80,7 +80,7 @@
         </div>
 
 
-        <div class="bkh" _style="padding:20px;">
+        <div class="bkh">
 
             <AppBasicSize v-if="cmpPick==='size'"></AppBasicSize>
 
@@ -558,8 +558,8 @@ export default {
     cursor: pointer;
     text-decoration: none;
 }
-.bkh {
-    padding:20px; /* 寬 */
+.bkh { /* 寬 */
+    padding:20px;
 }
 @media screen and (max-width:800px){ /* 中 */
     .bkh {
@@ -571,8 +571,8 @@ export default {
         padding:5px;
     }
 }
-.bkp {
-    padding:0px 20px; /* 寬 */
+.bkp { /* 寬 */
+    padding:0px 20px;
 }
 @media screen and (max-width:800px){ /* 中 */
     .bkp {
