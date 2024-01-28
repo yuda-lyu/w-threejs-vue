@@ -42,6 +42,9 @@
 
 <script>
 import domShowInputAndGetFiles from 'wsemi/src/domShowInputAndGetFiles.mjs'
+import blob2b64 from 'wsemi/src/blob2b64.mjs'
+import blob2u8arr from 'wsemi/src/blob2u8arr.mjs'
+import b642u8arr from 'wsemi/src/b642u8arr.mjs'
 import WThreejsVue from './components/WThreejsVue.vue'
 import jv from 'w-jsonview-tree'
 
@@ -116,8 +119,16 @@ export default {
                     let file = res.files[i]
                     console.log('file', file)
 
-                    let url = window.URL.createObjectURL(file)
-                    // console.log('url', url)
+                    //後端若傳u8a時, 先轉blob再轉url即可給STLLoader讀取
+                    let u8a = await blob2u8arr(file)
+                    console.log('u8a', u8a)
+
+                    let bb = new Blob([u8a]) //type:'model/stl', type:'application/octet-stream'
+                    console.log('bb', bb)
+
+                    // let url = window.URL.createObjectURL(file)
+                    let url = window.URL.createObjectURL(bb)
+                    console.log('url', url)
 
                     let m = {
                         type: 'stl',

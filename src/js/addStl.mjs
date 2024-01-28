@@ -1,6 +1,7 @@
 import get from 'lodash-es/get'
 import isNumber from 'lodash-es/isNumber'
 import isestr from 'wsemi/src/isestr.mjs'
+// import genPm from 'wsemi/src/genPm.mjs'
 import oc from 'wsemi/src/color.mjs'
 import * as THREE from 'three'
 import { STLLoader } from 'three/addons/loaders/STLLoader.js'
@@ -34,6 +35,28 @@ let addStl = async(ev, url, opt = {}) => {
             prog,
         })
     })
+    // let lad = (url) => {
+    //     let pm = genPm()
+    //     let onLoad = (res) => {
+    //         console.log('onLoad', res)
+    //         pm.resolve(res)
+    //     }
+    //     let onProgress = (xhr) => {
+    //         console.log('onProgress', xhr)
+    //         let prog = (xhr.loaded / xhr.total) * 100
+    //         ev.emit('loading', {
+    //             url,
+    //             prog,
+    //         })
+    //     }
+    //     let onError = (err) => {
+    //         console.log('onError', err)
+    //         pm.reject(err)
+    //     }
+    //     loader.load(url, onLoad, onProgress, onError)
+    //     return pm
+    // }
+    // let geometry = await lad(url)
     // console.log('geometry', geometry)
 
     //material, MeshLambertMaterial, MeshPhysicalMaterial

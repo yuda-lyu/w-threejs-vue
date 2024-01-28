@@ -7,6 +7,7 @@ A vue component for three.js.
 [![license](https://img.shields.io/npm/l/w-threejs-vue.svg?style=flat)](https://npmjs.org/package/w-threejs-vue) 
 [![gzip file size](http://img.badgesize.io/yuda-lyu/w-threejs-vue/master/dist/w-threejs-vue.umd.js.svg?compression=gzip)](https://github.com/yuda-lyu/w-threejs-vue)
 [![npm download](https://img.shields.io/npm/dt/w-threejs-vue.svg)](https://npmjs.org/package/w-threejs-vue) 
+[![npm download](https://img.shields.io/npm/dm/w-threejs-vue.svg)](https://npmjs.org/package/w-threejs-vue) 
 [![jsdelivr download](https://img.shields.io/jsdelivr/npm/hm/w-threejs-vue.svg)](https://www.jsdelivr.com/package/npm/w-threejs-vue)
 
 ## Documentation
