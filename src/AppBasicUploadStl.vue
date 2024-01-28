@@ -42,9 +42,7 @@
 
 <script>
 import domShowInputAndGetFiles from 'wsemi/src/domShowInputAndGetFiles.mjs'
-import blob2b64 from 'wsemi/src/blob2b64.mjs'
 import blob2u8arr from 'wsemi/src/blob2u8arr.mjs'
-import b642u8arr from 'wsemi/src/b642u8arr.mjs'
 import WThreejsVue from './components/WThreejsVue.vue'
 import jv from 'w-jsonview-tree'
 
