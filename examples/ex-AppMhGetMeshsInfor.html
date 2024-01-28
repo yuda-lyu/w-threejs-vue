@@ -43,7 +43,7 @@
     />
 
     <!-- w-threejs-vue -->
-    <script src="https://cdn.jsdelivr.net/npm/w-threejs-vue@1.0.3/dist/w-threejs-vue.umd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/w-threejs-vue@1.0.4/dist/w-threejs-vue.umd.js"></script>
 
     <!-- lodash -->
     <script src="https://cdn.jsdelivr.net/npm/lodash@latest/lodash.min.js"></script>
@@ -149,7 +149,9 @@
                             style="margin:0px 0px 0px 1px; padding:5px; font-size:0.75rem; color:#000; background:#eee;"
                             v-if="c"
                         >
-                            <pre style="padding:0px; margin:0px;">{{c}}</pre>
+                            <pre
+                                style="padding:0px; margin:0px; text-align:left;"
+                            >{{c}}</pre>
                         </div>
                     </div>
                     <w-threejs-vue ref="thr" :opt="opt" @init="loading=false"></w-threejs-vue>
