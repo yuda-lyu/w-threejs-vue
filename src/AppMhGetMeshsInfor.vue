@@ -17,7 +17,7 @@
                             <button style="margin:0px 3px 3px 0px;" @click="getMeshsInfor()">getMeshsInfor</button>
                         </div>
                         <div style="margin:0px 0px 0px 1px; padding:5px; font-size:0.75rem; color:#000; background:#eee;" v-if="c">
-                            <pre style="padding:0px; margin:0px;">{{c}}</pre>
+                            <pre style="padding:0px; margin:0px; text-align:left;">{{c}}</pre>
                         </div>
                     </div>
                     <WThreejsVue

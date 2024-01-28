@@ -43,7 +43,7 @@
     />
 
     <!-- w-threejs-vue -->
-    <script src="https://cdn.jsdelivr.net/npm/w-threejs-vue@1.0.3/dist/w-threejs-vue.umd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/w-threejs-vue@1.0.4/dist/w-threejs-vue.umd.js"></script>
 
     <!-- lodash -->
     <script src="https://cdn.jsdelivr.net/npm/lodash@latest/lodash.min.js"></script>
@@ -229,8 +229,16 @@
             let file = res.files[i];
             console.log("file", file);
 
-            let url = window.URL.createObjectURL(file);
-            // console.log('url', url)
+            //後端若傳u8a時, 先轉blob再轉url即可給STLLoader讀取
+            let u8a = await blob2u8arr(file);
+            console.log("u8a", u8a);
+
+            let bb = new Blob([u8a]); //type:'model/stl', type:'application/octet-stream'
+            console.log("bb", bb);
+
+            // let url = window.URL.createObjectURL(file)
+            let url = window.URL.createObjectURL(bb);
+            console.log("url", url);
 
             let m = {
               type: "stl",
