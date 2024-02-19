@@ -72,11 +72,13 @@ let getCsrdFromMeshs = (meshs) => {
     let zc = (bx.zmax + bx.zmin) / 2
     let rd = max([xrng, yrng, zrng])
     return {
-        cs: {
-            x: xc,
-            y: yc,
-            z: zc,
-        },
+        xc,
+        yc,
+        zc,
+        ...bx,
+        xrng,
+        yrng,
+        zrng,
         rd,
     }
 }

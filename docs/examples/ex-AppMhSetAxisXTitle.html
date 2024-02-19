@@ -7,7 +7,7 @@
         content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui"
     />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>example for AppLtUseLightAmbient</title>
+    <title>example for AppMhSetAxisXTitle</title>
 
     <!-- @babel/polyfill -->
     <script
@@ -119,14 +119,14 @@
 >
     <div id="app" class="bkh" style>
         <div class="bkh">
-            <div style="font-size:1.5rem;">useLightAmbient</div>
+            <div style="font-size:1.5rem;">setAxisXTitle</div>
             <a
-                href="//yuda-lyu.github.io/w-threejs-vue/examples/ex-AppLtUseLightAmbient.html"
+                href="//yuda-lyu.github.io/w-threejs-vue/examples/ex-AppMhSetAxisXTitle.html"
                 target="_blank"
                 class="item-link"
             >example</a>
             <a
-                href="//github.com/yuda-lyu/w-threejs-vue/blob/master/docs/examples/ex-AppLtUseLightAmbient.html"
+                href="//github.com/yuda-lyu/w-threejs-vue/blob/master/docs/examples/ex-AppMhSetAxisXTitle.html"
                 target="_blank"
                 class="item-link"
             >code</a>
@@ -141,14 +141,14 @@
                     >
                         <button
                             style="margin:0px 3px 3px 0px;"
-                            @click="setUseLightAmbient(true)"
-                        >show</button>
+                            @click="setAxisXTitle('XXX')"
+                        >set axisXTitle to 'XXX'</button>
                         <button
                             style="margin:0px 3px 3px 0px;"
-                            @click="setUseLightAmbient(false)"
-                        >hide</button>
+                            @click="setAxisXTitle('X')"
+                        >set axisXTitle to 'X'</button>
                     </div>
-                    <w-threejs-vue :opt="opt" @init="loading=false"></w-threejs-vue>
+                    <w-threejs-vue ref="thr" :opt="opt" @init="loading=false"></w-threejs-vue>
                 </div>
 
                 <div style="padding:0px 20px;">
@@ -192,9 +192,7 @@
               color: "rgba(214, 214, 92, 0.9)"
             }
           ],
-          useLightPoint: false, //預設為false
-          useLightDirection: false, //預設為true, 得關閉才能顯示效果
-          useLightAmbient: true
+          axisXTitle: "XXX"
         },
         action: []
       };
@@ -209,9 +207,11 @@
         let vo = this;
         jv(vo.opt, document.querySelector("#optjson"), { expanded: true });
       },
-      setUseLightAmbient: function(b) {
+      setAxisXTitle: function(c) {
         let vo = this;
-        vo.opt.useLightAmbient = b;
+        try {
+          vo.$refs.thr.getInst().setAxisXTitle(c);
+        } catch (err) {}
       }
     }
   });

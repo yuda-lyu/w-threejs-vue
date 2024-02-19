@@ -146,6 +146,13 @@
 
             <AppLtLightDirectionPos v-if="cmpPick==='lightDirectionPos'"></AppLtLightDirectionPos>
 
+<!-- bbb -->
+
+            <AppMhSetAxisXTitle v-if="cmpPick==='setAxisXTitle'"></AppMhSetAxisXTitle>
+
+
+<!-- bbb -->
+
             <AppMhGetMeshsInfor v-if="cmpPick==='getMeshsInfor'"></AppMhGetMeshsInfor>
 
             <AppMhSetMeshVisible v-if="cmpPick==='setMeshVisible'"></AppMhSetMeshVisible>
@@ -216,6 +223,11 @@ import AppLtUseLightDirection from './AppLtUseLightDirection.vue'
 import AppLtLightDirectionColor from './AppLtLightDirectionColor.vue'
 import AppLtLightDirectionIntensity from './AppLtLightDirectionIntensity.vue'
 import AppLtLightDirectionPos from './AppLtLightDirectionPos.vue'
+// bbb
+
+import AppMhSetAxisXTitle from './AppMhSetAxisXTitle.vue'
+
+//bbb
 import AppMhGetMeshsInfor from './AppMhGetMeshsInfor.vue'
 import AppMhSetMeshVisible from './AppMhSetMeshVisible.vue'
 import AppMhSetMeshColor from './AppMhSetMeshColor.vue'
@@ -266,6 +278,10 @@ export default {
         AppLtLightDirectionColor,
         AppLtLightDirectionIntensity,
         AppLtLightDirectionPos,
+        //bbb
+        AppMhSetAxisXTitle,
+
+        //bbb
         AppMhGetMeshsInfor,
         AppMhSetMeshVisible,
         AppMhSetMeshColor,
@@ -347,6 +363,18 @@ export default {
                     { name: 'lightDirectionColor' },
                     { name: 'lightDirectionIntensity' },
                     { name: 'lightDirectionPos' },
+                ],
+            },
+            {
+                name: 'axis',
+                cmps: [
+                    {
+                        name: 'X',
+                        cmps: [
+                            { name: 'setAxisXTitle' },
+                        ],
+                    },
+
                 ],
             },
             {

@@ -136,7 +136,7 @@
 </template>
 
 <script>
-import { mdiCogOutline, mdiAxis, mdiAxisZRotateCounterclockwise, mdiGrid, mdiProjectorScreenOutline, mdiListBoxOutline, mdiEyeOutline, mdiEyeOffOutline } from '@mdi/js/mdi.js'
+import { mdiCogOutline, mdiAxis, mdiAxisZRotateCounterclockwise, mdiGrid, mdiProjectorScreenOutline, mdiPackageVariantClosed, mdiListBoxOutline, mdiEyeOutline, mdiEyeOffOutline } from '@mdi/js/mdi.js'
 import get from 'lodash-es/get'
 import each from 'lodash-es/each'
 import map from 'lodash-es/map'
@@ -164,6 +164,15 @@ import WGroupIconCheck from 'w-component-vue/src/components/WGroupIconCheck.vue'
 import WIcon from 'w-component-vue/src/components/WIcon.vue'
 import WColorSelect from 'w-component-vue/src/components/WColorSelect.vue'
 import plot3d from '../js/plot3d.mjs'
+
+
+let pathXY = `M 11.846997,18.39162 H 10.298964 L 7.0132374,12.771255 3.7275112,18.39162 H 2.1683717 L 6.2340948,11.441753 2.4024562,4.8687472 H 3.9504895 L 7.0132374,10.102848 10.064879,4.8687472 h 1.548034 L 7.7821281,11.441753 Z M 22.650766,4.8687472 18.552578,11.922776 v 6.468844 h -1.436971 v -6.450037 l -4.13236,-7.0728358 h 1.548034 l 3.285725,5.6203648 3.285727,-5.6203648 z`
+let pathXZ = `M 11.271926,18.568104 H 9.7408431 L 6.4910943,12.996958 3.2413455,18.568104 H 1.6992781 L 5.7204831,11.679099 1.9307994,5.1636556 H 3.4618823 L 6.4910943,10.351919 9.5093217,5.1636556 H 11.040404 L 7.2515659,11.679099 Z m 10.465779,0 h -8.889914 v -0.57002 L 19.886379,6.3137351 H 13.067483 V 5.1636556 h 8.670222 V 5.7429974 L 14.698273,17.418742 h 7.039432 z`
+let pathYZ = `M 22.049294,18.372083 H 12.678108 V 17.831045 L 20.097742,6.7407687 H 12.910584 V 5.6491633 h 9.13871 v 0.549886 L 14.628768,17.281159 h 7.420526 z M 11.249404,5.6491633 6.976656,12.285907 v 6.086176 H 5.4784775 V 12.303601 L 1.1701008,5.6491633 H 2.7840719 L 6.2097526,10.937053 9.635433,5.6491633 Z`
+
+// 繪製尺規線
+// 新增顯隱尺規線
+// 新增選單左右側對齊設定
 
 
 /**
@@ -203,6 +212,7 @@ export default {
             useHelperAxes: true,
             useHelperGrid: true,
             usePerspective: true,
+            useBox: false,
             useLegend: true,
 
             optTemp: null,
@@ -213,14 +223,22 @@ export default {
 
             menuSettingIcon: '',
             menuSettingTooltip: '',
-            menuAutoRotateIcon: '',
-            menuAutoRotateTooltip: '',
             menuAxesIcon: '',
             menuAxesTooltip: '',
             menuGridIcon: '',
             menuGridTooltip: '',
             menuPerspectiveIcon: '',
             menuPerspectiveTooltip: '',
+            menuBoxIcon: '',
+            menuBoxTooltip: '',
+            menuAutoRotateIcon: '',
+            menuAutoRotateTooltip: '',
+            menuViewXYIcon: '',
+            menuViewXYTooltip: '',
+            menuViewXZIcon: '',
+            menuViewXZTooltip: '',
+            menuViewYZIcon: '',
+            menuViewYZTooltip: '',
             menuLegendIcon: '',
             menuLegendTooltip: '',
 
@@ -254,6 +272,11 @@ export default {
             t = vo.getParam('cameraType') === 'perspective'
             if (vo.usePerspective !== t) {
                 vo.usePerspective = t
+            }
+
+            t = vo.getParam('useBox')
+            if (vo.useBox !== t) {
+                vo.useBox = t
             }
 
             // vo.useLegend
@@ -356,11 +379,6 @@ export default {
                     tooltip: vo.menuSettingTooltip,
                 },
                 {
-                    id: 'auto_rotate',
-                    icon: vo.menuAutoRotateIcon,
-                    tooltip: vo.menuAutoRotateTooltip,
-                },
-                {
                     id: 'axes',
                     icon: vo.menuAxesIcon,
                     tooltip: vo.menuAxesTooltip,
@@ -374,6 +392,31 @@ export default {
                     id: 'perspective',
                     icon: vo.menuPerspectiveIcon,
                     tooltip: vo.menuPerspectiveTooltip,
+                },
+                {
+                    id: 'box',
+                    icon: vo.menuBoxIcon,
+                    tooltip: vo.menuBoxTooltip,
+                },
+                {
+                    id: 'viewxy',
+                    icon: vo.menuViewXYIcon,
+                    tooltip: vo.menuViewXYTooltip,
+                },
+                {
+                    id: 'viewxz',
+                    icon: vo.menuViewXZIcon,
+                    tooltip: vo.menuViewXZTooltip,
+                },
+                {
+                    id: 'viewyz',
+                    icon: vo.menuViewYZIcon,
+                    tooltip: vo.menuViewYZTooltip,
+                },
+                {
+                    id: 'auto_rotate',
+                    icon: vo.menuAutoRotateIcon,
+                    tooltip: vo.menuAutoRotateTooltip,
                 },
                 {
                     id: 'legend',
@@ -433,9 +476,6 @@ export default {
             if (vo.useSetting) {
                 ids.push('setting')
             }
-            if (vo.useAutoRotate) {
-                ids.push('auto_rotate')
-            }
             if (vo.useHelperAxes) {
                 ids.push('axes')
             }
@@ -444,6 +484,12 @@ export default {
             }
             if (vo.usePerspective) {
                 ids.push('perspective')
+            }
+            if (vo.useBox) {
+                ids.push('box')
+            }
+            if (vo.useAutoRotate) {
+                ids.push('auto_rotate')
             }
             if (vo.useLegend) {
                 ids.push('legend')
@@ -472,11 +518,11 @@ export default {
             let rs = []
             each(vo.itemsSelectIds, (id) => {
                 let r = find(vo.items, { id })
-                if (!iseobj(r)) {
-                    console.log(`invalid id[${id}]`)
+                if (iseobj(r)) {
+                    rs.push(r)
                 }
                 else {
-                    rs.push(r)
+                    // console.log(`invalid id[${id}]`)
                 }
             })
 
@@ -497,16 +543,6 @@ export default {
             let menuSettingTooltip = get(vo, 'opt.menuSettingTooltip', '')
             if (!isestr(menuSettingTooltip)) {
                 menuSettingTooltip = 'Settings'
-            }
-
-            let menuAutoRotateIcon = get(vo, 'opt.menuAutoRotateIcon', '')
-            if (!isestr(menuAutoRotateIcon)) {
-                menuAutoRotateIcon = mdiAxisZRotateCounterclockwise
-            }
-
-            let menuAutoRotateTooltip = get(vo, 'opt.menuAutoRotateTooltip', '')
-            if (!isestr(menuAutoRotateTooltip)) {
-                menuAutoRotateTooltip = 'Auto rotate'
             }
 
             let menuAxesIcon = get(vo, 'opt.menuAxesIcon', '')
@@ -539,6 +575,56 @@ export default {
                 menuPerspectiveTooltip = 'Perspective'
             }
 
+            let menuBoxIcon = get(vo, 'opt.menuBoxIcon', '')
+            if (!isestr(menuBoxIcon)) {
+                menuBoxIcon = mdiPackageVariantClosed
+            }
+
+            let menuBoxTooltip = get(vo, 'opt.menuBoxTooltip', '')
+            if (!isestr(menuBoxTooltip)) {
+                menuBoxTooltip = 'Box'
+            }
+
+            let menuAutoRotateIcon = get(vo, 'opt.menuAutoRotateIcon', '')
+            if (!isestr(menuAutoRotateIcon)) {
+                menuAutoRotateIcon = mdiAxisZRotateCounterclockwise
+            }
+
+            let menuAutoRotateTooltip = get(vo, 'opt.menuAutoRotateTooltip', '')
+            if (!isestr(menuAutoRotateTooltip)) {
+                menuAutoRotateTooltip = 'Auto rotate'
+            }
+
+            let menuViewXYIcon = get(vo, 'opt.menuViewXYIcon', '')
+            if (!isestr(menuViewXYIcon)) {
+                menuViewXYIcon = pathXY
+            }
+
+            let menuViewXYTooltip = get(vo, 'opt.menuViewXYTooltip', '')
+            if (!isestr(menuViewXYTooltip)) {
+                menuViewXYTooltip = 'XY Plane'
+            }
+
+            let menuViewXZIcon = get(vo, 'opt.menuViewXZIcon', '')
+            if (!isestr(menuViewXZIcon)) {
+                menuViewXZIcon = pathXZ
+            }
+
+            let menuViewXZTooltip = get(vo, 'opt.menuViewXZTooltip', '')
+            if (!isestr(menuViewXZTooltip)) {
+                menuViewXZTooltip = 'XZ Plane'
+            }
+
+            let menuViewYZIcon = get(vo, 'opt.menuViewYZIcon', '')
+            if (!isestr(menuViewYZIcon)) {
+                menuViewYZIcon = pathYZ
+            }
+
+            let menuViewYZTooltip = get(vo, 'opt.menuViewYZTooltip', '')
+            if (!isestr(menuViewYZTooltip)) {
+                menuViewYZTooltip = 'YZ Plane'
+            }
+
             let menuLegendIcon = get(vo, 'opt.menuLegendIcon', '')
             if (!isestr(menuLegendIcon)) {
                 menuLegendIcon = mdiListBoxOutline
@@ -552,14 +638,22 @@ export default {
             //save
             vo.menuSettingIcon = menuSettingIcon
             vo.menuSettingTooltip = menuSettingTooltip
-            vo.menuAutoRotateIcon = menuAutoRotateIcon
-            vo.menuAutoRotateTooltip = menuAutoRotateTooltip
             vo.menuAxesIcon = menuAxesIcon
             vo.menuAxesTooltip = menuAxesTooltip
             vo.menuGridIcon = menuGridIcon
             vo.menuGridTooltip = menuGridTooltip
             vo.menuPerspectiveIcon = menuPerspectiveIcon
             vo.menuPerspectiveTooltip = menuPerspectiveTooltip
+            vo.menuBoxIcon = menuBoxIcon
+            vo.menuBoxTooltip = menuBoxTooltip
+            vo.menuAutoRotateIcon = menuAutoRotateIcon
+            vo.menuAutoRotateTooltip = menuAutoRotateTooltip
+            vo.menuViewXYIcon = menuViewXYIcon
+            vo.menuViewXYTooltip = menuViewXYTooltip
+            vo.menuViewXZIcon = menuViewXZIcon
+            vo.menuViewXZTooltip = menuViewXZTooltip
+            vo.menuViewYZIcon = menuViewYZIcon
+            vo.menuViewYZTooltip = menuViewYZTooltip
             vo.menuLegendIcon = menuLegendIcon
             vo.menuLegendTooltip = menuLegendTooltip
 
@@ -753,6 +847,7 @@ export default {
                     lightDirectionColor: 'ev.setLightDirectionColor',
                     lightDirectionIntensity: 'ev.setLightDirectionIntensity',
                     lightDirectionPos: 'ev.setLightDirectionPos',
+                    useBox: 'ev.setUseBox',
                     cameraType: 'ev.setCameraType',
                     // cameraPos: 'ev.setCameraPos', //因cameraPos跟cameraPolarAngle與cameraAzimuthAngle衝突, 故僅提供設定cameraPolarAngle與cameraAzimuthAngle
                     cameraFov: 'ev.setCameraFov',
@@ -764,14 +859,22 @@ export default {
 
                     menuSettingIcon: 'updateMenus',
                     menuSettingTooltip: 'updateMenus',
-                    menuAutoRotateIcon: 'updateMenus',
-                    menuAutoRotateTooltip: 'updateMenus',
                     menuAxesIcon: 'updateMenus',
                     menuAxesTooltip: 'updateMenus',
                     menuGridIcon: 'updateMenus',
                     menuGridTooltip: 'updateMenus',
                     menuPerspectiveIcon: 'updateMenus',
                     menuPerspectiveTooltip: 'updateMenus',
+                    menuBoxIcon: 'updateMenus',
+                    menuBoxTooltip: 'updateMenus',
+                    menuAutoRotateIcon: 'updateMenus',
+                    menuAutoRotateTooltip: 'updateMenus',
+                    menuViewXYIcon: 'updateMenus',
+                    menuViewXYTooltip: 'updateMenus',
+                    menuViewXZIcon: 'updateMenus',
+                    menuViewXZTooltip: 'updateMenus',
+                    menuViewYZIcon: 'updateMenus',
+                    menuViewYZTooltip: 'updateMenus',
                     menuLegendIcon: 'updateMenus',
                     menuLegendTooltip: 'updateMenus',
 
@@ -887,12 +990,12 @@ export default {
             return r
         },
 
-        setParam: function(key, v) {
+        setParam: function(key, v1, v2) {
             let vo = this
             key = vo.strUpperHead(key)
             let fun = get(vo, `ev.set${key}`)
             if (isfun(fun)) {
-                fun(v)
+                fun(v1, v2)
             }
         },
 
@@ -914,9 +1017,6 @@ export default {
                 axes: () => {
                     vo.toggleParam('useHelperAxes')
                 },
-                auto_rotate: () => {
-                    vo.toggleParam('useAutoRotate')
-                },
                 grid: () => {
                     vo.toggleParam('useHelperGrid')
                 },
@@ -927,6 +1027,21 @@ export default {
                     else {
                         vo.setParam('cameraType', 'perspective')
                     }
+                },
+                box: () => {
+                    vo.toggleParam('useBox')
+                },
+                auto_rotate: () => {
+                    vo.toggleParam('useAutoRotate')
+                },
+                viewxy: () => {
+                    vo.setParam('cameraViewAngle', 0, 0)
+                },
+                viewxz: () => {
+                    vo.setParam('cameraViewAngle', 0, 90)
+                },
+                viewyz: () => {
+                    vo.setParam('cameraViewAngle', 90, 90)
                 },
                 legend: () => {
                     vo.useLegend = !vo.useLegend

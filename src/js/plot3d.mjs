@@ -2,18 +2,25 @@ import get from 'lodash-es/get'
 import set from 'lodash-es/set'
 import each from 'lodash-es/each'
 import map from 'lodash-es/map'
+import size from 'lodash-es/size'
+import range from 'lodash-es/range'
 import isEqual from 'lodash-es/isEqual'
 import isNumber from 'lodash-es/isNumber'
+// import cloneDeep from 'lodash-es/cloneDeep'
 import evem from 'wsemi/src/evem.mjs'
 import isnum from 'wsemi/src/isnum.mjs'
 import isestr from 'wsemi/src/isestr.mjs'
 import isbol from 'wsemi/src/isbol.mjs'
 import isearr from 'wsemi/src/isearr.mjs'
 import iseobj from 'wsemi/src/iseobj.mjs'
+import ispint from 'wsemi/src/ispint.mjs'
+import isp0int from 'wsemi/src/isp0int.mjs'
 import isEle from 'wsemi/src/isEle.mjs'
+import cdbl from 'wsemi/src/cdbl.mjs'
+import cint from 'wsemi/src/cint.mjs'
+import dig from 'wsemi/src/dig.mjs'
 import delay from 'wsemi/src/delay.mjs'
 import pmSeries from 'wsemi/src/pmSeries.mjs'
-import cdbl from 'wsemi/src/cdbl.mjs'
 import oc from 'wsemi/src/color.mjs'
 import domRemove from 'wsemi/src/domRemove.mjs'
 import getFileNameExt from 'wsemi/src/getFileNameExt.mjs'
@@ -318,6 +325,294 @@ async function plot3d(items, opt = {}) {
         autoRotateDeg = r
     }
 
+    //useBox
+    let useBox = get(opt, 'useBox')
+    if (!isbol(useBox)) {
+        useBox = false //false bbb
+    }
+
+    let getUseBox = () => {
+        return useBox
+    }
+
+    let setUseBox = (b) => {
+        useBox = b
+        refreshAxis()
+    }
+
+    //axisX
+
+    let axisXTitle = get(opt, 'axisXTitle')
+    if (!isestr(axisXTitle)) {
+        axisXTitle = 'X'
+    }
+
+    let axisXTitleColor = get(opt, 'axisXTitleColor')
+    if (!isestr(axisXTitleColor)) {
+        axisXTitleColor = '#fff'
+    }
+
+    let axisXTitleFontSize = get(opt, 'axisXTitleFontSize')
+    if (!isestr(axisXTitleFontSize)) {
+        axisXTitleFontSize = '1.0rem'
+    }
+
+    let axisXTitleFontFamily = get(opt, 'axisXTitleFontFamily')
+    if (!isestr(axisXTitleFontFamily)) {
+        axisXTitleFontFamily = 'Microsoft JhengHei'
+    }
+
+    let axisXTitleDistance = get(opt, 'axisXTitleDistance')
+    if (!isnum(axisXTitleDistance)) {
+        axisXTitleDistance = 0.22
+    }
+    axisXTitleDistance = cdbl(axisXTitleDistance)
+
+    let axisXColor = get(opt, 'axisXColor')
+    if (!isestr(axisXColor)) {
+        axisXColor = '#fff'
+    }
+
+    let axisXWidth = get(opt, 'axisXWidth')
+    if (!isnum(axisXWidth)) {
+        axisXWidth = 1
+    }
+    axisXWidth = cdbl(axisXWidth)
+
+    let axisXTickColor = get(opt, 'axisXTickColor')
+    if (!isestr(axisXTickColor)) {
+        axisXTickColor = '#fff'
+    }
+
+    let axisXTickwidth = get(opt, 'axisXTickwidth')
+    if (!isnum(axisXTickwidth)) {
+        axisXTickwidth = 1
+    }
+    axisXTickwidth = cdbl(axisXTickwidth)
+
+    let axisXTickLength = get(opt, 'axisXTickLength')
+    if (!isnum(axisXTickLength)) {
+        axisXTickLength = 0.03
+    }
+    axisXTickLength = cdbl(axisXTickLength)
+
+    let axisXTickNum = get(opt, 'axisXTickNum')
+    if (!ispint(axisXTickNum)) {
+        axisXTickNum = 11
+    }
+    axisXTickNum = cint(axisXTickNum)
+
+    let axisXTickIntervalNum = Math.max(axisXTickNum - 1, 1)
+
+    let axisXTickLabelDistance = get(opt, 'axisXTickLabelDistance')
+    if (!isnum(axisXTickLabelDistance)) {
+        axisXTickLabelDistance = 0.11
+    }
+    axisXTickLabelDistance = cdbl(axisXTickLabelDistance)
+
+    let axisXTickLabelDig = get(opt, 'axisXTickLabelDig')
+    if (!isp0int(axisXTickLabelDig)) {
+        axisXTickLabelDig = 0
+    }
+    axisXTickLabelDig = cint(axisXTickLabelDig)
+
+    let axisXTickLabelColor = get(opt, 'axisXTickLabelColor')
+    if (!isestr(axisXTickLabelColor)) {
+        axisXTickLabelColor = '#fff'
+    }
+
+    let axisXTickLabelFontSize = get(opt, 'axisXTickLabelFontSize')
+    if (!isestr(axisXTickLabelFontSize)) {
+        axisXTickLabelFontSize = '0.7rem'
+    }
+
+    let axisXTickLabelFontFamily = get(opt, 'axisXTickLabelFontFamily')
+    if (!isestr(axisXTickLabelFontFamily)) {
+        axisXTickLabelFontFamily = 'Microsoft JhengHei'
+    }
+
+    //axisY
+
+    let axisYTitle = get(opt, 'axisYTitle')
+    if (!isestr(axisYTitle)) {
+        axisYTitle = 'Y'
+    }
+
+    let axisYTitleColor = get(opt, 'axisYTitleColor')
+    if (!isestr(axisYTitleColor)) {
+        axisYTitleColor = '#fff'
+    }
+
+    let axisYTitleFontSize = get(opt, 'axisYTitleFontSize')
+    if (!isestr(axisYTitleFontSize)) {
+        axisYTitleFontSize = '1.0rem'
+    }
+
+    let axisYTitleFontFamily = get(opt, 'axisYTitleFontFamily')
+    if (!isestr(axisYTitleFontFamily)) {
+        axisYTitleFontFamily = 'Microsoft JhengHei'
+    }
+
+    let axisYTitleDistance = get(opt, 'axisYTitleDistance')
+    if (!isnum(axisYTitleDistance)) {
+        axisYTitleDistance = 0.22
+    }
+    axisYTitleDistance = cdbl(axisYTitleDistance)
+
+    let axisYColor = get(opt, 'axisYColor')
+    if (!isestr(axisYColor)) {
+        axisYColor = '#fff'
+    }
+
+    let axisYWidth = get(opt, 'axisYWidth')
+    if (!isnum(axisYWidth)) {
+        axisYWidth = 1
+    }
+    axisYWidth = cdbl(axisYWidth)
+
+    let axisYTickColor = get(opt, 'axisYTickColor')
+    if (!isestr(axisYTickColor)) {
+        axisYTickColor = '#fff'
+    }
+
+    let axisYTickwidth = get(opt, 'axisYTickwidth')
+    if (!isnum(axisYTickwidth)) {
+        axisYTickwidth = 1
+    }
+    axisYTickwidth = cdbl(axisYTickwidth)
+
+    let axisYTickLength = get(opt, 'axisYTickLength')
+    if (!isnum(axisYTickLength)) {
+        axisYTickLength = 0.03
+    }
+    axisYTickLength = cdbl(axisYTickLength)
+
+    let axisYTickNum = get(opt, 'axisYTickNum')
+    if (!ispint(axisYTickNum)) {
+        axisYTickNum = 11
+    }
+    axisYTickNum = cint(axisYTickNum)
+
+    let axisYTickIntervalNum = Math.max(axisYTickNum - 1, 1)
+
+    let axisYTickLabelDistance = get(opt, 'axisYTickLabelDistance')
+    if (!isnum(axisYTickLabelDistance)) {
+        axisYTickLabelDistance = 0.11
+    }
+    axisYTickLabelDistance = cdbl(axisYTickLabelDistance)
+
+    let axisYTickLabelDig = get(opt, 'axisYTickLabelDig')
+    if (!isp0int(axisYTickLabelDig)) {
+        axisYTickLabelDig = 0
+    }
+    axisYTickLabelDig = cint(axisYTickLabelDig)
+
+    let axisYTickLabelColor = get(opt, 'axisYTickLabelColor')
+    if (!isestr(axisYTickLabelColor)) {
+        axisYTickLabelColor = '#fff'
+    }
+
+    let axisYTickLabelFontSize = get(opt, 'axisYTickLabelFontSize')
+    if (!isestr(axisYTickLabelFontSize)) {
+        axisYTickLabelFontSize = '0.7rem'
+    }
+
+    let axisYTickLabelFontFamily = get(opt, 'axisYTickLabelFontFamily')
+    if (!isestr(axisYTickLabelFontFamily)) {
+        axisYTickLabelFontFamily = 'Microsoft JhengHei'
+    }
+
+    //axisZ
+
+    let axisZTitle = get(opt, 'axisZTitle')
+    if (!isestr(axisZTitle)) {
+        axisZTitle = 'Z'
+    }
+
+    let axisZTitleColor = get(opt, 'axisZTitleColor')
+    if (!isestr(axisZTitleColor)) {
+        axisZTitleColor = '#fff'
+    }
+
+    let axisZTitleFontSize = get(opt, 'axisZTitleFontSize')
+    if (!isestr(axisZTitleFontSize)) {
+        axisZTitleFontSize = '1.0rem'
+    }
+
+    let axisZTitleFontFamily = get(opt, 'axisZTitleFontFamily')
+    if (!isestr(axisZTitleFontFamily)) {
+        axisZTitleFontFamily = 'Microsoft JhengHei'
+    }
+
+    let axisZTitleDistance = get(opt, 'axisZTitleDistance')
+    if (!isnum(axisZTitleDistance)) {
+        axisZTitleDistance = 0.22
+    }
+    axisZTitleDistance = cdbl(axisZTitleDistance)
+
+    let axisZColor = get(opt, 'axisZColor')
+    if (!isestr(axisZColor)) {
+        axisZColor = '#fff'
+    }
+
+    let axisZWidth = get(opt, 'axisZWidth')
+    if (!isnum(axisZWidth)) {
+        axisZWidth = 1
+    }
+    axisZWidth = cdbl(axisZWidth)
+
+    let axisZTickColor = get(opt, 'axisZTickColor')
+    if (!isestr(axisZTickColor)) {
+        axisZTickColor = '#fff'
+    }
+
+    let axisZTickwidth = get(opt, 'axisZTickwidth')
+    if (!isnum(axisZTickwidth)) {
+        axisZTickwidth = 1
+    }
+    axisZTickwidth = cdbl(axisZTickwidth)
+
+    let axisZTickLength = get(opt, 'axisZTickLength')
+    if (!isnum(axisZTickLength)) {
+        axisZTickLength = 0.03
+    }
+    axisZTickLength = cdbl(axisZTickLength)
+
+    let axisZTickNum = get(opt, 'axisZTickNum')
+    if (!ispint(axisZTickNum)) {
+        axisZTickNum = 11
+    }
+    axisZTickNum = cint(axisZTickNum)
+
+    let axisZTickIntervalNum = Math.max(axisZTickNum - 1, 1)
+
+    let axisZTickLabelDistance = get(opt, 'axisZTickLabelDistance')
+    if (!isnum(axisZTickLabelDistance)) {
+        axisZTickLabelDistance = 0.11
+    }
+    axisZTickLabelDistance = cdbl(axisZTickLabelDistance)
+
+    let axisZTickLabelDig = get(opt, 'axisZTickLabelDig')
+    if (!isp0int(axisZTickLabelDig)) {
+        axisZTickLabelDig = 0
+    }
+    axisZTickLabelDig = cint(axisZTickLabelDig)
+
+    let axisZTickLabelColor = get(opt, 'axisZTickLabelColor')
+    if (!isestr(axisZTickLabelColor)) {
+        axisZTickLabelColor = '#fff'
+    }
+
+    let axisZTickLabelFontSize = get(opt, 'axisZTickLabelFontSize')
+    if (!isestr(axisZTickLabelFontSize)) {
+        axisZTickLabelFontSize = '0.7rem'
+    }
+
+    let axisZTickLabelFontFamily = get(opt, 'axisZTickLabelFontFamily')
+    if (!isestr(axisZTickLabelFontFamily)) {
+        axisZTickLabelFontFamily = 'Microsoft JhengHei'
+    }
+
     //ev
     let ev = evem()
 
@@ -564,7 +859,6 @@ async function plot3d(items, opt = {}) {
         scene.remove(lightDirection)
         lightDirection.dispose()
         lightDirection = null
-
     }
     createLightDirection()
 
@@ -796,9 +1090,19 @@ async function plot3d(items, opt = {}) {
     let getCameraViewAngle = () => {
         let az = get(controls, 'azimuthAngle')
         let polar = get(controls, 'polarAngle')
+        az *= toDeg
+        polar *= toDeg
+        az = az % 360
+        if (az < 0) {
+            az += 360
+        }
+        polar = polar % 360
+        if (polar < 0) {
+            polar += 360
+        }
         return {
-            azimuthAngle: az * toDeg,
-            polarAngle: polar * toDeg,
+            azimuthAngle: az,
+            polarAngle: polar,
         }
     }
 
@@ -829,8 +1133,23 @@ async function plot3d(items, opt = {}) {
     let timer = setInterval(() => { //timer偵測
         let viewAngle = getCameraViewAngle()
         if (!isEqual(viewAngle, _viewAngle)) {
+            // console.log('viewAngle', viewAngle)
+
+            //update
             _viewAngle = viewAngle
+
+            //autoDisplayAxis
+            autoDisplayAxis()
+
+            //更新顯隱座標標題、軸與刻度
+            try {
+                render() //因使用timer偵測, 故可能發生render尚未創建定義而報錯
+            }
+            catch (err) {}
+
+            //emit
             ev.emit('change-view-angle', viewAngle)
+
         }
     }, 50)
 
@@ -855,6 +1174,813 @@ async function plot3d(items, opt = {}) {
         group = null
     }
     createGroup()
+
+    let createArrow = (x, y, z, dx, dy, dz, opt = {}) => {
+        let dir = new THREE.Vector3(dx, dy, dz)
+        dir.normalize()
+        let origin = new THREE.Vector3(x, y, z)
+        let color = get(opt, 'color', '#fff')
+        let length = get(opt, 'length', 1)
+        let headLength = get(opt, 'headLength', 0.05)
+        let headWidth = get(opt, 'headWidth', 0.02)
+        let arrowHelper = new THREE.ArrowHelper(dir, origin, length, nc(color), headLength, headWidth)
+        return arrowHelper
+    }
+    let disposeArrow = (arrowHelper) => {
+        try {
+            scene.remove(arrowHelper)
+        }
+        catch (err) {}
+        try {
+            arrowHelper.dispose()
+            arrowHelper = null
+        }
+        catch (err) {}
+    }
+
+    let createLine = (x1, y1, z1, x2, y2, z2, opt = {}) => {
+
+        let color = get(opt, 'color', '#fff')
+        let width = get(opt, 'width', 1)
+
+        //material
+        let material = new THREE.LineBasicMaterial({
+            color: nc(color),
+            linewidth: width,
+        })
+
+        //points
+        let points = []
+        points.push(new THREE.Vector3(x1, y1, z1))
+        points.push(new THREE.Vector3(x2, y2, z2))
+
+        //geometry
+        let geometry = new THREE.BufferGeometry().setFromPoints(points)
+
+        //line
+        let line = new THREE.Line(geometry, material)
+
+        //add
+        scene.add(line)
+
+        return {
+            material,
+            geometry,
+            line,
+        }
+    }
+    let disposeLine = (objLine) => {
+        let line = get(objLine, 'line')
+        let material = get(objLine, 'material')
+        let geometry = get(objLine, 'geometry')
+        try {
+            scene.remove(line)
+        }
+        catch (err) {}
+        try {
+            line.dispose()
+            line = null
+        }
+        catch (err) {}
+        try {
+            geometry.dispose()
+            geometry = null
+        }
+        catch (err) {}
+        try {
+            material.dispose()
+            material = null
+        }
+        catch (err) {}
+        objLine = null
+    }
+
+    let createLines = (vs, opt = {}) => {
+        let arrLines = map(vs, (v) => {
+            let x1 = get(v, 'x1', 0)
+            let y1 = get(v, 'y1', 0)
+            let z1 = get(v, 'z1', 0)
+            let x2 = get(v, 'x2', 0)
+            let y2 = get(v, 'y2', 0)
+            let z2 = get(v, 'z2', 0)
+            let r = createLabel(x1, y1, z1, x2, y2, z2, opt)
+            return r
+        })
+        return arrLines
+    }
+    let disposeLines = (arrLines) => {
+        each(arrLines, (objLine) => {
+            disposeLine(objLine)
+        })
+        arrLines = []
+    }
+
+    let createLabel = (text, x, y, z, opt = {}) => {
+
+        let textColor = get(opt, 'textColor', '#fff')
+        let textFontSize = get(opt, 'textFontSize', '0.8rem')
+        let textFontFamily = get(opt, 'textFontFamily', 'Microsoft JhengHei')
+
+        //ele
+        let ele = document.createElement('div')
+        ele.textContent = text
+        ele.style.color = textColor
+        ele.style.fontSize = textFontSize
+        ele.style.fontFamily = textFontFamily
+        // ele.style.display = 'none' //無效
+        ele.style.visibility = 'visible' //改用visibility控制顯隱, visible, hidden
+        // console.log('ele', ele)
+
+        //cso
+        let cso = new CSS2DObject(ele) //不須dispose
+        cso.position.set(x, y, z)
+        // console.log('cso',cso)
+
+        //add
+        scene.add(cso)
+
+        return {
+            cso,
+            ele,
+        }
+    }
+    let disposeLabel = (objLabel) => {
+        try {
+            let cso = get(objLabel, 'cso')
+            scene.remove(cso)
+        }
+        catch (err) {}
+        try {
+            let ele = get(objLabel, 'ele')
+            domRemove(ele)
+        }
+        catch (err) {}
+        objLabel.cso = null
+        objLabel.ele = null
+        objLabel = null
+    }
+
+    let createLabels = (vs, opt = {}) => {
+        let arrLabels = map(vs, (v) => {
+            let text = get(v, 'text', '')
+            let x = get(v, 'x', 0)
+            let y = get(v, 'y', 0)
+            let z = get(v, 'z', 0)
+            let r = createLabel(text, x, y, z, opt)
+            return r
+        })
+        return arrLabels
+    }
+    let disposeLabels = (arrLabels) => {
+        each(arrLabels, (objLabel) => {
+            disposeLabel(objLabel)
+        })
+        arrLabels = []
+    }
+
+    //axis
+    let axisLines = []
+    let axisLabels = []
+    let axisRela = []
+    let axisKpRela = {
+        axisLines,
+        axisLabels,
+    }
+    let createAxis = () => {
+
+        //check
+        if (!useBox) {
+            return
+        }
+
+        let ts
+        let ldxy = [ //x,y軸標題與刻度
+            //0: 標題與刻度之平移布林, 代表指定x,y軸位於的基本側與對象側
+            //1: x,y向正負向, 代表指定x,y軸刻度之朝向
+            //2: x,y與z向, 代表繪製x,y向或z向
+            [0, -1, 0],
+            [1, 1, 0],
+            [0, 0, -1],
+            [1, 0, -1],
+        ]
+        let ldz = [ //z軸標題與刻度
+            //0: x向刻度之平移布林
+            //1: y向刻度之平移布林
+            //2: x向標題之平移布林
+            //3: y向標題之平移布林
+            [0, 0, -1, -1],
+            [1, 0, 1, -1],
+            [1, 1, 1, 1],
+            [0, 1, -1, 1],
+        ]
+        let lda = [ //x,y,z軸線
+            [0, 0],
+            [1, 0],
+            [1, 1],
+            [0, 1],
+        ]
+
+        let genTks = (cx, cy, cz, n, dx, dy, dz, tlx, tly, tlz, tnx, tny, tnz) => {
+            let vs = map(range(n), (i) => {
+                let x1
+                let y1
+                let z1
+                let x2
+                let y2
+                let z2
+                let xt
+                let yt
+                let zt
+                x1 = cx + dx * i
+                y1 = cy + dy * i
+                z1 = cz + dz * i
+                x2 = x1 + tlx
+                y2 = y1 + tly
+                z2 = z1 + tlz
+                xt = x1 + tnx
+                yt = y1 + tny
+                zt = z1 + tnz
+                return {
+                    x1,
+                    y1,
+                    z1,
+                    x2,
+                    y2,
+                    z2,
+                    xt,
+                    yt,
+                    zt,
+                }
+
+            })
+            return vs
+        }
+
+        //x-axis title
+        if (true) {
+            each(ldxy, (l, kl) => {
+                let objLabel = createLabel(axisXTitle, 0, csr.rymin + l[0] * csr.ryrng + l[1] * axisXTitleDistance, csr.rzmin + l[2] * axisXTitleDistance, {
+                    textColor: axisXTitleColor,
+                    textFontSize: axisXTitleFontSize,
+                    textFontFamily: axisXTitleFontFamily,
+                })
+                axisLabels.push(objLabel)
+                axisRela.push({
+                    key: 'x-title',
+                    id: `s${kl}`,
+                    rela: 'axisLabels',
+                    ind: size(axisLabels) - 1,
+                })
+            })
+        }
+
+        //x-axis line
+        if (true) {
+            each(lda, (l, kl) => {
+                let objLine = createLine(
+                    csr.rxmin, csr.rymin + l[0] * csr.ryrng, csr.rzmin + l[1] * csr.rzrng,
+                    csr.rxmax, csr.rymin + l[0] * csr.ryrng, csr.rzmin + l[1] * csr.rzrng,
+                    {
+                        color: axisXColor,
+                        width: axisXWidth,
+                    })
+                axisLines.push(objLine)
+                axisRela.push({
+                    key: 'x-axis-line',
+                    id: `s${kl}`,
+                    rela: 'axisLines',
+                    ind: size(axisLines) - 1,
+                })
+            })
+        }
+
+        //x-axis ticks
+        each(ldxy, (l, kl) => {
+
+            ts = genTks(
+                csr.rxmin, csr.rymin + l[0] * csr.ryrng, csr.rzmin,
+                axisXTickNum,
+                1 / axisXTickIntervalNum, 0, 0,
+                0, l[1] * axisXTickLength, l[2] * axisXTickLength,
+                0, l[1] * axisXTickLabelDistance, l[2] * axisXTickLabelDistance,
+            )
+
+            each(ts, (t, i) => {
+
+                let objLine = createLine(t.x1, t.y1, t.z1, t.x2, t.y2, t.z2, {
+                    color: axisXTickColor,
+                    width: axisXTickwidth,
+                })
+                axisLines.push(objLine)
+                axisRela.push({
+                    key: 'x-tick-line',
+                    id: `s${kl}`,
+                    rela: 'axisLines',
+                    ind: size(axisLines) - 1,
+                })
+
+                //text
+                let text = i * csr.xrng / axisXTickNum + csr.xmin
+                text = dig(text, axisXTickLabelDig)
+
+                let objLabel = createLabel(text, t.xt, t.yt, t.zt, {
+                    textColor: axisXTickLabelColor,
+                    textFontSize: axisXTickLabelFontSize,
+                    textFontFamily: axisXTickLabelFontFamily,
+                })
+                axisLabels.push(objLabel)
+                axisRela.push({
+                    key: 'x-tick-label',
+                    id: `s${kl}`,
+                    rela: 'axisLabels',
+                    ind: size(axisLabels) - 1,
+                })
+
+            })
+
+        })
+
+        //y-axis title
+        if (true) {
+            each(ldxy, (l, kl) => {
+                let objLabel = createLabel(axisYTitle, csr.rxmin + l[0] * csr.rxrng + l[1] * axisYTitleDistance, 0, csr.rzmin + l[2] * axisYTitleDistance, {
+                    textColor: axisYTitleColor,
+                    textFontSize: axisYTitleFontSize,
+                    textFontFamily: axisYTitleFontFamily,
+                })
+                axisLabels.push(objLabel)
+                axisRela.push({
+                    key: 'y-title',
+                    id: `s${kl}`,
+                    rela: 'axisLabels',
+                    ind: size(axisLabels) - 1,
+                })
+            })
+        }
+
+        //y-axis line
+        if (true) {
+            each(lda, (l, kl) => {
+                let objLine = createLine(
+                    csr.rxmin + l[0] * csr.rxrng, csr.rymin, csr.rzmin + l[1] * csr.rzrng,
+                    csr.rxmin + l[0] * csr.rxrng, csr.rymax, csr.rzmin + l[1] * csr.rzrng,
+                    {
+                        color: axisYColor,
+                        width: axisYWidth,
+                    })
+                axisLines.push(objLine)
+                axisRela.push({
+                    key: 'y-axis-line',
+                    id: `s${kl}`,
+                    rela: 'axisLines',
+                    ind: size(axisLines) - 1,
+                })
+            })
+        }
+
+        //y-axis ticks
+        each(ldxy, (l, kl) => {
+
+            ts = genTks(
+                csr.rxmin + l[0] * csr.rxrng, csr.rymin, csr.rzmin,
+                axisYTickNum,
+                0, 1 / axisYTickIntervalNum, 0,
+                l[1] * axisYTickLength, 0, l[2] * axisYTickLength,
+                l[1] * axisYTickLabelDistance, 0, l[2] * axisYTickLabelDistance,
+            )
+
+            each(ts, (t, i) => {
+
+                let objLine = createLine(t.x1, t.y1, t.z1, t.x2, t.y2, t.z2, {
+                    color: axisYTickColor,
+                    width: axisYTickwidth,
+                })
+                axisLines.push(objLine)
+                axisRela.push({
+                    key: 'y-tick-line',
+                    id: `s${kl}`,
+                    rela: 'axisLines',
+                    ind: size(axisLines) - 1,
+                })
+
+                //text
+                let text = i * csr.yrng / axisYTickNum + csr.ymin
+                text = dig(text, axisYTickLabelDig)
+
+                let objLabel = createLabel(text, t.xt, t.yt, t.zt, {
+                    textColor: axisYTickLabelColor,
+                    textFontSize: axisYTickLabelFontSize,
+                    textFontFamily: axisYTickLabelFontFamily,
+                })
+                axisLabels.push(objLabel)
+                axisRela.push({
+                    key: 'y-tick-label',
+                    id: `s${kl}`,
+                    rela: 'axisLabels',
+                    ind: size(axisLabels) - 1,
+                })
+
+            })
+
+        })
+
+        //z-axis title
+        if (true) {
+            each(ldz, (l, kl) => {
+                let xt = csr.rxmin + l[0] * csr.rxrng + l[2] * axisZTitleDistance / 1.414
+                let yt = csr.rymin + l[1] * csr.ryrng + l[3] * axisZTitleDistance / 1.414
+                let objLabel = createLabel(axisZTitle, xt, yt, 0, {
+                    textColor: axisZTitleColor,
+                    textFontSize: axisZTitleFontSize,
+                    textFontFamily: axisZTitleFontFamily,
+                })
+                axisLabels.push(objLabel)
+                axisRela.push({
+                    key: 'z-title',
+                    id: `s${kl}`,
+                    rela: 'axisLabels',
+                    ind: size(axisLabels) - 1,
+                })
+            })
+        }
+
+        //z-axis line
+        if (true) {
+            each(lda, (l, kl) => {
+                let objLine = createLine(
+                    csr.rxmin + l[0] * csr.rxrng, csr.rymin + l[1] * csr.ryrng, csr.rzmin,
+                    csr.rxmin + l[0] * csr.rxrng, csr.rymin + l[1] * csr.ryrng, csr.rzmax,
+                    {
+                        color: axisZColor,
+                        width: axisZWidth,
+                    })
+                axisLines.push(objLine)
+                axisRela.push({
+                    key: 'z-axis-line',
+                    id: `s${kl}`,
+                    rela: 'axisLines',
+                    ind: size(axisLines) - 1,
+                })
+            })
+        }
+
+        //z-axis ticks
+        each(ldz, (l, kl) => {
+
+            ts = genTks(
+                csr.rxmin + l[0] * csr.rxrng, csr.rymin + l[1] * csr.ryrng, csr.rzmin,
+                axisZTickNum,
+                0, 0, 1 / axisZTickIntervalNum,
+                l[2] * axisZTickLength / 1.414, l[3] * axisZTickLength / 1.414, 0,
+                l[2] * axisZTickLabelDistance / 1.414, l[3] * axisZTickLabelDistance / 1.414, 0,
+            )
+
+            each(ts, (t, i) => {
+
+                let objLine = createLine(t.x1, t.y1, t.z1, t.x2, t.y2, t.z2, {
+                    color: axisZTickColor,
+                    width: axisZTickwidth,
+                })
+                axisLines.push(objLine)
+                axisRela.push({
+                    key: 'z-tick-line',
+                    id: `s${kl}`,
+                    rela: 'axisLines',
+                    ind: size(axisLines) - 1,
+                })
+
+                //text
+                let text = i * csr.zrng / axisZTickNum + csr.zmin
+                text = dig(text, axisZTickLabelDig)
+
+                let objLabel = createLabel(text, t.xt, t.yt, t.zt, {
+                    textColor: axisZTickLabelColor,
+                    textFontSize: axisZTickLabelFontSize,
+                    textFontFamily: axisZTickLabelFontFamily,
+                })
+                axisLabels.push(objLabel)
+                axisRela.push({
+                    key: 'z-tick-label',
+                    id: `s${kl}`,
+                    rela: 'axisLabels',
+                    ind: size(axisLabels) - 1,
+                })
+
+            })
+
+        })
+
+    }
+    let displayAxis = (key, id, show) => {
+        each(axisRela, (v) => {
+            let b1 = true
+            if (isestr(key)) {
+                b1 = v.key === key
+            }
+            let b2 = true
+            if (isestr(id)) {
+                b2 = v.id === id
+            }
+            let b = b1 && b2
+            // console.log(v, b)
+            if (b) {
+
+                //o
+                let o = get(axisKpRela, `${v.rela}.${v.ind}`)
+                // console.log('o', o)
+
+                //check
+                if (!iseobj(o)) {
+                    return true //跳出換下一個
+                }
+
+                if (get(o, 'ele')) {
+                    let visibility = show ? 'visible' : 'hidden'
+                    o.ele.style.visibility = visibility
+                }
+                else if (get(o, 'line')) {
+                    o.line.visible = show
+                }
+                else {
+                    console.log(`invalid attr.`, o)
+                }
+
+            }
+        })
+    }
+    let disposeAxis = () => {
+        disposeLines(axisLines)
+        disposeLabels(axisLabels)
+        axisRela = []
+        // axisKpRela = {} //不能清除, 記憶體須保持關聯axisLines與axisLabels
+    }
+
+    let displayAxisAndTitleAndTick = (ax, id) => {
+        displayAxis(`${ax}-title`, 's0', id === 's0')
+        displayAxis(`${ax}-tick-label`, 's0', id === 's0')
+        displayAxis(`${ax}-tick-line`, 's0', id === 's0')
+        displayAxis(`${ax}-title`, 's1', id === 's1')
+        displayAxis(`${ax}-tick-label`, 's1', id === 's1')
+        displayAxis(`${ax}-tick-line`, 's1', id === 's1')
+        displayAxis(`${ax}-title`, 's2', id === 's2')
+        displayAxis(`${ax}-tick-label`, 's2', id === 's2')
+        displayAxis(`${ax}-tick-line`, 's2', id === 's2')
+        displayAxis(`${ax}-title`, 's3', id === 's3')
+        displayAxis(`${ax}-tick-label`, 's3', id === 's3')
+        displayAxis(`${ax}-tick-line`, 's3', id === 's3')
+    }
+
+    let autoDisplayAxis = () => {
+
+        //check
+        if (!useBox) {
+            return
+        }
+
+        //check
+        if (!iseobj(_viewAngle)) {
+            return
+        }
+
+        let azimuthAngle = get(_viewAngle, 'azimuthAngle')
+        let polarAngle = get(_viewAngle, 'polarAngle')
+
+        let b1
+        let b2
+        let b
+
+        b1 = azimuthAngle >= 0 && azimuthAngle <= 90 //0~90
+        b2 = azimuthAngle >= 270 && azimuthAngle <= 360 //270~360
+        b = b1 || b2
+        if (b) {
+            displayAxisAndTitleAndTick('x', 's0')
+        }
+        else {
+            displayAxisAndTitleAndTick('x', 's1')
+        }
+        if (cameraType === 'orthographic') {
+            if (Math.abs(polarAngle - 90) < 0.2) {
+                if (Math.abs(azimuthAngle - 90) < 0.2 || Math.abs(azimuthAngle - 270) < 0.2) {
+                    displayAxisAndTitleAndTick('x', 'none')
+                }
+                else if (b) {
+                    displayAxisAndTitleAndTick('x', 's2')
+                }
+                else {
+                    displayAxisAndTitleAndTick('x', 's3')
+                }
+            }
+        }
+
+        b1 = azimuthAngle >= 180 && azimuthAngle <= 360
+        b2 = false
+        b = b1 || b2
+        if (b) {
+            displayAxisAndTitleAndTick('y', 's0')
+        }
+        else {
+            displayAxisAndTitleAndTick('y', 's1')
+        }
+        if (cameraType === 'orthographic') {
+            if (Math.abs(polarAngle - 90) < 0.2) {
+                if (Math.abs(azimuthAngle) < 0.2 || Math.abs(azimuthAngle - 180) < 0.2) {
+                    displayAxisAndTitleAndTick('y', 'none')
+                }
+                else if (b) {
+                    displayAxisAndTitleAndTick('y', 's2')
+                }
+                else {
+                    displayAxisAndTitleAndTick('y', 's3')
+                }
+            }
+        }
+
+        if (azimuthAngle <= 90) {
+            displayAxisAndTitleAndTick('z', 's0')
+        }
+        else if (azimuthAngle <= 180) {
+            displayAxisAndTitleAndTick('z', 's1')
+        }
+        else if (azimuthAngle <= 270) {
+            displayAxisAndTitleAndTick('z', 's2')
+        }
+        else {
+            displayAxisAndTitleAndTick('z', 's3')
+        }
+        if (cameraType === 'orthographic') {
+            if (Math.abs(polarAngle) < 0.2 || Math.abs(polarAngle - 180) < 0.2) {
+                displayAxisAndTitleAndTick('z', 'none')
+            }
+        }
+
+    }
+
+    let refreshAxis = () => {
+
+        //disposeAxis
+        disposeAxis()
+
+        if (useBox) {
+
+            //createAxis
+            createAxis()
+
+            //autoDisplayAxis
+            autoDisplayAxis()
+
+        }
+
+        //render
+        render()
+
+    }
+
+    let setAxisXTitle = (v) => {
+        axisXTitle = v; refreshAxis()
+    }
+    let setAxisXTitleColor = (v) => {
+        axisXTitleColor = v; refreshAxis()
+    }
+    let setAxisXTitleFontSize = (v) => {
+        axisXTitleFontSize = v; refreshAxis()
+    }
+    let setAxisXTitleFontFamily = (v) => {
+        axisXTitleFontFamily = v; refreshAxis()
+    }
+    let setAxisXTitleDistance = (v) => {
+        axisXTitleDistance = v; refreshAxis()
+    }
+    let setAxisXColor = (v) => {
+        axisXColor = v; refreshAxis()
+    }
+    let setAxisXWidth = (v) => {
+        axisXWidth = v; refreshAxis()
+    }
+    let setAxisXTickColor = (v) => {
+        axisXTickColor = v; refreshAxis()
+    }
+    let setAxisXTickwidth = (v) => {
+        axisXTickwidth = v; refreshAxis()
+    }
+    let setAxisXTickLength = (v) => {
+        axisXTickLength = v; refreshAxis()
+    }
+    let setAxisXTickNum = (v) => {
+        axisXTickNum = v; refreshAxis()
+    }
+    let setAxisXTickLabelDistance = (v) => {
+        axisXTickLabelDistance = v; refreshAxis()
+    }
+    let setAxisXTickLabelDig = (v) => {
+        axisXTickLabelDig = v; refreshAxis()
+    }
+    let setAxisXTickLabelColor = (v) => {
+        axisXTickLabelColor = v; refreshAxis()
+    }
+    let setAxisXTickLabelFontSize = (v) => {
+        axisXTickLabelFontSize = v; refreshAxis()
+    }
+    let setAxisXTickLabelFontFamily = (v) => {
+        axisXTickLabelFontFamily = v; refreshAxis()
+    }
+
+    let setAxisYTitle = (v) => {
+        axisYTitle = v; refreshAxis()
+    }
+    let setAxisYTitleColor = (v) => {
+        axisYTitleColor = v; refreshAxis()
+    }
+    let setAxisYTitleFontSize = (v) => {
+        axisYTitleFontSize = v; refreshAxis()
+    }
+    let setAxisYTitleFontFamily = (v) => {
+        axisYTitleFontFamily = v; refreshAxis()
+    }
+    let setAxisYTitleDistance = (v) => {
+        axisYTitleDistance = v; refreshAxis()
+    }
+    let setAxisYColor = (v) => {
+        axisYColor = v; refreshAxis()
+    }
+    let setAxisYWidth = (v) => {
+        axisYWidth = v; refreshAxis()
+    }
+    let setAxisYTickColor = (v) => {
+        axisYTickColor = v; refreshAxis()
+    }
+    let setAxisYTickwidth = (v) => {
+        axisYTickwidth = v; refreshAxis()
+    }
+    let setAxisYTickLength = (v) => {
+        axisYTickLength = v; refreshAxis()
+    }
+    let setAxisYTickNum = (v) => {
+        axisYTickNum = v; refreshAxis()
+    }
+    let setAxisYTickLabelDistance = (v) => {
+        axisYTickLabelDistance = v; refreshAxis()
+    }
+    let setAxisYTickLabelDig = (v) => {
+        axisYTickLabelDig = v; refreshAxis()
+    }
+    let setAxisYTickLabelColor = (v) => {
+        axisYTickLabelColor = v; refreshAxis()
+    }
+    let setAxisYTickLabelFontSize = (v) => {
+        axisYTickLabelFontSize = v; refreshAxis()
+    }
+    let setAxisYTickLabelFontFamily = (v) => {
+        axisYTickLabelFontFamily = v; refreshAxis()
+    }
+
+    let setAxisZTitle = (v) => {
+        axisZTitle = v; refreshAxis()
+    }
+    let setAxisZTitleColor = (v) => {
+        axisZTitleColor = v; refreshAxis()
+    }
+    let setAxisZTitleFontSize = (v) => {
+        axisZTitleFontSize = v; refreshAxis()
+    }
+    let setAxisZTitleFontFamily = (v) => {
+        axisZTitleFontFamily = v; refreshAxis()
+    }
+    let setAxisZTitleDistance = (v) => {
+        axisZTitleDistance = v; refreshAxis()
+    }
+    let setAxisZColor = (v) => {
+        axisZColor = v; refreshAxis()
+    }
+    let setAxisZWidth = (v) => {
+        axisZWidth = v; refreshAxis()
+    }
+    let setAxisZTickColor = (v) => {
+        axisZTickColor = v; refreshAxis()
+    }
+    let setAxisZTickwidth = (v) => {
+        axisZTickwidth = v; refreshAxis()
+    }
+    let setAxisZTickLength = (v) => {
+        axisZTickLength = v; refreshAxis()
+    }
+    let setAxisZTickNum = (v) => {
+        axisZTickNum = v; refreshAxis()
+    }
+    let setAxisZTickLabelDistance = (v) => {
+        axisZTickLabelDistance = v; refreshAxis()
+    }
+    let setAxisZTickLabelDig = (v) => {
+        axisZTickLabelDig = v; refreshAxis()
+    }
+    let setAxisZTickLabelColor = (v) => {
+        axisZTickLabelColor = v; refreshAxis()
+    }
+    let setAxisZTickLabelFontSize = (v) => {
+        axisZTickLabelFontSize = v; refreshAxis()
+    }
+    let setAxisZTickLabelFontFamily = (v) => {
+        axisZTickLabelFontFamily = v; refreshAxis()
+    }
 
     //meshs
     let meshs = []
@@ -907,14 +2033,14 @@ async function plot3d(items, opt = {}) {
 
     let addMesh = async (v) => {
         resetTransform()
-        disposeLabel()
+        disposeMeshLabels()
         await addMeshCore(v)
         rdr()
     }
 
     let addMeshs = async (vs) => {
         resetTransform()
-        disposeLabel()
+        disposeMeshLabels()
         await addMeshsCore(vs)
         rdr()
     }
@@ -923,7 +2049,7 @@ async function plot3d(items, opt = {}) {
         let rs = map(meshs, (v, ind) => {
             // console.log('ind', v)
             let color = get(v, 'color', '')
-            let label = get(labels, ind)
+            let label = get(meshLabels, `${ind}.ele`)
             let labelText = get(label, 'textContent', '')
             let labelTextColor = get(label, 'style.color', '')
             let labelTextFontSize = get(label, 'style.fontSize', '')
@@ -990,17 +2116,39 @@ async function plot3d(items, opt = {}) {
         let csrd = getCsrdFromMeshs(meshs)
         // console.log('csrd', csrd)
 
-        //cs, r
-        let cs = csrd.cs
+        //r
         let r = 1
         if (csrd.rd > 0) {
             r = 1 / csrd.rd
         }
 
+        //rxrng, rxmin, rxmax, ryrng, rymin, rymax, rzrng, rzmin, rzmax
+        let rxrng = 1
+        let rxmin = -0.5
+        let rxmax = rxmin + rxrng
+        let ryrng = 1
+        let rymin = -0.5
+        let rymax = rymin + ryrng
+        let rzrng = 1
+        let rzmin = -0.5
+        let rzmax = rzmin + rzrng
+
         //csr
         csr = {
-            ...cs,
-            r,
+            ...csrd,
+            rx: r,
+            ry: r,
+            rz: r,
+            rd: csrd.rd,
+            rxrng,
+            rxmin,
+            rxmax,
+            ryrng,
+            rymin,
+            rymax,
+            rzrng,
+            rzmin,
+            rzmax,
         }
         // console.log('csr', csr)
 
@@ -1010,8 +2158,8 @@ async function plot3d(items, opt = {}) {
         each(meshs, (mesh) => {
             // console.log('mesh',mesh)
             let geometry = mesh.geometry
-            geometry.translate(-csr.x, -csr.y, -csr.z) //先平移
-            geometry.scale(csr.r, csr.r, csr.r) //再縮放
+            geometry.translate(-csr.xc, -csr.yc, -csr.zc) //先平移
+            geometry.scale(csr.rx, csr.ry, csr.rz) //再縮放
         })
     }
 
@@ -1019,46 +2167,35 @@ async function plot3d(items, opt = {}) {
         each(meshs, (mesh) => {
             // console.log('mesh',mesh)
             let geometry = mesh.geometry
-            let r = 1 / csr.r
-            geometry.scale(r, r, r) //先恢復縮放
-            geometry.translate(csr.x, csr.y, csr.z) //再恢復平移
+            geometry.scale(1 / csr.rx, 1 / csr.ry, 1 / csr.rz) //先恢復縮放
+            geometry.translate(csr.xc, csr.yc, csr.zc) //再恢復平移
         })
     }
 
-    //labels
-    let labels = []
-    let createLabels = () => {
-        each(meshs, (mesh) => {
-
-            //ele
-            let ele = document.createElement('div')
-            ele.textContent = mesh.name
-            ele.style.color = labelTextColor
-            ele.style.fontSize = labelTextFontSize
-            ele.style.fontFamily = labelTextFontFamily
-            // ele.style.display = 'none' //無效
-            ele.style.visibility = 'visible' //改用visibility控制顯隱, visible, hidden
-            // console.log('ele', ele)
-
-            //cso
-            let cso = new CSS2DObject(ele)
+    //meshLabels
+    let meshLabels = []
+    let createMeshLabels = () => {
+        let vs = map(meshs, (mesh) => {
             let c = mesh.geometry.boundingSphere.center //get(mesh, 'geometry.boundingSphere.center')
-            cso.position.set(c.x, c.y, c.z)
-            // console.log('cso',cso)
-
-            //push
-            labels.push(ele)
-
-            //add
-            mesh.add(cso)
-
+            let text = mesh.name
+            let x = c.x
+            let y = c.y
+            let z = c.z
+            return {
+                text,
+                x,
+                y,
+                z,
+            }
+        })
+        meshLabels = createLabels(vs, {
+            textColor: labelTextColor,
+            textFontSize: labelTextFontSize,
+            textFontFamily: labelTextFontFamily,
         })
     }
-    let disposeLabel = () => {
-        each(labels, (ele) => {
-            domRemove(ele)
-        })
-        labels = []
+    let disposeMeshLabels = () => {
+        disposeLabels(meshLabels)
     }
 
     let rdr = async () => {
@@ -1075,7 +2212,18 @@ async function plot3d(items, opt = {}) {
         calcTransform()
 
         //須mesh已translate與scale才能取得center並給予label座標
-        createLabels()
+        createMeshLabels()
+
+        //check
+        if (useBox) {
+
+            //須有csr才能繪製axis與tick
+            createAxis()
+
+            //autoDisplayAxis
+            autoDisplayAxis()
+
+        }
 
         //更新平移與縮放後渲染
         render()
@@ -1083,7 +2231,7 @@ async function plot3d(items, opt = {}) {
     }
 
     let setMeshLabelVisibleCore = (ind, visible) => {
-        let label = get(labels, ind)
+        let label = get(meshLabels, `${ind}.ele`)
         if (!isEle(label)) {
             return null
         }
@@ -1093,7 +2241,7 @@ async function plot3d(items, opt = {}) {
             if (visible === true) {
                 visibility = 'visible'
             }
-            labels[ind].style.visibility = visibility
+            meshLabels[ind].ele.style.visibility = visibility
         }
         catch (err) {
             console.log(err)
@@ -1106,12 +2254,12 @@ async function plot3d(items, opt = {}) {
     }
 
     let setMeshLabelText = (ind, text) => {
-        let label = get(labels, ind)
+        let label = get(meshLabels, `${ind}.ele`)
         if (!isEle(label)) {
             return null
         }
         try {
-            labels[ind].textContent = text
+            meshLabels[ind].ele.textContent = text
         }
         catch (err) {
             console.log(err)
@@ -1120,12 +2268,12 @@ async function plot3d(items, opt = {}) {
     }
 
     let setMeshLabelTextColor = (ind, color) => {
-        let label = get(labels, ind)
+        let label = get(meshLabels, `${ind}.ele`)
         if (!isEle(label)) {
             return null
         }
         try {
-            labels[ind].style.color = color
+            meshLabels[ind].ele.style.color = color
         }
         catch (err) {
             console.log(err)
@@ -1134,12 +2282,12 @@ async function plot3d(items, opt = {}) {
     }
 
     let setMeshLabelTextFontSize = (ind, fontSize) => {
-        let label = get(labels, ind)
+        let label = get(meshLabels, `${ind}.ele`)
         if (!isEle(label)) {
             return null
         }
         try {
-            labels[ind].style.fontSize = fontSize
+            meshLabels[ind].ele.style.fontSize = fontSize
         }
         catch (err) {
             console.log(err)
@@ -1148,12 +2296,12 @@ async function plot3d(items, opt = {}) {
     }
 
     let setMeshLabelTextFontFamily = (ind, fontFamily) => {
-        let label = get(labels, ind)
+        let label = get(meshLabels, `${ind}.ele`)
         if (!isEle(label)) {
             return null
         }
         try {
-            labels[ind].style.fontFamily = fontFamily
+            meshLabels[ind].ele.style.fontFamily = fontFamily
         }
         catch (err) {
             console.log(err)
@@ -1168,7 +2316,7 @@ async function plot3d(items, opt = {}) {
         disposeGroup()
         meshs = []
         createGroup()
-        disposeLabel()
+        disposeMeshLabels()
         render()
     }
 
@@ -1294,14 +2442,17 @@ async function plot3d(items, opt = {}) {
         //disposeLightDirection
         disposeLightDirection()
 
+        //disposeAxis
+        disposeAxis()
+
         // labelDiv=document.querySelector('#labelDiv'); // same beginning
         // allLabelsToDelete=document.querySelectorAll('#labelDiv .label') // takes children of class "label" like in moon-earth example
         // forEach (elem in allLabelsToDelete ) {
         //     labelDiv.removeChild(elem)
         // }
 
-        //disposeLabel
-        disposeLabel()
+        //disposeMeshLabels
+        disposeMeshLabels()
 
         //disposeScene
         disposeScene()
@@ -1388,6 +2539,9 @@ async function plot3d(items, opt = {}) {
     ev.setCameraFar = setCameraFar
     ev.setCameraOrthographicRatio = setCameraOrthographicRatio
 
+    ev.getUseBox = getUseBox
+    ev.setUseBox = setUseBox
+
     ev.addMesh = addMesh
     ev.addMeshs = addMeshs
     ev.getMeshsInfor = getMeshsInfor
@@ -1399,6 +2553,57 @@ async function plot3d(items, opt = {}) {
     ev.setMeshLabelTextFontSize = setMeshLabelTextFontSize
     ev.setMeshLabelTextFontFamily = setMeshLabelTextFontFamily
     ev.cleanMeshs = cleanMeshs
+
+    ev.setAxisXTitle = setAxisXTitle
+    ev.setAxisXTitleColor = setAxisXTitleColor
+    ev.setAxisXTitleFontSize = setAxisXTitleFontSize
+    ev.setAxisXTitleFontFamily = setAxisXTitleFontFamily
+    ev.setAxisXTitleDistance = setAxisXTitleDistance
+    ev.setAxisXColor = setAxisXColor
+    ev.setAxisXWidth = setAxisXWidth
+    ev.setAxisXTickColor = setAxisXTickColor
+    ev.setAxisXTickwidth = setAxisXTickwidth
+    ev.setAxisXTickLength = setAxisXTickLength
+    ev.setAxisXTickNum = setAxisXTickNum
+    ev.setAxisXTickLabelDistance = setAxisXTickLabelDistance
+    ev.setAxisXTickLabelDig = setAxisXTickLabelDig
+    ev.setAxisXTickLabelColor = setAxisXTickLabelColor
+    ev.setAxisXTickLabelFontSize = setAxisXTickLabelFontSize
+    ev.setAxisXTickLabelFontFamily = setAxisXTickLabelFontFamily
+
+    ev.setAxisYTitle = setAxisYTitle
+    ev.setAxisYTitleColor = setAxisYTitleColor
+    ev.setAxisYTitleFontSize = setAxisYTitleFontSize
+    ev.setAxisYTitleFontFamily = setAxisYTitleFontFamily
+    ev.setAxisYTitleDistance = setAxisYTitleDistance
+    ev.setAxisYColor = setAxisYColor
+    ev.setAxisYWidth = setAxisYWidth
+    ev.setAxisYTickColor = setAxisYTickColor
+    ev.setAxisYTickwidth = setAxisYTickwidth
+    ev.setAxisYTickLength = setAxisYTickLength
+    ev.setAxisYTickNum = setAxisYTickNum
+    ev.setAxisYTickLabelDistance = setAxisYTickLabelDistance
+    ev.setAxisYTickLabelDig = setAxisYTickLabelDig
+    ev.setAxisYTickLabelColor = setAxisYTickLabelColor
+    ev.setAxisYTickLabelFontSize = setAxisYTickLabelFontSize
+    ev.setAxisYTickLabelFontFamily = setAxisYTickLabelFontFamily
+
+    ev.setAxisZTitle = setAxisZTitle
+    ev.setAxisZTitleColor = setAxisZTitleColor
+    ev.setAxisZTitleFontSize = setAxisZTitleFontSize
+    ev.setAxisZTitleFontFamily = setAxisZTitleFontFamily
+    ev.setAxisZTitleDistance = setAxisZTitleDistance
+    ev.setAxisZColor = setAxisZColor
+    ev.setAxisZWidth = setAxisZWidth
+    ev.setAxisZTickColor = setAxisZTickColor
+    ev.setAxisZTickwidth = setAxisZTickwidth
+    ev.setAxisZTickLength = setAxisZTickLength
+    ev.setAxisZTickNum = setAxisZTickNum
+    ev.setAxisZTickLabelDistance = setAxisZTickLabelDistance
+    ev.setAxisZTickLabelDig = setAxisZTickLabelDig
+    ev.setAxisZTickLabelColor = setAxisZTickLabelColor
+    ev.setAxisZTickLabelFontSize = setAxisZTickLabelFontSize
+    ev.setAxisZTickLabelFontFamily = setAxisZTickLabelFontFamily
 
     return ev
 }
