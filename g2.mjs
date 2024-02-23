@@ -1,17 +1,19 @@
 
-ev.setAxisXTitle               =setAxisXTitle               
-ev.setAxisXTitleColor          =setAxisXTitleColor          
-ev.setAxisXTitleFontSize       =setAxisXTitleFontSize       
-ev.setAxisXTitleFontFamily     =setAxisXTitleFontFamily     
-ev.setAxisXTitleDistance       =setAxisXTitleDistance       
-ev.setAxisXColor               =setAxisXColor               
-ev.setAxisXWidth               =setAxisXWidth               
-ev.setAxisXTickColor           =setAxisXTickColor           
-ev.setAxisXTickwidth           =setAxisXTickwidth           
-ev.setAxisXTickLength          =setAxisXTickLength          
-ev.setAxisXTickNum             =setAxisXTickNum             
-ev.setAxisXTickLabelDistance   =setAxisXTickLabelDistance   
-ev.setAxisXTickLabelDig        =setAxisXTickLabelDig        
-ev.setAxisXTickLabelColor      =setAxisXTickLabelColor      
-ev.setAxisXTickLabelFontSize   =setAxisXTickLabelFontSize   
-ev.setAxisXTickLabelFontFamily =setAxisXTickLabelFontFamily 
+useAxis: 'ev.setUseAxis',
+
+axisXTitle               :'ev.setAxisXTitle',
+axisXTitleColor          :'ev.setAxisXTitleColor',
+axisXTitleFontSize       :'ev.setAxisXTitleFontSize',
+axisXTitleFontFamily     :'ev.setAxisXTitleFontFamily',
+axisXTitleDistance       :'ev.setAxisXTitleDistance',
+axisXLineColor           :'ev.setAxisXLineColor',
+axisXLineWidth           :'ev.setAxisXLineWidth',
+axisXTickLineColor       :'ev.setAxisXTickLineColor',
+axisXTickLineWidth       :'ev.setAxisXTickLineWidth',
+axisXTickLineLength      :'ev.setAxisXTickLineLength',
+axisXTickNum             :'ev.setAxisXTickNum',
+axisXTickLabelDistance   :'ev.setAxisXTickLabelDistance',
+axisXTickLabelDig        :'ev.setAxisXTickLabelDig',
+axisXTickLabelColor      :'ev.setAxisXTickLabelColor',
+axisXTickLabelFontSize   :'ev.setAxisXTickLabelFontSize',
+axisXTickLabelFontFamily :'ev.setAxisXTickLabelFontFamily',

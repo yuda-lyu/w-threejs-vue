@@ -148,7 +148,103 @@
 
 <!-- bbb -->
 
-            <AppMhSetAxisXTitle v-if="cmpPick==='setAxisXTitle'"></AppMhSetAxisXTitle>
+            <AppMhUseAxis v-if="cmpPick==='useAxis'"></AppMhUseAxis>
+
+            <AppAxAxisXTitle v-if="cmpPick==='axisXTitle'"></AppAxAxisXTitle>
+
+            <AppAxAxisXTitleColor v-if="cmpPick==='axisXTitleColor'"></AppAxAxisXTitleColor>
+
+            <AppAxAxisXTitleFontSize v-if="cmpPick==='axisXTitleFontSize'"></AppAxAxisXTitleFontSize>
+
+            <AppAxAxisXTitleFontFamily v-if="cmpPick==='axisXTitleFontFamily'"></AppAxAxisXTitleFontFamily>
+
+            <AppAxAxisXTitleDistance v-if="cmpPick==='axisXTitleDistance'"></AppAxAxisXTitleDistance>
+
+            <AppAxAxisXLineColor v-if="cmpPick==='axisXLineColor'"></AppAxAxisXLineColor>
+
+            <AppAxAxisXLineWidth v-if="cmpPick==='axisXLineWidth'"></AppAxAxisXLineWidth>
+
+            <AppAxAxisXTickLineColor v-if="cmpPick==='axisXTickLineColor'"></AppAxAxisXTickLineColor>
+
+            <AppAxAxisXTickLineWidth v-if="cmpPick==='axisXTickLineWidth'"></AppAxAxisXTickLineWidth>
+
+            <AppAxAxisXTickLineLength v-if="cmpPick==='axisXTickLineLength'"></AppAxAxisXTickLineLength>
+
+            <AppAxAxisXTickNum v-if="cmpPick==='axisXTickNum'"></AppAxAxisXTickNum>
+
+            <AppAxAxisXTickLabelDistance v-if="cmpPick==='axisXTickLabelDistance'"></AppAxAxisXTickLabelDistance>
+
+            <AppAxAxisXTickLabelDig v-if="cmpPick==='axisXTickLabelDig'"></AppAxAxisXTickLabelDig>
+
+            <AppAxAxisXTickLabelColor v-if="cmpPick==='axisXTickLabelColor'"></AppAxAxisXTickLabelColor>
+
+            <AppAxAxisXTickLabelFontSize v-if="cmpPick==='axisXTickLabelFontSize'"></AppAxAxisXTickLabelFontSize>
+
+            <AppAxAxisXTickLabelFontFamily v-if="cmpPick==='axisXTickLabelFontFamily'"></AppAxAxisXTickLabelFontFamily>
+
+            <AppAxAxisYTitle v-if="cmpPick==='axisYTitle'"></AppAxAxisYTitle>
+
+            <AppAxAxisYTitleColor v-if="cmpPick==='axisYTitleColor'"></AppAxAxisYTitleColor>
+
+            <AppAxAxisYTitleFontSize v-if="cmpPick==='axisYTitleFontSize'"></AppAxAxisYTitleFontSize>
+
+            <AppAxAxisYTitleFontFamily v-if="cmpPick==='axisYTitleFontFamily'"></AppAxAxisYTitleFontFamily>
+
+            <AppAxAxisYTitleDistance v-if="cmpPick==='axisYTitleDistance'"></AppAxAxisYTitleDistance>
+
+            <AppAxAxisYLineColor v-if="cmpPick==='axisYLineColor'"></AppAxAxisYLineColor>
+
+            <AppAxAxisYLineWidth v-if="cmpPick==='axisYLineWidth'"></AppAxAxisYLineWidth>
+
+            <AppAxAxisYTickLineColor v-if="cmpPick==='axisYTickLineColor'"></AppAxAxisYTickLineColor>
+
+            <AppAxAxisYTickLineWidth v-if="cmpPick==='axisYTickLineWidth'"></AppAxAxisYTickLineWidth>
+
+            <AppAxAxisYTickLineLength v-if="cmpPick==='axisYTickLineLength'"></AppAxAxisYTickLineLength>
+
+            <AppAxAxisYTickNum v-if="cmpPick==='axisYTickNum'"></AppAxAxisYTickNum>
+
+            <AppAxAxisYTickLabelDistance v-if="cmpPick==='axisYTickLabelDistance'"></AppAxAxisYTickLabelDistance>
+
+            <AppAxAxisYTickLabelDig v-if="cmpPick==='axisYTickLabelDig'"></AppAxAxisYTickLabelDig>
+
+            <AppAxAxisYTickLabelColor v-if="cmpPick==='axisYTickLabelColor'"></AppAxAxisYTickLabelColor>
+
+            <AppAxAxisYTickLabelFontSize v-if="cmpPick==='axisYTickLabelFontSize'"></AppAxAxisYTickLabelFontSize>
+
+            <AppAxAxisYTickLabelFontFamily v-if="cmpPick==='axisYTickLabelFontFamily'"></AppAxAxisYTickLabelFontFamily>
+
+            <AppAxAxisZTitle v-if="cmpPick==='axisZTitle'"></AppAxAxisZTitle>
+
+            <AppAxAxisZTitleColor v-if="cmpPick==='axisZTitleColor'"></AppAxAxisZTitleColor>
+
+            <AppAxAxisZTitleFontSize v-if="cmpPick==='axisZTitleFontSize'"></AppAxAxisZTitleFontSize>
+
+            <AppAxAxisZTitleFontFamily v-if="cmpPick==='axisZTitleFontFamily'"></AppAxAxisZTitleFontFamily>
+
+            <AppAxAxisZTitleDistance v-if="cmpPick==='axisZTitleDistance'"></AppAxAxisZTitleDistance>
+
+            <AppAxAxisZLineColor v-if="cmpPick==='axisZLineColor'"></AppAxAxisZLineColor>
+
+            <AppAxAxisZLineWidth v-if="cmpPick==='axisZLineWidth'"></AppAxAxisZLineWidth>
+
+            <AppAxAxisZTickLineColor v-if="cmpPick==='axisZTickLineColor'"></AppAxAxisZTickLineColor>
+
+            <AppAxAxisZTickLineWidth v-if="cmpPick==='axisZTickLineWidth'"></AppAxAxisZTickLineWidth>
+
+            <AppAxAxisZTickLineLength v-if="cmpPick==='axisZTickLineLength'"></AppAxAxisZTickLineLength>
+
+            <AppAxAxisZTickNum v-if="cmpPick==='axisZTickNum'"></AppAxAxisZTickNum>
+
+            <AppAxAxisZTickLabelDistance v-if="cmpPick==='axisZTickLabelDistance'"></AppAxAxisZTickLabelDistance>
+
+            <AppAxAxisZTickLabelDig v-if="cmpPick==='axisZTickLabelDig'"></AppAxAxisZTickLabelDig>
+
+            <AppAxAxisZTickLabelColor v-if="cmpPick==='axisZTickLabelColor'"></AppAxAxisZTickLabelColor>
+
+            <AppAxAxisZTickLabelFontSize v-if="cmpPick==='axisZTickLabelFontSize'"></AppAxAxisZTickLabelFontSize>
+
+            <AppAxAxisZTickLabelFontFamily v-if="cmpPick==='axisZTickLabelFontFamily'"></AppAxAxisZTickLabelFontFamily>
 
 
 <!-- bbb -->
@@ -225,7 +321,56 @@ import AppLtLightDirectionIntensity from './AppLtLightDirectionIntensity.vue'
 import AppLtLightDirectionPos from './AppLtLightDirectionPos.vue'
 // bbb
 
-import AppMhSetAxisXTitle from './AppMhSetAxisXTitle.vue'
+import AppMhUseAxis from './AppMhUseAxis.vue'
+import AppAxAxisXTitle from './AppAxAxisXTitle.vue'
+import AppAxAxisXTitleColor from './AppAxAxisXTitleColor.vue'
+import AppAxAxisXTitleFontSize from './AppAxAxisXTitleFontSize.vue'
+import AppAxAxisXTitleFontFamily from './AppAxAxisXTitleFontFamily.vue'
+import AppAxAxisXTitleDistance from './AppAxAxisXTitleDistance.vue'
+import AppAxAxisXLineColor from './AppAxAxisXLineColor.vue'
+import AppAxAxisXLineWidth from './AppAxAxisXLineWidth.vue'
+import AppAxAxisXTickLineColor from './AppAxAxisXTickLineColor.vue'
+import AppAxAxisXTickLineWidth from './AppAxAxisXTickLineWidth.vue'
+import AppAxAxisXTickLineLength from './AppAxAxisXTickLineLength.vue'
+import AppAxAxisXTickNum from './AppAxAxisXTickNum.vue'
+import AppAxAxisXTickLabelDistance from './AppAxAxisXTickLabelDistance.vue'
+import AppAxAxisXTickLabelDig from './AppAxAxisXTickLabelDig.vue'
+import AppAxAxisXTickLabelColor from './AppAxAxisXTickLabelColor.vue'
+import AppAxAxisXTickLabelFontSize from './AppAxAxisXTickLabelFontSize.vue'
+import AppAxAxisXTickLabelFontFamily from './AppAxAxisXTickLabelFontFamily.vue'
+import AppAxAxisYTitle from './AppAxAxisYTitle.vue'
+import AppAxAxisYTitleColor from './AppAxAxisYTitleColor.vue'
+import AppAxAxisYTitleFontSize from './AppAxAxisYTitleFontSize.vue'
+import AppAxAxisYTitleFontFamily from './AppAxAxisYTitleFontFamily.vue'
+import AppAxAxisYTitleDistance from './AppAxAxisYTitleDistance.vue'
+import AppAxAxisYLineColor from './AppAxAxisYLineColor.vue'
+import AppAxAxisYLineWidth from './AppAxAxisYLineWidth.vue'
+import AppAxAxisYTickLineColor from './AppAxAxisYTickLineColor.vue'
+import AppAxAxisYTickLineWidth from './AppAxAxisYTickLineWidth.vue'
+import AppAxAxisYTickLineLength from './AppAxAxisYTickLineLength.vue'
+import AppAxAxisYTickNum from './AppAxAxisYTickNum.vue'
+import AppAxAxisYTickLabelDistance from './AppAxAxisYTickLabelDistance.vue'
+import AppAxAxisYTickLabelDig from './AppAxAxisYTickLabelDig.vue'
+import AppAxAxisYTickLabelColor from './AppAxAxisYTickLabelColor.vue'
+import AppAxAxisYTickLabelFontSize from './AppAxAxisYTickLabelFontSize.vue'
+import AppAxAxisYTickLabelFontFamily from './AppAxAxisYTickLabelFontFamily.vue'
+import AppAxAxisZTitle from './AppAxAxisZTitle.vue'
+import AppAxAxisZTitleColor from './AppAxAxisZTitleColor.vue'
+import AppAxAxisZTitleFontSize from './AppAxAxisZTitleFontSize.vue'
+import AppAxAxisZTitleFontFamily from './AppAxAxisZTitleFontFamily.vue'
+import AppAxAxisZTitleDistance from './AppAxAxisZTitleDistance.vue'
+import AppAxAxisZLineColor from './AppAxAxisZLineColor.vue'
+import AppAxAxisZLineWidth from './AppAxAxisZLineWidth.vue'
+import AppAxAxisZTickLineColor from './AppAxAxisZTickLineColor.vue'
+import AppAxAxisZTickLineWidth from './AppAxAxisZTickLineWidth.vue'
+import AppAxAxisZTickLineLength from './AppAxAxisZTickLineLength.vue'
+import AppAxAxisZTickNum from './AppAxAxisZTickNum.vue'
+import AppAxAxisZTickLabelDistance from './AppAxAxisZTickLabelDistance.vue'
+import AppAxAxisZTickLabelDig from './AppAxAxisZTickLabelDig.vue'
+import AppAxAxisZTickLabelColor from './AppAxAxisZTickLabelColor.vue'
+import AppAxAxisZTickLabelFontSize from './AppAxAxisZTickLabelFontSize.vue'
+import AppAxAxisZTickLabelFontFamily from './AppAxAxisZTickLabelFontFamily.vue'
+
 
 //bbb
 import AppMhGetMeshsInfor from './AppMhGetMeshsInfor.vue'
@@ -278,10 +423,61 @@ export default {
         AppLtLightDirectionColor,
         AppLtLightDirectionIntensity,
         AppLtLightDirectionPos,
-        //bbb
-        AppMhSetAxisXTitle,
 
         //bbb
+        AppMhUseAxis,
+        AppAxAxisXTitle,
+        AppAxAxisXTitleColor,
+        AppAxAxisXTitleFontSize,
+        AppAxAxisXTitleFontFamily,
+        AppAxAxisXTitleDistance,
+        AppAxAxisXLineColor,
+        AppAxAxisXLineWidth,
+        AppAxAxisXTickLineColor,
+        AppAxAxisXTickLineWidth,
+        AppAxAxisXTickLineLength,
+        AppAxAxisXTickNum,
+        AppAxAxisXTickLabelDistance,
+        AppAxAxisXTickLabelDig,
+        AppAxAxisXTickLabelColor,
+        AppAxAxisXTickLabelFontSize,
+        AppAxAxisXTickLabelFontFamily,
+        AppAxAxisYTitle,
+        AppAxAxisYTitleColor,
+        AppAxAxisYTitleFontSize,
+        AppAxAxisYTitleFontFamily,
+        AppAxAxisYTitleDistance,
+        AppAxAxisYLineColor,
+        AppAxAxisYLineWidth,
+        AppAxAxisYTickLineColor,
+        AppAxAxisYTickLineWidth,
+        AppAxAxisYTickLineLength,
+        AppAxAxisYTickNum,
+        AppAxAxisYTickLabelDistance,
+        AppAxAxisYTickLabelDig,
+        AppAxAxisYTickLabelColor,
+        AppAxAxisYTickLabelFontSize,
+        AppAxAxisYTickLabelFontFamily,
+        AppAxAxisZTitle,
+        AppAxAxisZTitleColor,
+        AppAxAxisZTitleFontSize,
+        AppAxAxisZTitleFontFamily,
+        AppAxAxisZTitleDistance,
+        AppAxAxisZLineColor,
+        AppAxAxisZLineWidth,
+        AppAxAxisZTickLineColor,
+        AppAxAxisZTickLineWidth,
+        AppAxAxisZTickLineLength,
+        AppAxAxisZTickNum,
+        AppAxAxisZTickLabelDistance,
+        AppAxAxisZTickLabelDig,
+        AppAxAxisZTickLabelColor,
+        AppAxAxisZTickLabelFontSize,
+        AppAxAxisZTickLabelFontFamily,
+
+
+        //bbb
+
         AppMhGetMeshsInfor,
         AppMhSetMeshVisible,
         AppMhSetMeshColor,
@@ -368,13 +564,70 @@ export default {
             {
                 name: 'axis',
                 cmps: [
+                    { name: 'useAxis' },
                     {
-                        name: 'X',
+                        name: 'axisX',
                         cmps: [
-                            { name: 'setAxisXTitle' },
+                            { name: 'axisXTitle' },
+                            { name: 'axisXTitleColor' },
+                            { name: 'axisXTitleFontSize' },
+                            { name: 'axisXTitleFontFamily' },
+                            { name: 'axisXTitleDistance' },
+                            { name: 'axisXLineColor' },
+                            { name: 'axisXLineWidth' },
+                            { name: 'axisXTickLineColor' },
+                            { name: 'axisXTickLineWidth' },
+                            { name: 'axisXTickLineLength' },
+                            { name: 'axisXTickNum' },
+                            { name: 'axisXTickLabelDistance' },
+                            { name: 'axisXTickLabelDig' },
+                            { name: 'axisXTickLabelColor' },
+                            { name: 'axisXTickLabelFontSize' },
+                            { name: 'axisXTickLabelFontFamily' },
                         ],
                     },
-
+                    {
+                        name: 'axisY',
+                        cmps: [
+                            { name: 'axisYTitle' },
+                            { name: 'axisYTitleColor' },
+                            { name: 'axisYTitleFontSize' },
+                            { name: 'axisYTitleFontFamily' },
+                            { name: 'axisYTitleDistance' },
+                            { name: 'axisYLineColor' },
+                            { name: 'axisYLineWidth' },
+                            { name: 'axisYTickLineColor' },
+                            { name: 'axisYTickLineWidth' },
+                            { name: 'axisYTickLineLength' },
+                            { name: 'axisYTickNum' },
+                            { name: 'axisYTickLabelDistance' },
+                            { name: 'axisYTickLabelDig' },
+                            { name: 'axisYTickLabelColor' },
+                            { name: 'axisYTickLabelFontSize' },
+                            { name: 'axisYTickLabelFontFamily' },
+                        ],
+                    },
+                    {
+                        name: 'axisZ',
+                        cmps: [
+                            { name: 'axisZTitle' },
+                            { name: 'axisZTitleColor' },
+                            { name: 'axisZTitleFontSize' },
+                            { name: 'axisZTitleFontFamily' },
+                            { name: 'axisZTitleDistance' },
+                            { name: 'axisZLineColor' },
+                            { name: 'axisZLineWidth' },
+                            { name: 'axisZTickLineColor' },
+                            { name: 'axisZTickLineWidth' },
+                            { name: 'axisZTickLineLength' },
+                            { name: 'axisZTickNum' },
+                            { name: 'axisZTickLabelDistance' },
+                            { name: 'axisZTickLabelDig' },
+                            { name: 'axisZTickLabelColor' },
+                            { name: 'axisZTickLabelFontSize' },
+                            { name: 'axisZTickLabelFontFamily' },
+                        ],
+                    },
                 ],
             },
             {

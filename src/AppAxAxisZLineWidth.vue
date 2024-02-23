@@ -2,9 +2,10 @@
     <div>
 
         <div class="bkh">
-            <div style="font-size:1.5rem;">setAxisXTitle</div>
-            <a href="//yuda-lyu.github.io/w-threejs-vue/examples/ex-AppMhSetAxisXTitle.html" target="_blank" class="item-link">example</a>
-            <a href="//github.com/yuda-lyu/w-threejs-vue/blob/master/docs/examples/ex-AppMhSetAxisXTitle.html" target="_blank" class="item-link">code</a>
+            <div style="font-size:1.5rem;">axisZLineWidth</div>
+            <div style="font-size:0.7rem; color:#f26;">* WebGL renderer will always be 1</div>
+            <a href="//yuda-lyu.github.io/w-threejs-vue/examples/ex-AppAxAxisZLineWidth.html" target="_blank" class="item-link">example</a>
+            <a href="//github.com/yuda-lyu/w-threejs-vue/blob/master/docs/examples/ex-AppAxAxisZLineWidth.html" target="_blank" class="item-link">code</a>
         </div>
 
         <div class="bkp">
@@ -13,8 +14,8 @@
 
                 <div style="position:relative;">
                     <div style="position:absolute; right:2px; top:1px; text-align:right; z-index:1;" v-if="!loading">
-                        <button style="margin:0px 3px 3px 0px;" @click="setAxisXTitle('XXX')">set axisXTitle to 'XXX'</button>
-                        <button style="margin:0px 3px 3px 0px;" @click="setAxisXTitle('X')">set axisXTitle to 'X'</button>
+                        <button style="margin:0px 3px 3px 0px;" @click="setAxisZLineWidth(1)">set axisZLineWidth to 1</button>
+                        <button style="margin:0px 3px 3px 0px;" @click="setAxisZLineWidth(2)">set axisZLineWidth to 2</button>
                     </div>
                     <WThreejsVue
                         ref="thr"
@@ -66,7 +67,8 @@ export default {
                         color: 'rgba(214, 214, 92, 0.9)',
                     },
                 ],
-                axisXTitle: 'XXX',
+                useAxis: true,
+                axisZLineWidth: 2,
             },
             'action': [
             ],
@@ -90,10 +92,10 @@ export default {
             let vo = this
             jv(vo.opt, document.querySelector('#optjson'), { expanded: true })
         },
-        setAxisXTitle: function(c) {
+        setAxisZLineWidth: function(r) {
             let vo = this
             try {
-                vo.$refs.thr.getInst().setAxisXTitle(c)
+                vo.opt.axisZLineWidth = r
             }
             catch (err) {}
         },

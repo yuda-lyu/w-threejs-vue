@@ -68,8 +68,8 @@ export default {
                 //須先給予預設值, 切換值才能被vue偵測
                 menuSettingIcon: 'fas fa-cog',
                 menuAutoRotateIcon: 'fas fa-history',
-                menuAxesIcon: 'fas fa-crosshairs',
-                menuGridIcon: 'fas fa-border-all',
+                menuHelperAxesIcon: 'fas fa-crosshairs',
+                menuHelperGridIcon: 'fas fa-border-all',
                 menuPerspectiveIcon: 'fas fa-monument',
                 menuLegendIcon: 'fas fa-list',
             },
@@ -99,8 +99,8 @@ export default {
             let vo = this
             vo.opt.menuSettingIcon = 'mdi-cog-outline'
             vo.opt.menuAutoRotateIcon = 'mdi-axis-z-rotate-counterclockwise'
-            vo.opt.menuAxesIcon = 'mdi-axis'
-            vo.opt.menuGridIcon = 'mdi-grid'
+            vo.opt.menuHelperAxesIcon = 'mdi-axis'
+            vo.opt.menuHelperGridIcon = 'mdi-grid'
             vo.opt.menuPerspectiveIcon = 'mdi-projector-screen-outline'
             vo.opt.menuLegendIcon = 'mdi-list-box-outline'
         },
@@ -108,8 +108,8 @@ export default {
             let vo = this
             vo.opt.menuSettingIcon = 'fas fa-cog'
             vo.opt.menuAutoRotateIcon = 'fas fa-history'
-            vo.opt.menuAxesIcon = 'fas fa-crosshairs'
-            vo.opt.menuGridIcon = 'fas fa-border-all'
+            vo.opt.menuHelperAxesIcon = 'fas fa-crosshairs'
+            vo.opt.menuHelperGridIcon = 'fas fa-border-all'
             vo.opt.menuPerspectiveIcon = 'fas fa-monument'
             vo.opt.menuLegendIcon = 'fas fa-list'
         },

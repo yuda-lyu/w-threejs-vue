@@ -69,8 +69,8 @@ export default {
                 //須先給予預設值, 切換值才能被vue偵測
                 menuSettingTooltip: '設定',
                 menuAutoRotateTooltip: '自動旋轉',
-                menuAxesTooltip: '座標軸',
-                menuGridTooltip: '網格',
+                menuHelperAxesTooltip: '座標軸',
+                menuHelperGridTooltip: '網格',
                 menuPerspectiveTooltip: '透視投影',
                 menuLegendTooltip: '圖例',
             },
@@ -100,8 +100,8 @@ export default {
             let vo = this
             vo.opt.menuSettingTooltip = 'Settings'
             vo.opt.menuAutoRotateTooltip = 'Auto rotate'
-            vo.opt.menuAxesTooltip = 'Axes'
-            vo.opt.menuGridTooltip = 'Grid'
+            vo.opt.menuHelperAxesTooltip = 'Axes'
+            vo.opt.menuHelperGridTooltip = 'Grid'
             vo.opt.menuPerspectiveTooltip = 'Perspective'
             vo.opt.menuLegendTooltip = 'Legend'
         },
@@ -109,8 +109,8 @@ export default {
             let vo = this
             vo.opt.menuSettingTooltip = '設定'
             vo.opt.menuAutoRotateTooltip = '自動旋轉'
-            vo.opt.menuAxesTooltip = '座標軸'
-            vo.opt.menuGridTooltip = '網格'
+            vo.opt.menuHelperAxesTooltip = '座標軸'
+            vo.opt.menuHelperGridTooltip = '網格'
             vo.opt.menuPerspectiveTooltip = '透視投影'
             vo.opt.menuLegendTooltip = '圖例'
         },

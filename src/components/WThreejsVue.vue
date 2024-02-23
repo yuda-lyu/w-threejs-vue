@@ -170,10 +170,6 @@ let pathXY = `M 11.846997,18.39162 H 10.298964 L 7.0132374,12.771255 3.7275112,1
 let pathXZ = `M 11.271926,18.568104 H 9.7408431 L 6.4910943,12.996958 3.2413455,18.568104 H 1.6992781 L 5.7204831,11.679099 1.9307994,5.1636556 H 3.4618823 L 6.4910943,10.351919 9.5093217,5.1636556 H 11.040404 L 7.2515659,11.679099 Z m 10.465779,0 h -8.889914 v -0.57002 L 19.886379,6.3137351 H 13.067483 V 5.1636556 h 8.670222 V 5.7429974 L 14.698273,17.418742 h 7.039432 z`
 let pathYZ = `M 22.049294,18.372083 H 12.678108 V 17.831045 L 20.097742,6.7407687 H 12.910584 V 5.6491633 h 9.13871 v 0.549886 L 14.628768,17.281159 h 7.420526 z M 11.249404,5.6491633 6.976656,12.285907 v 6.086176 H 5.4784775 V 12.303601 L 1.1701008,5.6491633 H 2.7840719 L 6.2097526,10.937053 9.635433,5.6491633 Z`
 
-// 繪製尺規線
-// 新增顯隱尺規線
-// 新增選單左右側對齊設定
-
 
 /**
  * @vue-prop {Object} [options={}] 輸入設定物件，預設{}
@@ -212,7 +208,7 @@ export default {
             useHelperAxes: true,
             useHelperGrid: true,
             usePerspective: true,
-            useBox: false,
+            useAxis: false,
             useLegend: true,
 
             optTemp: null,
@@ -223,14 +219,14 @@ export default {
 
             menuSettingIcon: '',
             menuSettingTooltip: '',
-            menuAxesIcon: '',
-            menuAxesTooltip: '',
-            menuGridIcon: '',
-            menuGridTooltip: '',
+            menuHelperAxesIcon: '',
+            menuHelperAxesTooltip: '',
+            menuHelperGridIcon: '',
+            menuHelperGridTooltip: '',
             menuPerspectiveIcon: '',
             menuPerspectiveTooltip: '',
-            menuBoxIcon: '',
-            menuBoxTooltip: '',
+            menuAxisIcon: '',
+            menuAxisTooltip: '',
             menuAutoRotateIcon: '',
             menuAutoRotateTooltip: '',
             menuViewXYIcon: '',
@@ -274,9 +270,9 @@ export default {
                 vo.usePerspective = t
             }
 
-            t = vo.getParam('useBox')
-            if (vo.useBox !== t) {
-                vo.useBox = t
+            t = vo.getParam('useAxis')
+            if (vo.useAxis !== t) {
+                vo.useAxis = t
             }
 
             // vo.useLegend
@@ -379,14 +375,14 @@ export default {
                     tooltip: vo.menuSettingTooltip,
                 },
                 {
-                    id: 'axes',
-                    icon: vo.menuAxesIcon,
-                    tooltip: vo.menuAxesTooltip,
+                    id: 'helperAxes',
+                    icon: vo.menuHelperAxesIcon,
+                    tooltip: vo.menuHelperAxesTooltip,
                 },
                 {
-                    id: 'grid',
-                    icon: vo.menuGridIcon,
-                    tooltip: vo.menuGridTooltip,
+                    id: 'helperGrid',
+                    icon: vo.menuHelperGridIcon,
+                    tooltip: vo.menuHelperGridTooltip,
                 },
                 {
                     id: 'perspective',
@@ -394,9 +390,9 @@ export default {
                     tooltip: vo.menuPerspectiveTooltip,
                 },
                 {
-                    id: 'box',
-                    icon: vo.menuBoxIcon,
-                    tooltip: vo.menuBoxTooltip,
+                    id: 'axis',
+                    icon: vo.menuAxisIcon,
+                    tooltip: vo.menuAxisTooltip,
                 },
                 {
                     id: 'viewxy',
@@ -414,7 +410,7 @@ export default {
                     tooltip: vo.menuViewYZTooltip,
                 },
                 {
-                    id: 'auto_rotate',
+                    id: 'autoRotate',
                     icon: vo.menuAutoRotateIcon,
                     tooltip: vo.menuAutoRotateTooltip,
                 },
@@ -477,19 +473,19 @@ export default {
                 ids.push('setting')
             }
             if (vo.useHelperAxes) {
-                ids.push('axes')
+                ids.push('helperAxes')
             }
             if (vo.useHelperGrid) {
-                ids.push('grid')
+                ids.push('helperGrid')
             }
             if (vo.usePerspective) {
                 ids.push('perspective')
             }
-            if (vo.useBox) {
-                ids.push('box')
+            if (vo.useAxis) {
+                ids.push('axis')
             }
             if (vo.useAutoRotate) {
-                ids.push('auto_rotate')
+                ids.push('autoRotate')
             }
             if (vo.useLegend) {
                 ids.push('legend')
@@ -545,24 +541,24 @@ export default {
                 menuSettingTooltip = 'Settings'
             }
 
-            let menuAxesIcon = get(vo, 'opt.menuAxesIcon', '')
-            if (!isestr(menuAxesIcon)) {
-                menuAxesIcon = mdiAxis
+            let menuHelperAxesIcon = get(vo, 'opt.menuHelperAxesIcon', '')
+            if (!isestr(menuHelperAxesIcon)) {
+                menuHelperAxesIcon = mdiAxis
             }
 
-            let menuAxesTooltip = get(vo, 'opt.menuAxesTooltip', '')
-            if (!isestr(menuAxesTooltip)) {
-                menuAxesTooltip = 'Axes'
+            let menuHelperAxesTooltip = get(vo, 'opt.menuHelperAxesTooltip', '')
+            if (!isestr(menuHelperAxesTooltip)) {
+                menuHelperAxesTooltip = 'Help axes'
             }
 
-            let menuGridIcon = get(vo, 'opt.menuGridIcon', '')
-            if (!isestr(menuGridIcon)) {
-                menuGridIcon = mdiGrid
+            let menuHelperGridIcon = get(vo, 'opt.menuHelperGridIcon', '')
+            if (!isestr(menuHelperGridIcon)) {
+                menuHelperGridIcon = mdiGrid
             }
 
-            let menuGridTooltip = get(vo, 'opt.menuGridTooltip', '')
-            if (!isestr(menuGridTooltip)) {
-                menuGridTooltip = 'Grid'
+            let menuHelperGridTooltip = get(vo, 'opt.menuHelperGridTooltip', '')
+            if (!isestr(menuHelperGridTooltip)) {
+                menuHelperGridTooltip = 'Help grid'
             }
 
             let menuPerspectiveIcon = get(vo, 'opt.menuPerspectiveIcon', '')
@@ -575,14 +571,14 @@ export default {
                 menuPerspectiveTooltip = 'Perspective'
             }
 
-            let menuBoxIcon = get(vo, 'opt.menuBoxIcon', '')
-            if (!isestr(menuBoxIcon)) {
-                menuBoxIcon = mdiPackageVariantClosed
+            let menuAxisIcon = get(vo, 'opt.menuAxisIcon', '')
+            if (!isestr(menuAxisIcon)) {
+                menuAxisIcon = mdiPackageVariantClosed
             }
 
-            let menuBoxTooltip = get(vo, 'opt.menuBoxTooltip', '')
-            if (!isestr(menuBoxTooltip)) {
-                menuBoxTooltip = 'Box'
+            let menuAxisTooltip = get(vo, 'opt.menuAxisTooltip', '')
+            if (!isestr(menuAxisTooltip)) {
+                menuAxisTooltip = 'Axis'
             }
 
             let menuAutoRotateIcon = get(vo, 'opt.menuAutoRotateIcon', '')
@@ -602,7 +598,7 @@ export default {
 
             let menuViewXYTooltip = get(vo, 'opt.menuViewXYTooltip', '')
             if (!isestr(menuViewXYTooltip)) {
-                menuViewXYTooltip = 'XY Plane'
+                menuViewXYTooltip = 'XY plane'
             }
 
             let menuViewXZIcon = get(vo, 'opt.menuViewXZIcon', '')
@@ -612,7 +608,7 @@ export default {
 
             let menuViewXZTooltip = get(vo, 'opt.menuViewXZTooltip', '')
             if (!isestr(menuViewXZTooltip)) {
-                menuViewXZTooltip = 'XZ Plane'
+                menuViewXZTooltip = 'XZ plane'
             }
 
             let menuViewYZIcon = get(vo, 'opt.menuViewYZIcon', '')
@@ -622,7 +618,7 @@ export default {
 
             let menuViewYZTooltip = get(vo, 'opt.menuViewYZTooltip', '')
             if (!isestr(menuViewYZTooltip)) {
-                menuViewYZTooltip = 'YZ Plane'
+                menuViewYZTooltip = 'YZ plane'
             }
 
             let menuLegendIcon = get(vo, 'opt.menuLegendIcon', '')
@@ -638,14 +634,14 @@ export default {
             //save
             vo.menuSettingIcon = menuSettingIcon
             vo.menuSettingTooltip = menuSettingTooltip
-            vo.menuAxesIcon = menuAxesIcon
-            vo.menuAxesTooltip = menuAxesTooltip
-            vo.menuGridIcon = menuGridIcon
-            vo.menuGridTooltip = menuGridTooltip
+            vo.menuHelperAxesIcon = menuHelperAxesIcon
+            vo.menuHelperAxesTooltip = menuHelperAxesTooltip
+            vo.menuHelperGridIcon = menuHelperGridIcon
+            vo.menuHelperGridTooltip = menuHelperGridTooltip
             vo.menuPerspectiveIcon = menuPerspectiveIcon
             vo.menuPerspectiveTooltip = menuPerspectiveTooltip
-            vo.menuBoxIcon = menuBoxIcon
-            vo.menuBoxTooltip = menuBoxTooltip
+            vo.menuAxisIcon = menuAxisIcon
+            vo.menuAxisTooltip = menuAxisTooltip
             vo.menuAutoRotateIcon = menuAutoRotateIcon
             vo.menuAutoRotateTooltip = menuAutoRotateTooltip
             vo.menuViewXYIcon = menuViewXYIcon
@@ -827,27 +823,83 @@ export default {
                     height: '', //由vue處理不需要另外處理
 
                     backgroundColor: 'ev.setBackgroundColor',
+
                     useAutoRotate: 'ev.setUseAutoRotate',
                     autoRotateDeg: 'ev.setAutoRotateDeg',
+
                     useHelperAxes: 'ev.setUseHelperAxes',
                     helperAxesLengthRatio: 'ev.setHelperAxesLengthRatio',
+
                     useHelperGrid: 'ev.setUseHelperGrid',
                     helperGridLengthRatio: 'ev.setHelperGridLengthRatio',
                     helperGridDensity: 'ev.setHelperGridDensity',
                     helperGridPositionRatioZ: 'ev.setHelperGridPositionRatioZ',
+
                     useLightAmbient: 'ev.setUseLightAmbient',
                     lightAmbientColor: 'ev.setLightAmbientColor',
+
                     useLightPoint: 'ev.setUseLightPoint',
                     lightPointPoss: 'ev.setLightPointPoss',
                     lightPointColor: 'ev.setLightPointColor',
                     lightPointIntensity: 'ev.setLightPointIntensity',
                     lightPointDistance: 'ev.setLightPointDistance',
                     lightPointDecay: 'ev.setLightPointDecay',
+
                     useLightDirection: 'ev.setUseLightDirection',
                     lightDirectionColor: 'ev.setLightDirectionColor',
                     lightDirectionIntensity: 'ev.setLightDirectionIntensity',
                     lightDirectionPos: 'ev.setLightDirectionPos',
-                    useBox: 'ev.setUseBox',
+
+                    useAxis: 'ev.setUseAxis',
+                    axisXTitle: 'ev.setAxisXTitle',
+                    axisXTitleColor: 'ev.setAxisXTitleColor',
+                    axisXTitleFontSize: 'ev.setAxisXTitleFontSize',
+                    axisXTitleFontFamily: 'ev.setAxisXTitleFontFamily',
+                    axisXTitleDistance: 'ev.setAxisXTitleDistance',
+                    axisXLineColor: 'ev.setAxisXLineColor',
+                    axisXLineWidth: 'ev.setAxisXLineWidth',
+                    axisXTickLineColor: 'ev.setAxisXTickLineColor',
+                    axisXTickLineWidth: 'ev.setAxisXTickLineWidth',
+                    axisXTickLineLength: 'ev.setAxisXTickLineLength',
+                    axisXTickNum: 'ev.setAxisXTickNum',
+                    axisXTickLabelDistance: 'ev.setAxisXTickLabelDistance',
+                    axisXTickLabelDig: 'ev.setAxisXTickLabelDig',
+                    axisXTickLabelColor: 'ev.setAxisXTickLabelColor',
+                    axisXTickLabelFontSize: 'ev.setAxisXTickLabelFontSize',
+                    axisXTickLabelFontFamily: 'ev.setAxisXTickLabelFontFamily',
+                    axisYTitle: 'ev.setAxisYTitle',
+                    axisYTitleColor: 'ev.setAxisYTitleColor',
+                    axisYTitleFontSize: 'ev.setAxisYTitleFontSize',
+                    axisYTitleFontFamily: 'ev.setAxisYTitleFontFamily',
+                    axisYTitleDistance: 'ev.setAxisYTitleDistance',
+                    axisYLineColor: 'ev.setAxisYLineColor',
+                    axisYLineWidth: 'ev.setAxisYLineWidth',
+                    axisYTickLineColor: 'ev.setAxisYTickLineColor',
+                    axisYTickLineWidth: 'ev.setAxisYTickLineWidth',
+                    axisYTickLineLength: 'ev.setAxisYTickLineLength',
+                    axisYTickNum: 'ev.setAxisYTickNum',
+                    axisYTickLabelDistance: 'ev.setAxisYTickLabelDistance',
+                    axisYTickLabelDig: 'ev.setAxisYTickLabelDig',
+                    axisYTickLabelColor: 'ev.setAxisYTickLabelColor',
+                    axisYTickLabelFontSize: 'ev.setAxisYTickLabelFontSize',
+                    axisYTickLabelFontFamily: 'ev.setAxisYTickLabelFontFamily',
+                    axisZTitle: 'ev.setAxisZTitle',
+                    axisZTitleColor: 'ev.setAxisZTitleColor',
+                    axisZTitleFontSize: 'ev.setAxisZTitleFontSize',
+                    axisZTitleFontFamily: 'ev.setAxisZTitleFontFamily',
+                    axisZTitleDistance: 'ev.setAxisZTitleDistance',
+                    axisZLineColor: 'ev.setAxisZLineColor',
+                    axisZLineWidth: 'ev.setAxisZLineWidth',
+                    axisZTickLineColor: 'ev.setAxisZTickLineColor',
+                    axisZTickLineWidth: 'ev.setAxisZTickLineWidth',
+                    axisZTickLineLength: 'ev.setAxisZTickLineLength',
+                    axisZTickNum: 'ev.setAxisZTickNum',
+                    axisZTickLabelDistance: 'ev.setAxisZTickLabelDistance',
+                    axisZTickLabelDig: 'ev.setAxisZTickLabelDig',
+                    axisZTickLabelColor: 'ev.setAxisZTickLabelColor',
+                    axisZTickLabelFontSize: 'ev.setAxisZTickLabelFontSize',
+                    axisZTickLabelFontFamily: 'ev.setAxisZTickLabelFontFamily',
+
                     cameraType: 'ev.setCameraType',
                     // cameraPos: 'ev.setCameraPos', //因cameraPos跟cameraPolarAngle與cameraAzimuthAngle衝突, 故僅提供設定cameraPolarAngle與cameraAzimuthAngle
                     cameraFov: 'ev.setCameraFov',
@@ -859,14 +911,14 @@ export default {
 
                     menuSettingIcon: 'updateMenus',
                     menuSettingTooltip: 'updateMenus',
-                    menuAxesIcon: 'updateMenus',
-                    menuAxesTooltip: 'updateMenus',
-                    menuGridIcon: 'updateMenus',
-                    menuGridTooltip: 'updateMenus',
+                    menuHelperAxesIcon: 'updateMenus',
+                    menuHelperAxesTooltip: 'updateMenus',
+                    menuHelperGridIcon: 'updateMenus',
+                    menuHelperGridTooltip: 'updateMenus',
                     menuPerspectiveIcon: 'updateMenus',
                     menuPerspectiveTooltip: 'updateMenus',
-                    menuBoxIcon: 'updateMenus',
-                    menuBoxTooltip: 'updateMenus',
+                    menuAxisIcon: 'updateMenus',
+                    menuAxisTooltip: 'updateMenus',
                     menuAutoRotateIcon: 'updateMenus',
                     menuAutoRotateTooltip: 'updateMenus',
                     menuViewXYIcon: 'updateMenus',
@@ -1014,10 +1066,10 @@ export default {
                 setting: () => {
                     vo.useSetting = !vo.useSetting
                 },
-                axes: () => {
+                helperAxes: () => {
                     vo.toggleParam('useHelperAxes')
                 },
-                grid: () => {
+                helperGrid: () => {
                     vo.toggleParam('useHelperGrid')
                 },
                 perspective: () => {
@@ -1028,10 +1080,10 @@ export default {
                         vo.setParam('cameraType', 'perspective')
                     }
                 },
-                box: () => {
-                    vo.toggleParam('useBox')
+                axis: () => {
+                    vo.toggleParam('useAxis')
                 },
-                auto_rotate: () => {
+                autoRotate: () => {
                     vo.toggleParam('useAutoRotate')
                 },
                 viewxy: () => {

@@ -8,6 +8,7 @@ import isEqual from 'lodash-es/isEqual'
 import isNumber from 'lodash-es/isNumber'
 // import cloneDeep from 'lodash-es/cloneDeep'
 import evem from 'wsemi/src/evem.mjs'
+import oc from 'wsemi/src/color.mjs'
 import isnum from 'wsemi/src/isnum.mjs'
 import isestr from 'wsemi/src/isestr.mjs'
 import isbol from 'wsemi/src/isbol.mjs'
@@ -21,25 +22,30 @@ import cint from 'wsemi/src/cint.mjs'
 import dig from 'wsemi/src/dig.mjs'
 import delay from 'wsemi/src/delay.mjs'
 import pmSeries from 'wsemi/src/pmSeries.mjs'
-import oc from 'wsemi/src/color.mjs'
 import domRemove from 'wsemi/src/domRemove.mjs'
 import getFileNameExt from 'wsemi/src/getFileNameExt.mjs'
 import * as THREE from 'three'
 // import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
-import { CSS2DRenderer, CSS2DObject } from 'three/addons/renderers/CSS2DRenderer.js'
+import { CSS2DRenderer } from 'three/addons/renderers/CSS2DRenderer.js'
 import CameraControls from 'camera-controls'
+import { createScene, disposeScene } from './atScene.mjs'
+import { createHelperAxes, disposeHelperAxes } from './atHelperAxes.mjs'
+import { createHelperGrid, disposeHelperGrid } from './atHelperGrid.mjs'
+import { createLightAmbient, disposeLightAmbient } from './atLightAmbient.mjs'
+import { createLightPoints, disposeLightPoints } from './atLightPoints.mjs'
+import { createLightDirection, disposeLightDirection } from './atLightDirection.mjs'
+import { createGroup, disposeGroup } from './atGroup.mjs'
+// import { createArrow, disposeArrow } from './atArrow.mjs'
+import { createLine, disposeLines } from './atLine.mjs'
+import { createLabel, createLabels, disposeLabels } from './atLabel.mjs'
+import { calcTransform, resetTransform } from './atTransform.mjs'
+
 import addStl from './addStl.mjs'
 import getCsrdFromMeshs from './getCsrdFromMeshs.mjs'
 
 
 let toRad = Math.PI / 180
 let toDeg = 180 / Math.PI
-
-
-let nc = (c) => {
-    c = oc.toRgbString(c)
-    return c
-}
 
 
 async function plot3d(items, opt = {}) {
@@ -325,18 +331,18 @@ async function plot3d(items, opt = {}) {
         autoRotateDeg = r
     }
 
-    //useBox
-    let useBox = get(opt, 'useBox')
-    if (!isbol(useBox)) {
-        useBox = false //false bbb
+    //useAxis
+    let useAxis = get(opt, 'useAxis')
+    if (!isbol(useAxis)) {
+        useAxis = false //false bbb
     }
 
-    let getUseBox = () => {
-        return useBox
+    let getUseAxis = () => {
+        return useAxis
     }
 
-    let setUseBox = (b) => {
-        useBox = b
+    let setUseAxis = (b) => {
+        useAxis = b
         refreshAxis()
     }
 
@@ -368,41 +374,39 @@ async function plot3d(items, opt = {}) {
     }
     axisXTitleDistance = cdbl(axisXTitleDistance)
 
-    let axisXColor = get(opt, 'axisXColor')
-    if (!isestr(axisXColor)) {
-        axisXColor = '#fff'
+    let axisXLineColor = get(opt, 'axisXLineColor')
+    if (!isestr(axisXLineColor)) {
+        axisXLineColor = '#fff'
     }
 
-    let axisXWidth = get(opt, 'axisXWidth')
-    if (!isnum(axisXWidth)) {
-        axisXWidth = 1
+    let axisXLineWidth = get(opt, 'axisXLineWidth')
+    if (!isnum(axisXLineWidth)) {
+        axisXLineWidth = 1 //WebGL限制只能為1
     }
-    axisXWidth = cdbl(axisXWidth)
+    axisXLineWidth = cdbl(axisXLineWidth)
 
-    let axisXTickColor = get(opt, 'axisXTickColor')
-    if (!isestr(axisXTickColor)) {
-        axisXTickColor = '#fff'
+    let axisXTickLineColor = get(opt, 'axisXTickLineColor')
+    if (!isestr(axisXTickLineColor)) {
+        axisXTickLineColor = '#fff'
     }
 
-    let axisXTickwidth = get(opt, 'axisXTickwidth')
-    if (!isnum(axisXTickwidth)) {
-        axisXTickwidth = 1
+    let axisXTickLineWidth = get(opt, 'axisXTickLineWidth')
+    if (!isnum(axisXTickLineWidth)) {
+        axisXTickLineWidth = 1 //WebGL限制只能為1
     }
-    axisXTickwidth = cdbl(axisXTickwidth)
+    axisXTickLineWidth = cdbl(axisXTickLineWidth)
 
-    let axisXTickLength = get(opt, 'axisXTickLength')
-    if (!isnum(axisXTickLength)) {
-        axisXTickLength = 0.03
+    let axisXTickLineLength = get(opt, 'axisXTickLineLength')
+    if (!isnum(axisXTickLineLength)) {
+        axisXTickLineLength = 0.03
     }
-    axisXTickLength = cdbl(axisXTickLength)
+    axisXTickLineLength = cdbl(axisXTickLineLength)
 
     let axisXTickNum = get(opt, 'axisXTickNum')
     if (!ispint(axisXTickNum)) {
         axisXTickNum = 11
     }
     axisXTickNum = cint(axisXTickNum)
-
-    let axisXTickIntervalNum = Math.max(axisXTickNum - 1, 1)
 
     let axisXTickLabelDistance = get(opt, 'axisXTickLabelDistance')
     if (!isnum(axisXTickLabelDistance)) {
@@ -459,41 +463,39 @@ async function plot3d(items, opt = {}) {
     }
     axisYTitleDistance = cdbl(axisYTitleDistance)
 
-    let axisYColor = get(opt, 'axisYColor')
-    if (!isestr(axisYColor)) {
-        axisYColor = '#fff'
+    let axisYLineColor = get(opt, 'axisYLineColor')
+    if (!isestr(axisYLineColor)) {
+        axisYLineColor = '#fff'
     }
 
-    let axisYWidth = get(opt, 'axisYWidth')
-    if (!isnum(axisYWidth)) {
-        axisYWidth = 1
+    let axisYLineWidth = get(opt, 'axisYLineWidth')
+    if (!isnum(axisYLineWidth)) {
+        axisYLineWidth = 1 //WebGL限制只能為1
     }
-    axisYWidth = cdbl(axisYWidth)
+    axisYLineWidth = cdbl(axisYLineWidth)
 
-    let axisYTickColor = get(opt, 'axisYTickColor')
-    if (!isestr(axisYTickColor)) {
-        axisYTickColor = '#fff'
+    let axisYTickLineColor = get(opt, 'axisYTickLineColor')
+    if (!isestr(axisYTickLineColor)) {
+        axisYTickLineColor = '#fff'
     }
 
-    let axisYTickwidth = get(opt, 'axisYTickwidth')
-    if (!isnum(axisYTickwidth)) {
-        axisYTickwidth = 1
+    let axisYTickLineWidth = get(opt, 'axisYTickLineWidth')
+    if (!isnum(axisYTickLineWidth)) {
+        axisYTickLineWidth = 1 //WebGL限制只能為1
     }
-    axisYTickwidth = cdbl(axisYTickwidth)
+    axisYTickLineWidth = cdbl(axisYTickLineWidth)
 
-    let axisYTickLength = get(opt, 'axisYTickLength')
-    if (!isnum(axisYTickLength)) {
-        axisYTickLength = 0.03
+    let axisYTickLineLength = get(opt, 'axisYTickLineLength')
+    if (!isnum(axisYTickLineLength)) {
+        axisYTickLineLength = 0.03
     }
-    axisYTickLength = cdbl(axisYTickLength)
+    axisYTickLineLength = cdbl(axisYTickLineLength)
 
     let axisYTickNum = get(opt, 'axisYTickNum')
     if (!ispint(axisYTickNum)) {
         axisYTickNum = 11
     }
     axisYTickNum = cint(axisYTickNum)
-
-    let axisYTickIntervalNum = Math.max(axisYTickNum - 1, 1)
 
     let axisYTickLabelDistance = get(opt, 'axisYTickLabelDistance')
     if (!isnum(axisYTickLabelDistance)) {
@@ -550,41 +552,39 @@ async function plot3d(items, opt = {}) {
     }
     axisZTitleDistance = cdbl(axisZTitleDistance)
 
-    let axisZColor = get(opt, 'axisZColor')
-    if (!isestr(axisZColor)) {
-        axisZColor = '#fff'
+    let axisZLineColor = get(opt, 'axisZLineColor')
+    if (!isestr(axisZLineColor)) {
+        axisZLineColor = '#fff'
     }
 
-    let axisZWidth = get(opt, 'axisZWidth')
-    if (!isnum(axisZWidth)) {
-        axisZWidth = 1
+    let axisZLineWidth = get(opt, 'axisZLineWidth')
+    if (!isnum(axisZLineWidth)) {
+        axisZLineWidth = 1 //WebGL限制只能為1
     }
-    axisZWidth = cdbl(axisZWidth)
+    axisZLineWidth = cdbl(axisZLineWidth)
 
-    let axisZTickColor = get(opt, 'axisZTickColor')
-    if (!isestr(axisZTickColor)) {
-        axisZTickColor = '#fff'
+    let axisZTickLineColor = get(opt, 'axisZTickLineColor')
+    if (!isestr(axisZTickLineColor)) {
+        axisZTickLineColor = '#fff'
     }
 
-    let axisZTickwidth = get(opt, 'axisZTickwidth')
-    if (!isnum(axisZTickwidth)) {
-        axisZTickwidth = 1
+    let axisZTickLineWidth = get(opt, 'axisZTickLineWidth')
+    if (!isnum(axisZTickLineWidth)) {
+        axisZTickLineWidth = 1 //WebGL限制只能為1
     }
-    axisZTickwidth = cdbl(axisZTickwidth)
+    axisZTickLineWidth = cdbl(axisZTickLineWidth)
 
-    let axisZTickLength = get(opt, 'axisZTickLength')
-    if (!isnum(axisZTickLength)) {
-        axisZTickLength = 0.03
+    let axisZTickLineLength = get(opt, 'axisZTickLineLength')
+    if (!isnum(axisZTickLineLength)) {
+        axisZTickLineLength = 0.03
     }
-    axisZTickLength = cdbl(axisZTickLength)
+    axisZTickLineLength = cdbl(axisZTickLineLength)
 
     let axisZTickNum = get(opt, 'axisZTickNum')
     if (!ispint(axisZTickNum)) {
         axisZTickNum = 11
     }
     axisZTickNum = cint(axisZTickNum)
-
-    let axisZTickIntervalNum = Math.max(axisZTickNum - 1, 1)
 
     let axisZTickLabelDistance = get(opt, 'axisZTickLabelDistance')
     if (!isnum(axisZTickLabelDistance)) {
@@ -621,69 +621,26 @@ async function plot3d(items, opt = {}) {
     // console.log('clock',clock)
 
     //scene
-    let scene = new THREE.Scene()
-    let disposeScene = () => {
-        let cleanMaterial = (material) => { //已預先執行多種dispose, 此函數暫時用不到
-            // console.log('dispose material')
-            material.dispose()
-            // dispose textures
-            for (let key of Object.keys(material)) {
-                let value = material[key]
-                if (value && typeof value === 'object' && 'minFilter' in value) {
-                    // console.log('dispose texture')
-                    value.dispose()
-                }
-            }
-        }
-        scene.traverse(object => {
-            // console.log('object', object)
-            if (object.isLight) {
-                // console.log('dispose light')
-                object.dispose()
-            }
-            if (object.isMesh) {
-                // console.log('dispose geometry')
-                object.geometry.dispose()
-                if (object.material.isMaterial) {
-                    cleanMaterial(object.material)
-                }
-                else {
-                    // an array of materials
-                    for (let material of object.material) cleanMaterial(material)
-                }
-            }
-        })
-        scene = null
-    }
+    let scene = createScene()
 
-    //backgroundColor
-    scene.background = new THREE.Color(nc(backgroundColor))
+    //background
+    scene.background = new THREE.Color(oc.toRgbString(backgroundColor))
 
     let setBackgroundColor = (c) => {
         backgroundColor = c
-        scene.background = new THREE.Color(nc(c))
+        scene.background = new THREE.Color(oc.toRgbString(c))
         render()
     }
 
     //helperAxes
-    let helperAxes = null
-    let createHelperAxes = () => {
-        helperAxes = new THREE.AxesHelper(helperAxesLengthRatio)
-        helperAxes.visible = useHelperAxes
-        scene.add(helperAxes)
-    }
-    let disposeHelperAxes = () => {
-        scene.remove(helperAxes)
-        helperAxes.dispose()
-        helperAxes = null
-    }
-    createHelperAxes()
+    let helperAxes = createHelperAxes(scene, { useHelperAxes, helperAxesLengthRatio })
 
     let getUseHelperAxes = () => {
         return useHelperAxes
     }
 
     let setUseHelperAxes = (b) => {
+        console.log('setUseHelperAxes', b)
         useHelperAxes = b
         helperAxes.visible = b
         render()
@@ -692,26 +649,13 @@ async function plot3d(items, opt = {}) {
     let setHelperAxesLengthRatio = (r) => {
         //因無直接設定AxesHelper size函數, 故使用重產
         helperAxesLengthRatio = r
-        disposeHelperAxes()
-        createHelperAxes()
+        disposeHelperAxes(scene, helperAxes)
+        createHelperAxes(scene, { useHelperAxes, helperAxesLengthRatio })
         render()
     }
 
     //helperGrid
-    let helperGrid = null
-    let createHelperGrid = () => {
-        helperGrid = new THREE.GridHelper(helperGridLengthRatio, helperGridDensity)
-        helperGrid.visible = useHelperGrid
-        helperGrid.geometry.rotateX(Math.PI * 0.5)
-        helperGrid.geometry.translate(0, 0, helperGridPositionRatioZ)
-        scene.add(helperGrid)
-    }
-    let disposeHelperGrid = () => {
-        scene.remove(helperGrid)
-        helperGrid.dispose()
-        helperGrid = null
-    }
-    createHelperGrid()
+    let helperGrid = createHelperGrid(scene, { useHelperGrid, helperGridLengthRatio, helperGridDensity, helperGridPositionRatioZ })
 
     let getUseHelperGrid = () => {
         return useHelperGrid
@@ -725,43 +669,32 @@ async function plot3d(items, opt = {}) {
 
     let setHelperGridLengthRatio = (r) => {
         helperGridLengthRatio = r
-        disposeHelperGrid()
-        createHelperGrid()
+        disposeHelperGrid(scene, helperGrid)
+        createHelperGrid(scene, { useHelperGrid, helperGridLengthRatio, helperGridDensity, helperGridPositionRatioZ })
         render()
     }
 
     let setHelperGridDensity = (r) => {
         helperGridDensity = r
-        disposeHelperGrid()
-        createHelperGrid()
+        disposeHelperGrid(scene, helperGrid)
+        createHelperGrid(scene, { useHelperGrid, helperGridLengthRatio, helperGridDensity, helperGridPositionRatioZ })
         render()
     }
 
     let setHelperGridPositionRatioZ = (r) => {
         helperGridPositionRatioZ = r
-        disposeHelperGrid()
-        createHelperGrid()
+        disposeHelperGrid(scene, helperGrid)
+        createHelperGrid(scene, { useHelperGrid, helperGridLengthRatio, helperGridDensity, helperGridPositionRatioZ })
         render()
     }
 
     // //fog
     // let fogColor='#aaa'
-    // let fog = new THREE.Fog( nc(fogColor) , 0, 3 )
+    // let fog = new THREE.Fog( oc.toRgbString(fogColor) , 0, 3 )
     // scene.fog = fog
 
     //lightAmbient
-    let lightAmbient = null
-    let createLightAmbient = () => {
-        lightAmbient = new THREE.AmbientLight(nc(lightAmbientColor))
-        lightAmbient.visible = useLightAmbient
-        scene.add(lightAmbient)
-    }
-    let disposeLightAmbient = () => {
-        scene.remove(lightAmbient)
-        lightAmbient.dispose()
-        lightAmbient = null
-    }
-    createLightAmbient()
+    let lightAmbient = createLightAmbient(scene, { useLightAmbient, lightAmbientColor })
 
     let setUseLightAmbient = (b) => {
         useLightAmbient = b
@@ -771,34 +704,12 @@ async function plot3d(items, opt = {}) {
 
     let setLightAmbientColor = (c) => {
         lightAmbientColor = c
-        lightAmbient.color = new THREE.Color(nc(c))
+        lightAmbient.color = new THREE.Color(oc.toRgbString(c))
         render()
     }
 
     //lightPoint
-    let lightPoints = null
-    let createLightPoints = () => {
-        lightPoints = []
-        each(lightPointPoss, (lp) => {
-            let lightPoint = new THREE.PointLight(nc(lightPointColor), lightPointIntensity, lightPointDistance, lightPointDecay)
-            lightPoint.visible = useLightPoint
-            let x = get(lp, 0, 0)
-            let y = get(lp, 1, 0)
-            let z = get(lp, 2, 0)
-            lightPoint.position.set(x, y, z)
-            scene.add(lightPoint)
-            lightPoints.push(lightPoint)
-        })
-    }
-    let disposeLightPoints = () => {
-        each(lightPoints, (lightPoint) => {
-            scene.remove(lightPoint)
-            lightPoint.dispose()
-            lightPoint = null
-        })
-        lightPoints = null
-    }
-    createLightPoints()
+    let lightPoints = createLightPoints(scene, { useLightPoint, lightPointPoss, lightPointColor, lightPointIntensity, lightPointDistance, lightPointDecay })
 
     let setUseLightPoint = (b) => {
         useLightPoint = b
@@ -810,57 +721,41 @@ async function plot3d(items, opt = {}) {
 
     let setLightPointPoss = (poss) => {
         lightPointPoss = poss
-        disposeLightPoints()
-        createLightPoints()
+        disposeLightPoints(scene, lightPoints)
+        createLightPoints(scene, { useLightPoint, lightPointPoss, lightPointColor, lightPointIntensity, lightPointDistance, lightPointDecay })
         render()
     }
 
     let setLightPointColor = (c) => {
         lightPointColor = c
-        disposeLightPoints()
-        createLightPoints()
+        disposeLightPoints(scene, lightPoints)
+        createLightPoints(scene, { useLightPoint, lightPointPoss, lightPointColor, lightPointIntensity, lightPointDistance, lightPointDecay })
         render()
     }
 
     let setLightPointIntensity = (r) => {
         lightPointIntensity = r
-        disposeLightPoints()
-        createLightPoints()
+        disposeLightPoints(scene, lightPoints)
+        createLightPoints(scene, { useLightPoint, lightPointPoss, lightPointColor, lightPointIntensity, lightPointDistance, lightPointDecay })
         render()
     }
 
     let setLightPointDistance = (r) => {
         lightPointDistance = r
-        disposeLightPoints()
-        createLightPoints()
+        disposeLightPoints(scene, lightPoints)
+        createLightPoints(scene, { useLightPoint, lightPointPoss, lightPointColor, lightPointIntensity, lightPointDistance, lightPointDecay })
         render()
     }
 
     let setLightPointDecay = (r) => {
         lightPointDecay = r
-        disposeLightPoints()
-        createLightPoints()
+        disposeLightPoints(scene, lightPoints)
+        createLightPoints(scene, { useLightPoint, lightPointPoss, lightPointColor, lightPointIntensity, lightPointDistance, lightPointDecay })
         render()
     }
 
     //lightDirection
-    let lightDirection = null
-    let createLightDirection = () => {
-        lightDirection = new THREE.DirectionalLight(nc(lightDirectionColor), lightDirectionIntensity)
-        lightDirection.visible = useLightDirection
-        let x = get(lightDirectionPos, 0, 0)
-        let y = get(lightDirectionPos, 1, 0)
-        let z = get(lightDirectionPos, 2, 0)
-        lightDirection.position.set(x, y, z)
-        // lightDirection.castShadow = true
-        scene.add(lightDirection)
-    }
-    let disposeLightDirection = () => {
-        scene.remove(lightDirection)
-        lightDirection.dispose()
-        lightDirection = null
-    }
-    createLightDirection()
+    let lightDirection = createLightDirection(scene, { useLightDirection, lightDirectionPos, lightDirectionColor, lightDirectionIntensity })
 
     let setUseLightDirection = (b) => {
         useLightDirection = b
@@ -870,21 +765,21 @@ async function plot3d(items, opt = {}) {
 
     let setLightDirectionColor = (c) => {
         lightDirectionColor = c
-        lightDirection.color = new THREE.Color(nc(c))
+        lightDirection.color = new THREE.Color(oc.toRgbString(c))
         render()
     }
 
     let setLightDirectionIntensity = (r) => {
         lightDirectionIntensity = r
-        disposeLightDirection()
-        createLightDirection()
+        disposeLightDirection(scene, lightDirection)
+        createLightDirection(scene, { useLightDirection, lightDirectionPos, lightDirectionColor, lightDirectionIntensity })
         render()
     }
 
     let setLightDirectionPos = (pos) => {
         lightDirectionPos = pos
-        disposeLightDirection()
-        createLightDirection()
+        disposeLightDirection(scene, lightDirection)
+        createLightDirection(scene, { useLightDirection, lightDirectionPos, lightDirectionColor, lightDirectionIntensity })
         render()
     }
 
@@ -1154,189 +1049,7 @@ async function plot3d(items, opt = {}) {
     }, 50)
 
     //group
-    let group = null
-    let createGroup = () => {
-        group = new THREE.Group()
-        // each(meshs, (mesh) => {
-        //     group.add(mesh)
-        // })
-        // console.log('group',group)
-        scene.add(group)
-    }
-    let disposeGroup = () => {
-        group.traverse(function(obj) {
-            if (obj.isMesh) {
-                obj.geometry.dispose()
-                obj.material.dispose()
-            }
-        })
-        scene.remove(group)
-        group = null
-    }
-    createGroup()
-
-    let createArrow = (x, y, z, dx, dy, dz, opt = {}) => {
-        let dir = new THREE.Vector3(dx, dy, dz)
-        dir.normalize()
-        let origin = new THREE.Vector3(x, y, z)
-        let color = get(opt, 'color', '#fff')
-        let length = get(opt, 'length', 1)
-        let headLength = get(opt, 'headLength', 0.05)
-        let headWidth = get(opt, 'headWidth', 0.02)
-        let arrowHelper = new THREE.ArrowHelper(dir, origin, length, nc(color), headLength, headWidth)
-        return arrowHelper
-    }
-    let disposeArrow = (arrowHelper) => {
-        try {
-            scene.remove(arrowHelper)
-        }
-        catch (err) {}
-        try {
-            arrowHelper.dispose()
-            arrowHelper = null
-        }
-        catch (err) {}
-    }
-
-    let createLine = (x1, y1, z1, x2, y2, z2, opt = {}) => {
-
-        let color = get(opt, 'color', '#fff')
-        let width = get(opt, 'width', 1)
-
-        //material
-        let material = new THREE.LineBasicMaterial({
-            color: nc(color),
-            linewidth: width,
-        })
-
-        //points
-        let points = []
-        points.push(new THREE.Vector3(x1, y1, z1))
-        points.push(new THREE.Vector3(x2, y2, z2))
-
-        //geometry
-        let geometry = new THREE.BufferGeometry().setFromPoints(points)
-
-        //line
-        let line = new THREE.Line(geometry, material)
-
-        //add
-        scene.add(line)
-
-        return {
-            material,
-            geometry,
-            line,
-        }
-    }
-    let disposeLine = (objLine) => {
-        let line = get(objLine, 'line')
-        let material = get(objLine, 'material')
-        let geometry = get(objLine, 'geometry')
-        try {
-            scene.remove(line)
-        }
-        catch (err) {}
-        try {
-            line.dispose()
-            line = null
-        }
-        catch (err) {}
-        try {
-            geometry.dispose()
-            geometry = null
-        }
-        catch (err) {}
-        try {
-            material.dispose()
-            material = null
-        }
-        catch (err) {}
-        objLine = null
-    }
-
-    let createLines = (vs, opt = {}) => {
-        let arrLines = map(vs, (v) => {
-            let x1 = get(v, 'x1', 0)
-            let y1 = get(v, 'y1', 0)
-            let z1 = get(v, 'z1', 0)
-            let x2 = get(v, 'x2', 0)
-            let y2 = get(v, 'y2', 0)
-            let z2 = get(v, 'z2', 0)
-            let r = createLabel(x1, y1, z1, x2, y2, z2, opt)
-            return r
-        })
-        return arrLines
-    }
-    let disposeLines = (arrLines) => {
-        each(arrLines, (objLine) => {
-            disposeLine(objLine)
-        })
-        arrLines = []
-    }
-
-    let createLabel = (text, x, y, z, opt = {}) => {
-
-        let textColor = get(opt, 'textColor', '#fff')
-        let textFontSize = get(opt, 'textFontSize', '0.8rem')
-        let textFontFamily = get(opt, 'textFontFamily', 'Microsoft JhengHei')
-
-        //ele
-        let ele = document.createElement('div')
-        ele.textContent = text
-        ele.style.color = textColor
-        ele.style.fontSize = textFontSize
-        ele.style.fontFamily = textFontFamily
-        // ele.style.display = 'none' //無效
-        ele.style.visibility = 'visible' //改用visibility控制顯隱, visible, hidden
-        // console.log('ele', ele)
-
-        //cso
-        let cso = new CSS2DObject(ele) //不須dispose
-        cso.position.set(x, y, z)
-        // console.log('cso',cso)
-
-        //add
-        scene.add(cso)
-
-        return {
-            cso,
-            ele,
-        }
-    }
-    let disposeLabel = (objLabel) => {
-        try {
-            let cso = get(objLabel, 'cso')
-            scene.remove(cso)
-        }
-        catch (err) {}
-        try {
-            let ele = get(objLabel, 'ele')
-            domRemove(ele)
-        }
-        catch (err) {}
-        objLabel.cso = null
-        objLabel.ele = null
-        objLabel = null
-    }
-
-    let createLabels = (vs, opt = {}) => {
-        let arrLabels = map(vs, (v) => {
-            let text = get(v, 'text', '')
-            let x = get(v, 'x', 0)
-            let y = get(v, 'y', 0)
-            let z = get(v, 'z', 0)
-            let r = createLabel(text, x, y, z, opt)
-            return r
-        })
-        return arrLabels
-    }
-    let disposeLabels = (arrLabels) => {
-        each(arrLabels, (objLabel) => {
-            disposeLabel(objLabel)
-        })
-        arrLabels = []
-    }
+    let group = createGroup(scene)
 
     //axis
     let axisLines = []
@@ -1349,7 +1062,7 @@ async function plot3d(items, opt = {}) {
     let createAxis = () => {
 
         //check
-        if (!useBox) {
+        if (!useAxis) {
             return
         }
 
@@ -1419,11 +1132,15 @@ async function plot3d(items, opt = {}) {
         //x-axis title
         if (true) {
             each(ldxy, (l, kl) => {
-                let objLabel = createLabel(axisXTitle, 0, csr.rymin + l[0] * csr.ryrng + l[1] * axisXTitleDistance, csr.rzmin + l[2] * axisXTitleDistance, {
-                    textColor: axisXTitleColor,
-                    textFontSize: axisXTitleFontSize,
-                    textFontFamily: axisXTitleFontFamily,
-                })
+                let objLabel = createLabel(
+                    scene,
+                    axisXTitle,
+                    0, csr.rymin + l[0] * csr.ryrng + l[1] * axisXTitleDistance, csr.rzmin + l[2] * axisXTitleDistance,
+                    {
+                        textColor: axisXTitleColor,
+                        textFontSize: axisXTitleFontSize,
+                        textFontFamily: axisXTitleFontFamily,
+                    })
                 axisLabels.push(objLabel)
                 axisRela.push({
                     key: 'x-title',
@@ -1438,11 +1155,12 @@ async function plot3d(items, opt = {}) {
         if (true) {
             each(lda, (l, kl) => {
                 let objLine = createLine(
+                    scene,
                     csr.rxmin, csr.rymin + l[0] * csr.ryrng, csr.rzmin + l[1] * csr.rzrng,
                     csr.rxmax, csr.rymin + l[0] * csr.ryrng, csr.rzmin + l[1] * csr.rzrng,
                     {
-                        color: axisXColor,
-                        width: axisXWidth,
+                        color: axisXLineColor,
+                        width: axisXLineWidth,
                     })
                 axisLines.push(objLine)
                 axisRela.push({
@@ -1455,22 +1173,27 @@ async function plot3d(items, opt = {}) {
         }
 
         //x-axis ticks
+        let axisXTickIntervalNum = Math.max(axisXTickNum - 1, 1)
         each(ldxy, (l, kl) => {
 
             ts = genTks(
                 csr.rxmin, csr.rymin + l[0] * csr.ryrng, csr.rzmin,
                 axisXTickNum,
                 1 / axisXTickIntervalNum, 0, 0,
-                0, l[1] * axisXTickLength, l[2] * axisXTickLength,
+                0, l[1] * axisXTickLineLength, l[2] * axisXTickLineLength,
                 0, l[1] * axisXTickLabelDistance, l[2] * axisXTickLabelDistance,
             )
 
             each(ts, (t, i) => {
 
-                let objLine = createLine(t.x1, t.y1, t.z1, t.x2, t.y2, t.z2, {
-                    color: axisXTickColor,
-                    width: axisXTickwidth,
-                })
+                let objLine = createLine(
+                    scene,
+                    t.x1, t.y1, t.z1,
+                    t.x2, t.y2, t.z2,
+                    {
+                        color: axisXTickLineColor,
+                        width: axisXTickLineWidth,
+                    })
                 axisLines.push(objLine)
                 axisRela.push({
                     key: 'x-tick-line',
@@ -1483,11 +1206,14 @@ async function plot3d(items, opt = {}) {
                 let text = i * csr.xrng / axisXTickNum + csr.xmin
                 text = dig(text, axisXTickLabelDig)
 
-                let objLabel = createLabel(text, t.xt, t.yt, t.zt, {
-                    textColor: axisXTickLabelColor,
-                    textFontSize: axisXTickLabelFontSize,
-                    textFontFamily: axisXTickLabelFontFamily,
-                })
+                let objLabel = createLabel(
+                    scene, text,
+                    t.xt, t.yt, t.zt,
+                    {
+                        textColor: axisXTickLabelColor,
+                        textFontSize: axisXTickLabelFontSize,
+                        textFontFamily: axisXTickLabelFontFamily,
+                    })
                 axisLabels.push(objLabel)
                 axisRela.push({
                     key: 'x-tick-label',
@@ -1503,11 +1229,15 @@ async function plot3d(items, opt = {}) {
         //y-axis title
         if (true) {
             each(ldxy, (l, kl) => {
-                let objLabel = createLabel(axisYTitle, csr.rxmin + l[0] * csr.rxrng + l[1] * axisYTitleDistance, 0, csr.rzmin + l[2] * axisYTitleDistance, {
-                    textColor: axisYTitleColor,
-                    textFontSize: axisYTitleFontSize,
-                    textFontFamily: axisYTitleFontFamily,
-                })
+                let objLabel = createLabel(
+                    scene,
+                    axisYTitle,
+                    csr.rxmin + l[0] * csr.rxrng + l[1] * axisYTitleDistance, 0, csr.rzmin + l[2] * axisYTitleDistance,
+                    {
+                        textColor: axisYTitleColor,
+                        textFontSize: axisYTitleFontSize,
+                        textFontFamily: axisYTitleFontFamily,
+                    })
                 axisLabels.push(objLabel)
                 axisRela.push({
                     key: 'y-title',
@@ -1522,11 +1252,12 @@ async function plot3d(items, opt = {}) {
         if (true) {
             each(lda, (l, kl) => {
                 let objLine = createLine(
+                    scene,
                     csr.rxmin + l[0] * csr.rxrng, csr.rymin, csr.rzmin + l[1] * csr.rzrng,
                     csr.rxmin + l[0] * csr.rxrng, csr.rymax, csr.rzmin + l[1] * csr.rzrng,
                     {
-                        color: axisYColor,
-                        width: axisYWidth,
+                        color: axisYLineColor,
+                        width: axisYLineWidth,
                     })
                 axisLines.push(objLine)
                 axisRela.push({
@@ -1539,22 +1270,27 @@ async function plot3d(items, opt = {}) {
         }
 
         //y-axis ticks
+        let axisYTickIntervalNum = Math.max(axisYTickNum - 1, 1)
         each(ldxy, (l, kl) => {
 
             ts = genTks(
                 csr.rxmin + l[0] * csr.rxrng, csr.rymin, csr.rzmin,
                 axisYTickNum,
                 0, 1 / axisYTickIntervalNum, 0,
-                l[1] * axisYTickLength, 0, l[2] * axisYTickLength,
+                l[1] * axisYTickLineLength, 0, l[2] * axisYTickLineLength,
                 l[1] * axisYTickLabelDistance, 0, l[2] * axisYTickLabelDistance,
             )
 
             each(ts, (t, i) => {
 
-                let objLine = createLine(t.x1, t.y1, t.z1, t.x2, t.y2, t.z2, {
-                    color: axisYTickColor,
-                    width: axisYTickwidth,
-                })
+                let objLine = createLine(
+                    scene,
+                    t.x1, t.y1, t.z1,
+                    t.x2, t.y2, t.z2,
+                    {
+                        color: axisYTickLineColor,
+                        width: axisYTickLineWidth,
+                    })
                 axisLines.push(objLine)
                 axisRela.push({
                     key: 'y-tick-line',
@@ -1567,11 +1303,15 @@ async function plot3d(items, opt = {}) {
                 let text = i * csr.yrng / axisYTickNum + csr.ymin
                 text = dig(text, axisYTickLabelDig)
 
-                let objLabel = createLabel(text, t.xt, t.yt, t.zt, {
-                    textColor: axisYTickLabelColor,
-                    textFontSize: axisYTickLabelFontSize,
-                    textFontFamily: axisYTickLabelFontFamily,
-                })
+                let objLabel = createLabel(
+                    scene,
+                    text,
+                    t.xt, t.yt, t.zt,
+                    {
+                        textColor: axisYTickLabelColor,
+                        textFontSize: axisYTickLabelFontSize,
+                        textFontFamily: axisYTickLabelFontFamily,
+                    })
                 axisLabels.push(objLabel)
                 axisRela.push({
                     key: 'y-tick-label',
@@ -1589,11 +1329,15 @@ async function plot3d(items, opt = {}) {
             each(ldz, (l, kl) => {
                 let xt = csr.rxmin + l[0] * csr.rxrng + l[2] * axisZTitleDistance / 1.414
                 let yt = csr.rymin + l[1] * csr.ryrng + l[3] * axisZTitleDistance / 1.414
-                let objLabel = createLabel(axisZTitle, xt, yt, 0, {
-                    textColor: axisZTitleColor,
-                    textFontSize: axisZTitleFontSize,
-                    textFontFamily: axisZTitleFontFamily,
-                })
+                let objLabel = createLabel(
+                    scene,
+                    axisZTitle,
+                    xt, yt, 0,
+                    {
+                        textColor: axisZTitleColor,
+                        textFontSize: axisZTitleFontSize,
+                        textFontFamily: axisZTitleFontFamily,
+                    })
                 axisLabels.push(objLabel)
                 axisRela.push({
                     key: 'z-title',
@@ -1608,11 +1352,12 @@ async function plot3d(items, opt = {}) {
         if (true) {
             each(lda, (l, kl) => {
                 let objLine = createLine(
+                    scene,
                     csr.rxmin + l[0] * csr.rxrng, csr.rymin + l[1] * csr.ryrng, csr.rzmin,
                     csr.rxmin + l[0] * csr.rxrng, csr.rymin + l[1] * csr.ryrng, csr.rzmax,
                     {
-                        color: axisZColor,
-                        width: axisZWidth,
+                        color: axisZLineColor,
+                        width: axisZLineWidth,
                     })
                 axisLines.push(objLine)
                 axisRela.push({
@@ -1625,22 +1370,27 @@ async function plot3d(items, opt = {}) {
         }
 
         //z-axis ticks
+        let axisZTickIntervalNum = Math.max(axisZTickNum - 1, 1)
         each(ldz, (l, kl) => {
 
             ts = genTks(
                 csr.rxmin + l[0] * csr.rxrng, csr.rymin + l[1] * csr.ryrng, csr.rzmin,
                 axisZTickNum,
                 0, 0, 1 / axisZTickIntervalNum,
-                l[2] * axisZTickLength / 1.414, l[3] * axisZTickLength / 1.414, 0,
+                l[2] * axisZTickLineLength / 1.414, l[3] * axisZTickLineLength / 1.414, 0,
                 l[2] * axisZTickLabelDistance / 1.414, l[3] * axisZTickLabelDistance / 1.414, 0,
             )
 
             each(ts, (t, i) => {
 
-                let objLine = createLine(t.x1, t.y1, t.z1, t.x2, t.y2, t.z2, {
-                    color: axisZTickColor,
-                    width: axisZTickwidth,
-                })
+                let objLine = createLine(
+                    scene,
+                    t.x1, t.y1, t.z1,
+                    t.x2, t.y2, t.z2,
+                    {
+                        color: axisZTickLineColor,
+                        width: axisZTickLineWidth,
+                    })
                 axisLines.push(objLine)
                 axisRela.push({
                     key: 'z-tick-line',
@@ -1653,11 +1403,15 @@ async function plot3d(items, opt = {}) {
                 let text = i * csr.zrng / axisZTickNum + csr.zmin
                 text = dig(text, axisZTickLabelDig)
 
-                let objLabel = createLabel(text, t.xt, t.yt, t.zt, {
-                    textColor: axisZTickLabelColor,
-                    textFontSize: axisZTickLabelFontSize,
-                    textFontFamily: axisZTickLabelFontFamily,
-                })
+                let objLabel = createLabel(
+                    scene,
+                    text,
+                    t.xt, t.yt, t.zt,
+                    {
+                        textColor: axisZTickLabelColor,
+                        textFontSize: axisZTickLabelFontSize,
+                        textFontFamily: axisZTickLabelFontFamily,
+                    })
                 axisLabels.push(objLabel)
                 axisRela.push({
                     key: 'z-tick-label',
@@ -1709,8 +1463,8 @@ async function plot3d(items, opt = {}) {
         })
     }
     let disposeAxis = () => {
-        disposeLines(axisLines)
-        disposeLabels(axisLabels)
+        disposeLines(scene, axisLines)
+        disposeLabels(scene, axisLabels)
         axisRela = []
         // axisKpRela = {} //不能清除, 記憶體須保持關聯axisLines與axisLabels
     }
@@ -1733,7 +1487,7 @@ async function plot3d(items, opt = {}) {
     let autoDisplayAxis = () => {
 
         //check
-        if (!useBox) {
+        if (!useAxis) {
             return
         }
 
@@ -1820,7 +1574,7 @@ async function plot3d(items, opt = {}) {
         //disposeAxis
         disposeAxis()
 
-        if (useBox) {
+        if (useAxis) {
 
             //createAxis
             createAxis()
@@ -1850,20 +1604,20 @@ async function plot3d(items, opt = {}) {
     let setAxisXTitleDistance = (v) => {
         axisXTitleDistance = v; refreshAxis()
     }
-    let setAxisXColor = (v) => {
-        axisXColor = v; refreshAxis()
+    let setAxisXLineColor = (v) => {
+        axisXLineColor = v; refreshAxis()
     }
-    let setAxisXWidth = (v) => {
-        axisXWidth = v; refreshAxis()
+    let setAxisXLineWidth = (v) => {
+        axisXLineWidth = v; refreshAxis()
     }
-    let setAxisXTickColor = (v) => {
-        axisXTickColor = v; refreshAxis()
+    let setAxisXTickLineColor = (v) => {
+        axisXTickLineColor = v; refreshAxis()
     }
-    let setAxisXTickwidth = (v) => {
-        axisXTickwidth = v; refreshAxis()
+    let setAxisXTickLineWidth = (v) => {
+        axisXTickLineWidth = v; refreshAxis()
     }
-    let setAxisXTickLength = (v) => {
-        axisXTickLength = v; refreshAxis()
+    let setAxisXTickLineLength = (v) => {
+        axisXTickLineLength = v; refreshAxis()
     }
     let setAxisXTickNum = (v) => {
         axisXTickNum = v; refreshAxis()
@@ -1899,20 +1653,20 @@ async function plot3d(items, opt = {}) {
     let setAxisYTitleDistance = (v) => {
         axisYTitleDistance = v; refreshAxis()
     }
-    let setAxisYColor = (v) => {
-        axisYColor = v; refreshAxis()
+    let setAxisYLineColor = (v) => {
+        axisYLineColor = v; refreshAxis()
     }
-    let setAxisYWidth = (v) => {
-        axisYWidth = v; refreshAxis()
+    let setAxisYLineWidth = (v) => {
+        axisYLineWidth = v; refreshAxis()
     }
-    let setAxisYTickColor = (v) => {
-        axisYTickColor = v; refreshAxis()
+    let setAxisYTickLineColor = (v) => {
+        axisYTickLineColor = v; refreshAxis()
     }
-    let setAxisYTickwidth = (v) => {
-        axisYTickwidth = v; refreshAxis()
+    let setAxisYTickLineWidth = (v) => {
+        axisYTickLineWidth = v; refreshAxis()
     }
-    let setAxisYTickLength = (v) => {
-        axisYTickLength = v; refreshAxis()
+    let setAxisYTickLineLength = (v) => {
+        axisYTickLineLength = v; refreshAxis()
     }
     let setAxisYTickNum = (v) => {
         axisYTickNum = v; refreshAxis()
@@ -1948,20 +1702,20 @@ async function plot3d(items, opt = {}) {
     let setAxisZTitleDistance = (v) => {
         axisZTitleDistance = v; refreshAxis()
     }
-    let setAxisZColor = (v) => {
-        axisZColor = v; refreshAxis()
+    let setAxisZLineColor = (v) => {
+        axisZLineColor = v; refreshAxis()
     }
-    let setAxisZWidth = (v) => {
-        axisZWidth = v; refreshAxis()
+    let setAxisZLineWidth = (v) => {
+        axisZLineWidth = v; refreshAxis()
     }
-    let setAxisZTickColor = (v) => {
-        axisZTickColor = v; refreshAxis()
+    let setAxisZTickLineColor = (v) => {
+        axisZTickLineColor = v; refreshAxis()
     }
-    let setAxisZTickwidth = (v) => {
-        axisZTickwidth = v; refreshAxis()
+    let setAxisZTickLineWidth = (v) => {
+        axisZTickLineWidth = v; refreshAxis()
     }
-    let setAxisZTickLength = (v) => {
-        axisZTickLength = v; refreshAxis()
+    let setAxisZTickLineLength = (v) => {
+        axisZTickLineLength = v; refreshAxis()
     }
     let setAxisZTickNum = (v) => {
         axisZTickNum = v; refreshAxis()
@@ -2032,14 +1786,14 @@ async function plot3d(items, opt = {}) {
     // console.log('first addMeshsCore')
 
     let addMesh = async (v) => {
-        resetTransform()
+        resetTransform(csr, meshs)
         disposeMeshLabels()
         await addMeshCore(v)
         rdr()
     }
 
     let addMeshs = async (vs) => {
-        resetTransform()
+        resetTransform(csr, meshs)
         disposeMeshLabels()
         await addMeshsCore(vs)
         rdr()
@@ -2154,24 +1908,6 @@ async function plot3d(items, opt = {}) {
 
     }
 
-    let calcTransform = () => {
-        each(meshs, (mesh) => {
-            // console.log('mesh',mesh)
-            let geometry = mesh.geometry
-            geometry.translate(-csr.xc, -csr.yc, -csr.zc) //先平移
-            geometry.scale(csr.rx, csr.ry, csr.rz) //再縮放
-        })
-    }
-
-    let resetTransform = () => {
-        each(meshs, (mesh) => {
-            // console.log('mesh',mesh)
-            let geometry = mesh.geometry
-            geometry.scale(1 / csr.rx, 1 / csr.ry, 1 / csr.rz) //先恢復縮放
-            geometry.translate(csr.xc, csr.yc, csr.zc) //再恢復平移
-        })
-    }
-
     //meshLabels
     let meshLabels = []
     let createMeshLabels = () => {
@@ -2188,14 +1924,17 @@ async function plot3d(items, opt = {}) {
                 z,
             }
         })
-        meshLabels = createLabels(vs, {
-            textColor: labelTextColor,
-            textFontSize: labelTextFontSize,
-            textFontFamily: labelTextFontFamily,
-        })
+        meshLabels = createLabels(
+            scene,
+            vs,
+            {
+                textColor: labelTextColor,
+                textFontSize: labelTextFontSize,
+                textFontFamily: labelTextFontFamily,
+            })
     }
     let disposeMeshLabels = () => {
-        disposeLabels(meshLabels)
+        disposeLabels(scene, meshLabels)
     }
 
     let rdr = async () => {
@@ -2209,13 +1948,13 @@ async function plot3d(items, opt = {}) {
         calcCsr()
 
         //須有csr各mesh才能translate與scale
-        calcTransform()
+        calcTransform(csr, meshs)
 
         //須mesh已translate與scale才能取得center並給予label座標
         createMeshLabels()
 
         //check
-        if (useBox) {
+        if (useAxis) {
 
             //須有csr才能繪製axis與tick
             createAxis()
@@ -2313,9 +2052,9 @@ async function plot3d(items, opt = {}) {
         each(meshs, (mesh) => {
             group.remove(mesh)
         })
-        disposeGroup()
+        disposeGroup(scene, group)
         meshs = []
-        createGroup()
+        createGroup(scene)
         disposeMeshLabels()
         render()
     }
@@ -2425,22 +2164,22 @@ async function plot3d(items, opt = {}) {
         stop = true
 
         //disposeGroup
-        disposeGroup()
+        disposeGroup(scene, group)
 
         //disposeHelperAxes
-        disposeHelperAxes()
+        disposeHelperAxes(scene, helperAxes)
 
         //disposeHelperGrid
-        disposeHelperGrid()
+        disposeHelperGrid(scene, helperGrid)
 
         //disposeLightAmbient
-        disposeLightAmbient()
+        disposeLightAmbient(scene, lightAmbient)
 
         //disposeLightPoints
-        disposeLightPoints()
+        disposeLightPoints(scene, lightPoints)
 
         //disposeLightDirection
-        disposeLightDirection()
+        disposeLightDirection(scene, lightDirection)
 
         //disposeAxis
         disposeAxis()
@@ -2455,7 +2194,7 @@ async function plot3d(items, opt = {}) {
         disposeMeshLabels()
 
         //disposeScene
-        disposeScene()
+        disposeScene(scene)
 
         //remove
         // console.log('renderer.domElement',renderer.domElement)
@@ -2539,8 +2278,8 @@ async function plot3d(items, opt = {}) {
     ev.setCameraFar = setCameraFar
     ev.setCameraOrthographicRatio = setCameraOrthographicRatio
 
-    ev.getUseBox = getUseBox
-    ev.setUseBox = setUseBox
+    ev.getUseAxis = getUseAxis
+    ev.setUseAxis = setUseAxis
 
     ev.addMesh = addMesh
     ev.addMeshs = addMeshs
@@ -2559,11 +2298,11 @@ async function plot3d(items, opt = {}) {
     ev.setAxisXTitleFontSize = setAxisXTitleFontSize
     ev.setAxisXTitleFontFamily = setAxisXTitleFontFamily
     ev.setAxisXTitleDistance = setAxisXTitleDistance
-    ev.setAxisXColor = setAxisXColor
-    ev.setAxisXWidth = setAxisXWidth
-    ev.setAxisXTickColor = setAxisXTickColor
-    ev.setAxisXTickwidth = setAxisXTickwidth
-    ev.setAxisXTickLength = setAxisXTickLength
+    ev.setAxisXLineColor = setAxisXLineColor
+    ev.setAxisXLineWidth = setAxisXLineWidth
+    ev.setAxisXTickLineColor = setAxisXTickLineColor
+    ev.setAxisXTickLineWidth = setAxisXTickLineWidth
+    ev.setAxisXTickLineLength = setAxisXTickLineLength
     ev.setAxisXTickNum = setAxisXTickNum
     ev.setAxisXTickLabelDistance = setAxisXTickLabelDistance
     ev.setAxisXTickLabelDig = setAxisXTickLabelDig
@@ -2576,11 +2315,11 @@ async function plot3d(items, opt = {}) {
     ev.setAxisYTitleFontSize = setAxisYTitleFontSize
     ev.setAxisYTitleFontFamily = setAxisYTitleFontFamily
     ev.setAxisYTitleDistance = setAxisYTitleDistance
-    ev.setAxisYColor = setAxisYColor
-    ev.setAxisYWidth = setAxisYWidth
-    ev.setAxisYTickColor = setAxisYTickColor
-    ev.setAxisYTickwidth = setAxisYTickwidth
-    ev.setAxisYTickLength = setAxisYTickLength
+    ev.setAxisYLineColor = setAxisYLineColor
+    ev.setAxisYLineWidth = setAxisYLineWidth
+    ev.setAxisYTickLineColor = setAxisYTickLineColor
+    ev.setAxisYTickLineWidth = setAxisYTickLineWidth
+    ev.setAxisYTickLineLength = setAxisYTickLineLength
     ev.setAxisYTickNum = setAxisYTickNum
     ev.setAxisYTickLabelDistance = setAxisYTickLabelDistance
     ev.setAxisYTickLabelDig = setAxisYTickLabelDig
@@ -2593,11 +2332,11 @@ async function plot3d(items, opt = {}) {
     ev.setAxisZTitleFontSize = setAxisZTitleFontSize
     ev.setAxisZTitleFontFamily = setAxisZTitleFontFamily
     ev.setAxisZTitleDistance = setAxisZTitleDistance
-    ev.setAxisZColor = setAxisZColor
-    ev.setAxisZWidth = setAxisZWidth
-    ev.setAxisZTickColor = setAxisZTickColor
-    ev.setAxisZTickwidth = setAxisZTickwidth
-    ev.setAxisZTickLength = setAxisZTickLength
+    ev.setAxisZLineColor = setAxisZLineColor
+    ev.setAxisZLineWidth = setAxisZLineWidth
+    ev.setAxisZTickLineColor = setAxisZTickLineColor
+    ev.setAxisZTickLineWidth = setAxisZTickLineWidth
+    ev.setAxisZTickLineLength = setAxisZTickLineLength
     ev.setAxisZTickNum = setAxisZTickNum
     ev.setAxisZTickLabelDistance = setAxisZTickLabelDistance
     ev.setAxisZTickLabelDig = setAxisZTickLabelDig
