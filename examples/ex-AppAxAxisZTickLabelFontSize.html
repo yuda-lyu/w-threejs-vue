@@ -7,7 +7,7 @@
         content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui"
     />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>example for AppMhSetAxisXTitle</title>
+    <title>example for AppAxAxisZTickLabelFontSize</title>
 
     <!-- @babel/polyfill -->
     <script
@@ -43,7 +43,7 @@
     />
 
     <!-- w-threejs-vue -->
-    <script src="https://cdn.jsdelivr.net/npm/w-threejs-vue@1.0.5/dist/w-threejs-vue.umd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/w-threejs-vue@1.0.6/dist/w-threejs-vue.umd.js"></script>
 
     <!-- lodash -->
     <script src="https://cdn.jsdelivr.net/npm/lodash@latest/lodash.min.js"></script>
@@ -119,14 +119,14 @@
 >
     <div id="app" class="bkh" style>
         <div class="bkh">
-            <div style="font-size:1.5rem;">setAxisXTitle</div>
+            <div style="font-size:1.5rem;">axisZTickLabelFontSize</div>
             <a
-                href="//yuda-lyu.github.io/w-threejs-vue/examples/ex-AppMhSetAxisXTitle.html"
+                href="//yuda-lyu.github.io/w-threejs-vue/examples/ex-AppAxAxisZTickLabelFontSize.html"
                 target="_blank"
                 class="item-link"
             >example</a>
             <a
-                href="//github.com/yuda-lyu/w-threejs-vue/blob/master/docs/examples/ex-AppMhSetAxisXTitle.html"
+                href="//github.com/yuda-lyu/w-threejs-vue/blob/master/docs/examples/ex-AppAxAxisZTickLabelFontSize.html"
                 target="_blank"
                 class="item-link"
             >code</a>
@@ -141,12 +141,12 @@
                     >
                         <button
                             style="margin:0px 3px 3px 0px;"
-                            @click="setAxisXTitle('XXX')"
-                        >set axisXTitle to 'XXX'</button>
+                            @click="setAxisZTickLabelFontSize('0.7rem')"
+                        >set axisZTickLabelFontSize to '0.7rem'</button>
                         <button
                             style="margin:0px 3px 3px 0px;"
-                            @click="setAxisXTitle('X')"
-                        >set axisXTitle to 'X'</button>
+                            @click="setAxisZTickLabelFontSize('0.8rem')"
+                        >set axisZTickLabelFontSize to '0.8rem'</button>
                     </div>
                     <w-threejs-vue ref="thr" :opt="opt" @init="loading=false"></w-threejs-vue>
                 </div>
@@ -192,7 +192,8 @@
               color: "rgba(214, 214, 92, 0.9)"
             }
           ],
-          axisXTitle: "XXX"
+          useAxis: true,
+          axisZTickLabelFontSize: "0.8rem"
         },
         action: []
       };
@@ -207,10 +208,10 @@
         let vo = this;
         jv(vo.opt, document.querySelector("#optjson"), { expanded: true });
       },
-      setAxisXTitle: function(c) {
+      setAxisZTickLabelFontSize: function(c) {
         let vo = this;
         try {
-          vo.$refs.thr.getInst().setAxisXTitle(c);
+          vo.opt.axisZTickLabelFontSize = c;
         } catch (err) {}
       }
     }
