@@ -640,7 +640,6 @@ async function plot3d(items, opt = {}) {
     }
 
     let setUseHelperAxes = (b) => {
-        console.log('setUseHelperAxes', b)
         useHelperAxes = b
         helperAxes.visible = b
         render()
