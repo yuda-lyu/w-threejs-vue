@@ -1,15 +1,15 @@
 {
   "name": "w-threejs-vue",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "main": "dist/w-threejs-vue.umd.js",
   "dependencies": {
-    "@mdi/js": "^7.2.96",
+    "@mdi/js": "^7.4.47",
     "camera-controls": "^2.8.3",
     "lodash-es": "^4.17.21",
-    "three": "^0.161.0",
-    "w-component-vue": "^2.3.75",
-    "w-jsonview-tree": "^1.0.29",
-    "wsemi": "^1.7.45"
+    "three": "^0.162.0",
+    "w-component-vue": "^2.3.77",
+    "w-jsonview-tree": "^1.0.30",
+    "wsemi": "^1.7.47"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^5.0.8",
