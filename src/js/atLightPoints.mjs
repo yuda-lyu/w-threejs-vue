@@ -1,5 +1,5 @@
-import get from 'lodash-es/get'
-import each from 'lodash-es/each'
+import get from 'lodash-es/get.js'
+import each from 'lodash-es/each.js'
 import oc from 'wsemi/src/color.mjs'
 import * as THREE from 'three'
 

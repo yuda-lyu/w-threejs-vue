@@ -282,9 +282,9 @@
 </template>
 
 <script>
-import get from 'lodash-es/get'
-import each from 'lodash-es/each'
-// import cloneDeep from 'lodash-es/cloneDeep'
+import get from 'lodash-es/get.js'
+import each from 'lodash-es/each.js'
+// import cloneDeep from 'lodash-es/cloneDeep.js'
 import urlParse from 'wsemi/src/urlParse.mjs'
 import WListHorizontal from 'w-component-vue/src/components/WListHorizontal.vue'
 import AppBasicSize from './AppBasicSize.vue'

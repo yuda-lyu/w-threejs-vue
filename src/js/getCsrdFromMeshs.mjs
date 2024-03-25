@@ -1,6 +1,6 @@
-import map from 'lodash-es/map'
-import min from 'lodash-es/min'
-import max from 'lodash-es/max'
+import map from 'lodash-es/map.js'
+import min from 'lodash-es/min.js'
+import max from 'lodash-es/max.js'
 
 
 let getCsrdFromMesh = (mesh) => {

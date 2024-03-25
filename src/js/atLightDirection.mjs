@@ -1,4 +1,4 @@
-import get from 'lodash-es/get'
+import get from 'lodash-es/get.js'
 import oc from 'wsemi/src/color.mjs'
 import * as THREE from 'three'
 

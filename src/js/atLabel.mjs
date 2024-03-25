@@ -1,6 +1,6 @@
-import get from 'lodash-es/get'
-import each from 'lodash-es/each'
-import map from 'lodash-es/map'
+import get from 'lodash-es/get.js'
+import each from 'lodash-es/each.js'
+import map from 'lodash-es/map.js'
 import domRemove from 'wsemi/src/domRemove.mjs'
 import { CSS2DObject } from 'three/addons/renderers/CSS2DRenderer.js'
 

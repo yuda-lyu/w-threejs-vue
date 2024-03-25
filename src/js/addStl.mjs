@@ -1,5 +1,5 @@
-import get from 'lodash-es/get'
-import isNumber from 'lodash-es/isNumber'
+import get from 'lodash-es/get.js'
+import isNumber from 'lodash-es/isNumber.js'
 import isestr from 'wsemi/src/isestr.mjs'
 // import genPm from 'wsemi/src/genPm.mjs'
 import oc from 'wsemi/src/color.mjs'

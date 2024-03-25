@@ -36,5 +36,5 @@ npm i w-threejs-vue
 ```
 [Necessary] Add script for w-threejs-vue.
 ```alias
-<script src="https://cdn.jsdelivr.net/npm/w-threejs-vue@1.0.7/dist/w-threejs-vue.umd.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/w-threejs-vue@1.0.8/dist/w-threejs-vue.umd.js"></script>
 ```
