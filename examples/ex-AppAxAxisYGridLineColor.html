@@ -7,7 +7,7 @@
         content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui"
     />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>example for AppAxAxisZTickLabelFontSize</title>
+    <title>example for AppAxAxisYGridLineColor</title>
 
     <!-- @babel/polyfill -->
     <script
@@ -119,14 +119,14 @@
 >
     <div id="app" class="bkh" style>
         <div class="bkh">
-            <div style="font-size:1.5rem;">axisZTickLabelFontSize</div>
+            <div style="font-size:1.5rem;">axisYGridLineColor</div>
             <a
-                href="//yuda-lyu.github.io/w-threejs-vue/examples/ex-AppAxAxisZTickLabelFontSize.html"
+                href="//yuda-lyu.github.io/w-threejs-vue/examples/ex-AppAxAxisYGridLineColor.html"
                 target="_blank"
                 class="item-link"
             >example</a>
             <a
-                href="//github.com/yuda-lyu/w-threejs-vue/blob/master/docs/examples/ex-AppAxAxisZTickLabelFontSize.html"
+                href="//github.com/yuda-lyu/w-threejs-vue/blob/master/docs/examples/ex-AppAxAxisYGridLineColor.html"
                 target="_blank"
                 class="item-link"
             >code</a>
@@ -141,12 +141,12 @@
                     >
                         <button
                             style="margin:0px 3px 3px 0px;"
-                            @click="setAxisZTickLabelFontSize('0.7rem')"
-                        >set axisZTickLabelFontSize to '0.7rem'</button>
+                            @click="setAxisYGridLineColor('#888')"
+                        >set axisYGridLineColor to '#888'</button>
                         <button
                             style="margin:0px 3px 3px 0px;"
-                            @click="setAxisZTickLabelFontSize('0.8rem')"
-                        >set axisZTickLabelFontSize to '0.8rem'</button>
+                            @click="setAxisYGridLineColor('#f26')"
+                        >set axisYGridLineColor to '#f26'</button>
                     </div>
                     <w-threejs-vue ref="thr" :opt="opt" @init="loading=false"></w-threejs-vue>
                 </div>
@@ -192,8 +192,11 @@
               color: "rgba(214, 214, 92, 0.9)"
             }
           ],
+          useHelperGrid: false,
           useAxis: true,
-          axisZTickLabelFontSize: "0.8rem"
+          axisXGridLineColor: "#888",
+          axisYGridLineColor: "#888",
+          axisZGridLineColor: "#888"
         },
         action: []
       };
@@ -208,10 +211,10 @@
         let vo = this;
         jv(vo.opt, document.querySelector("#optjson"), { expanded: true });
       },
-      setAxisZTickLabelFontSize: function(c) {
+      setAxisYGridLineColor: function(c) {
         let vo = this;
         try {
-          vo.opt.axisZTickLabelFontSize = c;
+          vo.opt.axisYGridLineColor = c;
         } catch (err) {}
       }
     }

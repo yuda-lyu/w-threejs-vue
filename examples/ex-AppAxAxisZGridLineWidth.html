@@ -7,7 +7,7 @@
         content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui"
     />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>example for AppAxAxisZTickLabelFontSize</title>
+    <title>example for AppAxAxisZGridLineWidth</title>
 
     <!-- @babel/polyfill -->
     <script
@@ -119,14 +119,17 @@
 >
     <div id="app" class="bkh" style>
         <div class="bkh">
-            <div style="font-size:1.5rem;">axisZTickLabelFontSize</div>
+            <div style="font-size:1.5rem;">axisZGridLineWidth</div>
+            <div
+                style="font-size:0.7rem; color:#f26;"
+            >* WebGL renderer will always be 1</div>
             <a
-                href="//yuda-lyu.github.io/w-threejs-vue/examples/ex-AppAxAxisZTickLabelFontSize.html"
+                href="//yuda-lyu.github.io/w-threejs-vue/examples/ex-AppAxAxisZGridLineWidth.html"
                 target="_blank"
                 class="item-link"
             >example</a>
             <a
-                href="//github.com/yuda-lyu/w-threejs-vue/blob/master/docs/examples/ex-AppAxAxisZTickLabelFontSize.html"
+                href="//github.com/yuda-lyu/w-threejs-vue/blob/master/docs/examples/ex-AppAxAxisZGridLineWidth.html"
                 target="_blank"
                 class="item-link"
             >code</a>
@@ -141,12 +144,12 @@
                     >
                         <button
                             style="margin:0px 3px 3px 0px;"
-                            @click="setAxisZTickLabelFontSize('0.7rem')"
-                        >set axisZTickLabelFontSize to '0.7rem'</button>
+                            @click="setAxisZGridLineWidth(1)"
+                        >set axisZGridLineWidth to 1</button>
                         <button
                             style="margin:0px 3px 3px 0px;"
-                            @click="setAxisZTickLabelFontSize('0.8rem')"
-                        >set axisZTickLabelFontSize to '0.8rem'</button>
+                            @click="setAxisZGridLineWidth(2)"
+                        >set axisZGridLineWidth to 2</button>
                     </div>
                     <w-threejs-vue ref="thr" :opt="opt" @init="loading=false"></w-threejs-vue>
                 </div>
@@ -192,8 +195,12 @@
               color: "rgba(214, 214, 92, 0.9)"
             }
           ],
+          useHelperGrid: false,
           useAxis: true,
-          axisZTickLabelFontSize: "0.8rem"
+          axisXGridLineColor: "#888",
+          axisYGridLineColor: "#888",
+          axisZGridLineColor: "#888",
+          axisZGridLineWidth: 2
         },
         action: []
       };
@@ -208,10 +215,10 @@
         let vo = this;
         jv(vo.opt, document.querySelector("#optjson"), { expanded: true });
       },
-      setAxisZTickLabelFontSize: function(c) {
+      setAxisZGridLineWidth: function(r) {
         let vo = this;
         try {
-          vo.opt.axisZTickLabelFontSize = c;
+          vo.opt.axisZGridLineWidth = r;
         } catch (err) {}
       }
     }
