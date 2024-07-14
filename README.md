@@ -5,7 +5,6 @@ A vue component for three.js.
 [![language](https://img.shields.io/badge/vue-2.x-brightgreen.svg)](https://github.com/vuejs/vue) 
 [![npm version](http://img.shields.io/npm/v/w-threejs-vue.svg?style=flat)](https://npmjs.org/package/w-threejs-vue) 
 [![license](https://img.shields.io/npm/l/w-threejs-vue.svg?style=flat)](https://npmjs.org/package/w-threejs-vue) 
-[![gzip file size](http://img.badgesize.io/yuda-lyu/w-threejs-vue/master/dist/w-threejs-vue.umd.js.svg?compression=gzip)](https://github.com/yuda-lyu/w-threejs-vue)
 [![npm download](https://img.shields.io/npm/dt/w-threejs-vue.svg)](https://npmjs.org/package/w-threejs-vue) 
 [![npm download](https://img.shields.io/npm/dm/w-threejs-vue.svg)](https://npmjs.org/package/w-threejs-vue) 
 [![jsdelivr download](https://img.shields.io/jsdelivr/npm/hm/w-threejs-vue.svg)](https://www.jsdelivr.com/package/npm/w-threejs-vue)
@@ -36,5 +35,5 @@ npm i w-threejs-vue
 ```
 [Necessary] Add script for w-threejs-vue.
 ```alias
-<script src="https://cdn.jsdelivr.net/npm/w-threejs-vue@1.0.8/dist/w-threejs-vue.umd.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/w-threejs-vue@1.0.9/dist/w-threejs-vue.umd.js"></script>
 ```

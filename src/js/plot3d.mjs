@@ -334,7 +334,7 @@ async function plot3d(items, opt = {}) {
     //useAxis
     let useAxis = get(opt, 'useAxis')
     if (!isbol(useAxis)) {
-        useAxis = false //false bbb
+        useAxis = false
     }
 
     let getUseAxis = () => {
@@ -435,6 +435,17 @@ async function plot3d(items, opt = {}) {
         axisXTickLabelFontFamily = 'Microsoft JhengHei'
     }
 
+    let axisXGridLineColor = get(opt, 'axisXGridLineColor')
+    if (!isestr(axisXGridLineColor)) {
+        axisXGridLineColor = 'transparent'
+    }
+
+    let axisXGridLineWidth = get(opt, 'axisXGridLineWidth')
+    if (!isnum(axisXGridLineWidth)) {
+        axisXGridLineWidth = 1 //WebGL限制只能為1
+    }
+    axisXGridLineWidth = cdbl(axisXGridLineWidth)
+
     //axisY
 
     let axisYTitle = get(opt, 'axisYTitle')
@@ -524,6 +535,17 @@ async function plot3d(items, opt = {}) {
         axisYTickLabelFontFamily = 'Microsoft JhengHei'
     }
 
+    let axisYGridLineColor = get(opt, 'axisYGridLineColor')
+    if (!isestr(axisYGridLineColor)) {
+        axisYGridLineColor = 'transparent'
+    }
+
+    let axisYGridLineWidth = get(opt, 'axisYGridLineWidth')
+    if (!isnum(axisYGridLineWidth)) {
+        axisYGridLineWidth = 1 //WebGL限制只能為1
+    }
+    axisYGridLineWidth = cdbl(axisYGridLineWidth)
+
     //axisZ
 
     let axisZTitle = get(opt, 'axisZTitle')
@@ -612,6 +634,17 @@ async function plot3d(items, opt = {}) {
     if (!isestr(axisZTickLabelFontFamily)) {
         axisZTickLabelFontFamily = 'Microsoft JhengHei'
     }
+
+    let axisZGridLineColor = get(opt, 'axisZGridLineColor')
+    if (!isestr(axisZGridLineColor)) {
+        axisZGridLineColor = 'transparent'
+    }
+
+    let axisZGridLineWidth = get(opt, 'axisZGridLineWidth')
+    if (!isnum(axisZGridLineWidth)) {
+        axisZGridLineWidth = 1 //WebGL限制只能為1
+    }
+    axisZGridLineWidth = cdbl(axisZGridLineWidth)
 
     //ev
     let ev = evem()
@@ -1128,6 +1161,193 @@ async function plot3d(items, opt = {}) {
             return vs
         }
 
+        let axisXTickIntervalNum = Math.max(axisXTickNum - 1, 1)
+        let axisYTickIntervalNum = Math.max(axisYTickNum - 1, 1)
+        let axisZTickIntervalNum = Math.max(axisZTickNum - 1, 1)
+
+        //x-y grids, grid先繪製才能被axis與tick繪製時覆蓋
+        if (true) {
+
+            each([0, 1], (l, kl) => {
+
+                //x grid
+                ts = genTks(
+                    csr.rxmin, csr.rymin, csr.rzmin + l * csr.rzrng,
+                    axisXTickNum,
+                    1 / axisXTickIntervalNum, 0, 0,
+                    0, 1 * csr.ryrng, 0,
+                    0, 0, 0,
+                )
+                each(ts, (t, i) => {
+                    let objLine = createLine(
+                        scene,
+                        t.x1, t.y1, t.z1,
+                        t.x2, t.y2, t.z2,
+                        {
+                            color: axisXGridLineColor,
+                            width: axisXGridLineWidth,
+                        })
+                    axisLines.push(objLine)
+                    axisRela.push({
+                        key: 'xy-grid-line',
+                        id: `s${kl}`,
+                        rela: 'axisLines',
+                        ind: size(axisLines) - 1,
+                    })
+                })
+
+                //y grid
+                ts = genTks(
+                    csr.rxmin, csr.rymin, csr.rzmin + l * csr.rzrng,
+                    axisYTickNum,
+                    0, 1 / axisYTickIntervalNum, 0,
+                    1 * csr.rxrng, 0, 0,
+                    0, 0, 0,
+                )
+                each(ts, (t, i) => {
+                    let objLine = createLine(
+                        scene,
+                        t.x1, t.y1, t.z1,
+                        t.x2, t.y2, t.z2,
+                        {
+                            color: axisYGridLineColor,
+                            width: axisYGridLineWidth,
+                        })
+                    axisLines.push(objLine)
+                    axisRela.push({
+                        key: 'xy-grid-line',
+                        id: `s${kl}`,
+                        rela: 'axisLines',
+                        ind: size(axisLines) - 1,
+                    })
+                })
+
+            })
+
+        }
+
+        //x-z grids, grid先繪製才能被axis與tick繪製時覆蓋
+        if (true) {
+
+            each([0, 1], (l, kl) => {
+
+                //x grid
+                ts = genTks(
+                    csr.rxmin, csr.rymin + l * csr.ryrng, csr.rzmin,
+                    axisZTickNum,
+                    0, 0, 1 / axisZTickIntervalNum,
+                    1 * csr.rxrng, 0, 0,
+                    0, 0, 0,
+                )
+                each(ts, (t, i) => {
+                    let objLine = createLine(
+                        scene,
+                        t.x1, t.y1, t.z1,
+                        t.x2, t.y2, t.z2,
+                        {
+                            color: axisXGridLineColor,
+                            width: axisXGridLineWidth,
+                        })
+                    axisLines.push(objLine)
+                    axisRela.push({
+                        key: 'xz-grid-line',
+                        id: `s${kl}`,
+                        rela: 'axisLines',
+                        ind: size(axisLines) - 1,
+                    })
+                })
+
+                //z grid
+                ts = genTks(
+                    csr.rxmin, csr.rymin + l * csr.ryrng, csr.rzmin,
+                    axisXTickNum,
+                    1 / axisXTickIntervalNum, 0, 0,
+                    0, 0, 1 * csr.rzrng,
+                    0, 0, 0,
+                )
+                each(ts, (t, i) => {
+                    let objLine = createLine(
+                        scene,
+                        t.x1, t.y1, t.z1,
+                        t.x2, t.y2, t.z2,
+                        {
+                            color: axisZGridLineColor,
+                            width: axisZGridLineWidth,
+                        })
+                    axisLines.push(objLine)
+                    axisRela.push({
+                        key: 'xz-grid-line',
+                        id: `s${kl}`,
+                        rela: 'axisLines',
+                        ind: size(axisLines) - 1,
+                    })
+                })
+
+            })
+
+        }
+
+        //y-z grids, grid先繪製才能被axis與tick繪製時覆蓋
+        if (true) {
+
+            each([0, 1], (l, kl) => {
+
+                //y grid
+                ts = genTks(
+                    csr.rxmin + l * csr.rxrng, csr.rymin, csr.rzmin,
+                    axisZTickNum,
+                    0, 0, 1 / axisZTickIntervalNum,
+                    0, 1 * csr.ryrng, 0,
+                    0, 0, 0,
+                )
+                each(ts, (t, i) => {
+                    let objLine = createLine(
+                        scene,
+                        t.x1, t.y1, t.z1,
+                        t.x2, t.y2, t.z2,
+                        {
+                            color: axisYGridLineColor,
+                            width: axisYGridLineWidth,
+                        })
+                    axisLines.push(objLine)
+                    axisRela.push({
+                        key: 'yz-grid-line',
+                        id: `s${kl}`,
+                        rela: 'axisLines',
+                        ind: size(axisLines) - 1,
+                    })
+                })
+
+                //z grid
+                ts = genTks(
+                    csr.rxmin + l * csr.rxrng, csr.rymin, csr.rzmin,
+                    axisYTickNum,
+                    0, 1 / axisYTickIntervalNum, 0,
+                    0, 0, 1 * csr.rzrng,
+                    0, 0, 0,
+                )
+                each(ts, (t, i) => {
+                    let objLine = createLine(
+                        scene,
+                        t.x1, t.y1, t.z1,
+                        t.x2, t.y2, t.z2,
+                        {
+                            color: axisZGridLineColor,
+                            width: axisZGridLineWidth,
+                        })
+                    axisLines.push(objLine)
+                    axisRela.push({
+                        key: 'yz-grid-line',
+                        id: `s${kl}`,
+                        rela: 'axisLines',
+                        ind: size(axisLines) - 1,
+                    })
+                })
+
+            })
+
+        }
+
         //x-axis title
         if (true) {
             each(ldxy, (l, kl) => {
@@ -1172,7 +1392,6 @@ async function plot3d(items, opt = {}) {
         }
 
         //x-axis ticks
-        let axisXTickIntervalNum = Math.max(axisXTickNum - 1, 1)
         each(ldxy, (l, kl) => {
 
             ts = genTks(
@@ -1269,7 +1488,6 @@ async function plot3d(items, opt = {}) {
         }
 
         //y-axis ticks
-        let axisYTickIntervalNum = Math.max(axisYTickNum - 1, 1)
         each(ldxy, (l, kl) => {
 
             ts = genTks(
@@ -1369,7 +1587,6 @@ async function plot3d(items, opt = {}) {
         }
 
         //z-axis ticks
-        let axisZTickIntervalNum = Math.max(axisZTickNum - 1, 1)
         each(ldz, (l, kl) => {
 
             ts = genTks(
@@ -1424,7 +1641,7 @@ async function plot3d(items, opt = {}) {
         })
 
     }
-    let displayAxis = (key, id, show) => {
+    let displayObj = (key, id, show) => {
         each(axisRela, (v) => {
             let b1 = true
             if (isestr(key)) {
@@ -1468,19 +1685,21 @@ async function plot3d(items, opt = {}) {
         // axisKpRela = {} //不能清除, 記憶體須保持關聯axisLines與axisLabels
     }
 
-    let displayAxisAndTitleAndTick = (ax, id) => {
-        displayAxis(`${ax}-title`, 's0', id === 's0')
-        displayAxis(`${ax}-tick-label`, 's0', id === 's0')
-        displayAxis(`${ax}-tick-line`, 's0', id === 's0')
-        displayAxis(`${ax}-title`, 's1', id === 's1')
-        displayAxis(`${ax}-tick-label`, 's1', id === 's1')
-        displayAxis(`${ax}-tick-line`, 's1', id === 's1')
-        displayAxis(`${ax}-title`, 's2', id === 's2')
-        displayAxis(`${ax}-tick-label`, 's2', id === 's2')
-        displayAxis(`${ax}-tick-line`, 's2', id === 's2')
-        displayAxis(`${ax}-title`, 's3', id === 's3')
-        displayAxis(`${ax}-tick-label`, 's3', id === 's3')
-        displayAxis(`${ax}-tick-line`, 's3', id === 's3')
+    let displayObjAndTitleAndTickAndGrid = (ax, id) => {
+        displayObj(`${ax}-title`, 's0', id === 's0')
+        displayObj(`${ax}-tick-label`, 's0', id === 's0')
+        displayObj(`${ax}-tick-line`, 's0', id === 's0')
+        displayObj(`${ax}-title`, 's1', id === 's1')
+        displayObj(`${ax}-tick-label`, 's1', id === 's1')
+        displayObj(`${ax}-tick-line`, 's1', id === 's1')
+        displayObj(`${ax}-title`, 's2', id === 's2')
+        displayObj(`${ax}-tick-label`, 's2', id === 's2')
+        displayObj(`${ax}-tick-line`, 's2', id === 's2')
+        displayObj(`${ax}-title`, 's3', id === 's3')
+        displayObj(`${ax}-tick-label`, 's3', id === 's3')
+        displayObj(`${ax}-tick-line`, 's3', id === 's3')
+        displayObj(`${ax}-grid-line`, 's0', id === 's0')
+        displayObj(`${ax}-grid-line`, 's1', id === 's1')
     }
 
     let autoDisplayAxis = () => {
@@ -1502,68 +1721,83 @@ async function plot3d(items, opt = {}) {
         let b2
         let b
 
+        //x axis tick
         b1 = azimuthAngle >= 0 && azimuthAngle <= 90 //0~90
         b2 = azimuthAngle >= 270 && azimuthAngle <= 360 //270~360
         b = b1 || b2
         if (b) {
-            displayAxisAndTitleAndTick('x', 's0')
+            displayObjAndTitleAndTickAndGrid('x', 's0')
+            displayObjAndTitleAndTickAndGrid('xz', 's1')
         }
         else {
-            displayAxisAndTitleAndTick('x', 's1')
+            displayObjAndTitleAndTickAndGrid('x', 's1')
+            displayObjAndTitleAndTickAndGrid('xz', 's0')
         }
         if (cameraType === 'orthographic') {
             if (Math.abs(polarAngle - 90) < 0.2) {
                 if (Math.abs(azimuthAngle - 90) < 0.2 || Math.abs(azimuthAngle - 270) < 0.2) {
-                    displayAxisAndTitleAndTick('x', 'none')
+                    displayObjAndTitleAndTickAndGrid('x', 'none')
                 }
                 else if (b) {
-                    displayAxisAndTitleAndTick('x', 's2')
+                    displayObjAndTitleAndTickAndGrid('x', 's2')
                 }
                 else {
-                    displayAxisAndTitleAndTick('x', 's3')
+                    displayObjAndTitleAndTickAndGrid('x', 's3')
                 }
             }
         }
 
-        b1 = azimuthAngle >= 180 && azimuthAngle <= 360
+        //y axis tick
+        b1 = azimuthAngle >= 180 && azimuthAngle <= 360 //180~360
         b2 = false
         b = b1 || b2
         if (b) {
-            displayAxisAndTitleAndTick('y', 's0')
+            displayObjAndTitleAndTickAndGrid('y', 's0')
+            displayObjAndTitleAndTickAndGrid('yz', 's1')
         }
         else {
-            displayAxisAndTitleAndTick('y', 's1')
+            displayObjAndTitleAndTickAndGrid('y', 's1')
+            displayObjAndTitleAndTickAndGrid('yz', 's0')
         }
         if (cameraType === 'orthographic') {
             if (Math.abs(polarAngle - 90) < 0.2) {
                 if (Math.abs(azimuthAngle) < 0.2 || Math.abs(azimuthAngle - 180) < 0.2) {
-                    displayAxisAndTitleAndTick('y', 'none')
+                    displayObjAndTitleAndTickAndGrid('y', 'none')
                 }
                 else if (b) {
-                    displayAxisAndTitleAndTick('y', 's2')
+                    displayObjAndTitleAndTickAndGrid('y', 's2')
                 }
                 else {
-                    displayAxisAndTitleAndTick('y', 's3')
+                    displayObjAndTitleAndTickAndGrid('y', 's3')
                 }
             }
         }
 
+        //z axis tick
         if (azimuthAngle <= 90) {
-            displayAxisAndTitleAndTick('z', 's0')
+            displayObjAndTitleAndTickAndGrid('z', 's0')
         }
         else if (azimuthAngle <= 180) {
-            displayAxisAndTitleAndTick('z', 's1')
+            displayObjAndTitleAndTickAndGrid('z', 's1')
         }
         else if (azimuthAngle <= 270) {
-            displayAxisAndTitleAndTick('z', 's2')
+            displayObjAndTitleAndTickAndGrid('z', 's2')
         }
         else {
-            displayAxisAndTitleAndTick('z', 's3')
+            displayObjAndTitleAndTickAndGrid('z', 's3')
         }
         if (cameraType === 'orthographic') {
             if (Math.abs(polarAngle) < 0.2 || Math.abs(polarAngle - 180) < 0.2) {
-                displayAxisAndTitleAndTick('z', 'none')
+                displayObjAndTitleAndTickAndGrid('z', 'none')
             }
+        }
+
+        //x-y grid
+        if (polarAngle <= 90) {
+            displayObjAndTitleAndTickAndGrid('xy', 's0')
+        }
+        else {
+            displayObjAndTitleAndTickAndGrid('xy', 's1')
         }
 
     }
@@ -1636,6 +1870,12 @@ async function plot3d(items, opt = {}) {
     let setAxisXTickLabelFontFamily = (v) => {
         axisXTickLabelFontFamily = v; refreshAxis()
     }
+    let setAxisXGridLineColor = (v) => {
+        axisXGridLineColor = v; refreshAxis()
+    }
+    let setAxisXGridLineWidth = (v) => {
+        axisXGridLineWidth = v; refreshAxis()
+    }
 
     let setAxisYTitle = (v) => {
         axisYTitle = v; refreshAxis()
@@ -1685,6 +1925,12 @@ async function plot3d(items, opt = {}) {
     let setAxisYTickLabelFontFamily = (v) => {
         axisYTickLabelFontFamily = v; refreshAxis()
     }
+    let setAxisYGridLineColor = (v) => {
+        axisYGridLineColor = v; refreshAxis()
+    }
+    let setAxisYGridLineWidth = (v) => {
+        axisYGridLineWidth = v; refreshAxis()
+    }
 
     let setAxisZTitle = (v) => {
         axisZTitle = v; refreshAxis()
@@ -1733,6 +1979,12 @@ async function plot3d(items, opt = {}) {
     }
     let setAxisZTickLabelFontFamily = (v) => {
         axisZTickLabelFontFamily = v; refreshAxis()
+    }
+    let setAxisZGridLineColor = (v) => {
+        axisZGridLineColor = v; refreshAxis()
+    }
+    let setAxisZGridLineWidth = (v) => {
+        axisZGridLineWidth = v; refreshAxis()
     }
 
     //meshs
@@ -2308,6 +2560,8 @@ async function plot3d(items, opt = {}) {
     ev.setAxisXTickLabelColor = setAxisXTickLabelColor
     ev.setAxisXTickLabelFontSize = setAxisXTickLabelFontSize
     ev.setAxisXTickLabelFontFamily = setAxisXTickLabelFontFamily
+    ev.setAxisXGridLineColor = setAxisXGridLineColor
+    ev.setAxisXGridLineWidth = setAxisXGridLineWidth
 
     ev.setAxisYTitle = setAxisYTitle
     ev.setAxisYTitleColor = setAxisYTitleColor
@@ -2325,6 +2579,8 @@ async function plot3d(items, opt = {}) {
     ev.setAxisYTickLabelColor = setAxisYTickLabelColor
     ev.setAxisYTickLabelFontSize = setAxisYTickLabelFontSize
     ev.setAxisYTickLabelFontFamily = setAxisYTickLabelFontFamily
+    ev.setAxisYGridLineColor = setAxisYGridLineColor
+    ev.setAxisYGridLineWidth = setAxisYGridLineWidth
 
     ev.setAxisZTitle = setAxisZTitle
     ev.setAxisZTitleColor = setAxisZTitleColor
@@ -2342,6 +2598,8 @@ async function plot3d(items, opt = {}) {
     ev.setAxisZTickLabelColor = setAxisZTickLabelColor
     ev.setAxisZTickLabelFontSize = setAxisZTickLabelFontSize
     ev.setAxisZTickLabelFontFamily = setAxisZTickLabelFontFamily
+    ev.setAxisZGridLineColor = setAxisZGridLineColor
+    ev.setAxisZGridLineWidth = setAxisZGridLineWidth
 
     return ev
 }

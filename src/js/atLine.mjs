@@ -10,13 +10,23 @@ let createLine = (scene, x1, y1, z1, x2, y2, z2, opt = { }) => {
     let color = get(opt, 'color', '#fff')
     let width = get(opt, 'width', 1)
 
+    //gc, transparent, opacity
+    let c = oc.toRgba(color)
+    let gc = oc.toRgbString(c)
+    let opacity = c.a
+    let transparent = opacity < 1
+
     //material
     let material = new THREE.LineBasicMaterial({
-        color: oc.toRgbString(color),
+
+        color: gc,
 
         linewidth: width,
         //https://threejs.org/docs/#api/zh/materials/LineBasicMaterial
         //由于OpenGL Core Profile与 大多数平台上WebGL渲染器的限制，无论如何设置该值，线宽始终为1
+
+        transparent,
+        opacity,
 
     })
 

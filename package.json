@@ -1,15 +1,15 @@
 {
   "name": "w-threejs-vue",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "main": "dist/w-threejs-vue.umd.js",
   "dependencies": {
     "@mdi/js": "^7.4.47",
-    "camera-controls": "^2.8.3",
+    "camera-controls": "^2.8.5",
     "lodash-es": "^4.17.21",
-    "three": "^0.162.0",
-    "w-component-vue": "^2.3.80",
+    "three": "^0.166.1",
+    "w-component-vue": "^2.3.87",
     "w-jsonview-tree": "^1.0.31",
-    "wsemi": "^1.7.49"
+    "wsemi": "^1.7.51"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^5.0.8",
@@ -30,7 +30,7 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "test": "mocha --parallel --timeout 60000 --experimental-modules --es-module-specifier-resolution=node",
+    "test": "mocha --parallel --timeout 60000 --experimental-modules",
     "lint": "vue-cli-service lint",
     "deploy": "gh-pages -d docs"
   },

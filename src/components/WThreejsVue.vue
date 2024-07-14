@@ -867,6 +867,8 @@ export default {
                     axisXTickLabelColor: 'ev.setAxisXTickLabelColor',
                     axisXTickLabelFontSize: 'ev.setAxisXTickLabelFontSize',
                     axisXTickLabelFontFamily: 'ev.setAxisXTickLabelFontFamily',
+                    axisXGridLineColor: 'ev.setAxisXGridLineColor',
+                    axisXGridLineWidth: 'ev.setAxisXGridLineWidth',
                     axisYTitle: 'ev.setAxisYTitle',
                     axisYTitleColor: 'ev.setAxisYTitleColor',
                     axisYTitleFontSize: 'ev.setAxisYTitleFontSize',
@@ -883,6 +885,8 @@ export default {
                     axisYTickLabelColor: 'ev.setAxisYTickLabelColor',
                     axisYTickLabelFontSize: 'ev.setAxisYTickLabelFontSize',
                     axisYTickLabelFontFamily: 'ev.setAxisYTickLabelFontFamily',
+                    axisYGridLineColor: 'ev.setAxisYGridLineColor',
+                    axisYGridLineWidth: 'ev.setAxisYGridLineWidth',
                     axisZTitle: 'ev.setAxisZTitle',
                     axisZTitleColor: 'ev.setAxisZTitleColor',
                     axisZTitleFontSize: 'ev.setAxisZTitleFontSize',
@@ -899,6 +903,8 @@ export default {
                     axisZTickLabelColor: 'ev.setAxisZTickLabelColor',
                     axisZTickLabelFontSize: 'ev.setAxisZTickLabelFontSize',
                     axisZTickLabelFontFamily: 'ev.setAxisZTickLabelFontFamily',
+                    axisZGridLineColor: 'ev.setAxisZGridLineColor',
+                    axisZGridLineWidth: 'ev.setAxisZGridLineWidth',
 
                     cameraType: 'ev.setCameraType',
                     // cameraPos: 'ev.setCameraPos', //因cameraPos跟cameraPolarAngle與cameraAzimuthAngle衝突, 故僅提供設定cameraPolarAngle與cameraAzimuthAngle

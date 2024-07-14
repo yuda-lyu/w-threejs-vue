@@ -146,8 +146,6 @@
 
             <AppLtLightDirectionPos v-if="cmpPick==='lightDirectionPos'"></AppLtLightDirectionPos>
 
-<!-- bbb -->
-
             <AppMhUseAxis v-if="cmpPick==='useAxis'"></AppMhUseAxis>
 
             <AppAxAxisXTitle v-if="cmpPick==='axisXTitle'"></AppAxAxisXTitle>
@@ -182,6 +180,10 @@
 
             <AppAxAxisXTickLabelFontFamily v-if="cmpPick==='axisXTickLabelFontFamily'"></AppAxAxisXTickLabelFontFamily>
 
+            <AppAxAxisXGridLineColor v-if="cmpPick==='axisXGridLineColor'"></AppAxAxisXGridLineColor>
+
+            <AppAxAxisXGridLineWidth v-if="cmpPick==='axisXGridLineWidth'"></AppAxAxisXGridLineWidth>
+
             <AppAxAxisYTitle v-if="cmpPick==='axisYTitle'"></AppAxAxisYTitle>
 
             <AppAxAxisYTitleColor v-if="cmpPick==='axisYTitleColor'"></AppAxAxisYTitleColor>
@@ -213,6 +215,10 @@
             <AppAxAxisYTickLabelFontSize v-if="cmpPick==='axisYTickLabelFontSize'"></AppAxAxisYTickLabelFontSize>
 
             <AppAxAxisYTickLabelFontFamily v-if="cmpPick==='axisYTickLabelFontFamily'"></AppAxAxisYTickLabelFontFamily>
+
+            <AppAxAxisYGridLineColor v-if="cmpPick==='axisYGridLineColor'"></AppAxAxisYGridLineColor>
+
+            <AppAxAxisYGridLineWidth v-if="cmpPick==='axisYGridLineWidth'"></AppAxAxisYGridLineWidth>
 
             <AppAxAxisZTitle v-if="cmpPick==='axisZTitle'"></AppAxAxisZTitle>
 
@@ -246,8 +252,9 @@
 
             <AppAxAxisZTickLabelFontFamily v-if="cmpPick==='axisZTickLabelFontFamily'"></AppAxAxisZTickLabelFontFamily>
 
+            <AppAxAxisZGridLineColor v-if="cmpPick==='axisZGridLineColor'"></AppAxAxisZGridLineColor>
 
-<!-- bbb -->
+            <AppAxAxisZGridLineWidth v-if="cmpPick==='axisZGridLineWidth'"></AppAxAxisZGridLineWidth>
 
             <AppMhGetMeshsInfor v-if="cmpPick==='getMeshsInfor'"></AppMhGetMeshsInfor>
 
@@ -319,8 +326,6 @@ import AppLtUseLightDirection from './AppLtUseLightDirection.vue'
 import AppLtLightDirectionColor from './AppLtLightDirectionColor.vue'
 import AppLtLightDirectionIntensity from './AppLtLightDirectionIntensity.vue'
 import AppLtLightDirectionPos from './AppLtLightDirectionPos.vue'
-// bbb
-
 import AppMhUseAxis from './AppMhUseAxis.vue'
 import AppAxAxisXTitle from './AppAxAxisXTitle.vue'
 import AppAxAxisXTitleColor from './AppAxAxisXTitleColor.vue'
@@ -338,6 +343,8 @@ import AppAxAxisXTickLabelDig from './AppAxAxisXTickLabelDig.vue'
 import AppAxAxisXTickLabelColor from './AppAxAxisXTickLabelColor.vue'
 import AppAxAxisXTickLabelFontSize from './AppAxAxisXTickLabelFontSize.vue'
 import AppAxAxisXTickLabelFontFamily from './AppAxAxisXTickLabelFontFamily.vue'
+import AppAxAxisXGridLineColor from './AppAxAxisXGridLineColor.vue'
+import AppAxAxisXGridLineWidth from './AppAxAxisXGridLineWidth.vue'
 import AppAxAxisYTitle from './AppAxAxisYTitle.vue'
 import AppAxAxisYTitleColor from './AppAxAxisYTitleColor.vue'
 import AppAxAxisYTitleFontSize from './AppAxAxisYTitleFontSize.vue'
@@ -354,6 +361,8 @@ import AppAxAxisYTickLabelDig from './AppAxAxisYTickLabelDig.vue'
 import AppAxAxisYTickLabelColor from './AppAxAxisYTickLabelColor.vue'
 import AppAxAxisYTickLabelFontSize from './AppAxAxisYTickLabelFontSize.vue'
 import AppAxAxisYTickLabelFontFamily from './AppAxAxisYTickLabelFontFamily.vue'
+import AppAxAxisYGridLineColor from './AppAxAxisYGridLineColor.vue'
+import AppAxAxisYGridLineWidth from './AppAxAxisYGridLineWidth.vue'
 import AppAxAxisZTitle from './AppAxAxisZTitle.vue'
 import AppAxAxisZTitleColor from './AppAxAxisZTitleColor.vue'
 import AppAxAxisZTitleFontSize from './AppAxAxisZTitleFontSize.vue'
@@ -370,9 +379,8 @@ import AppAxAxisZTickLabelDig from './AppAxAxisZTickLabelDig.vue'
 import AppAxAxisZTickLabelColor from './AppAxAxisZTickLabelColor.vue'
 import AppAxAxisZTickLabelFontSize from './AppAxAxisZTickLabelFontSize.vue'
 import AppAxAxisZTickLabelFontFamily from './AppAxAxisZTickLabelFontFamily.vue'
-
-
-//bbb
+import AppAxAxisZGridLineColor from './AppAxAxisZGridLineColor.vue'
+import AppAxAxisZGridLineWidth from './AppAxAxisZGridLineWidth.vue'
 import AppMhGetMeshsInfor from './AppMhGetMeshsInfor.vue'
 import AppMhSetMeshVisible from './AppMhSetMeshVisible.vue'
 import AppMhSetMeshColor from './AppMhSetMeshColor.vue'
@@ -423,8 +431,6 @@ export default {
         AppLtLightDirectionColor,
         AppLtLightDirectionIntensity,
         AppLtLightDirectionPos,
-
-        //bbb
         AppMhUseAxis,
         AppAxAxisXTitle,
         AppAxAxisXTitleColor,
@@ -442,6 +448,8 @@ export default {
         AppAxAxisXTickLabelColor,
         AppAxAxisXTickLabelFontSize,
         AppAxAxisXTickLabelFontFamily,
+        AppAxAxisXGridLineColor,
+        AppAxAxisXGridLineWidth,
         AppAxAxisYTitle,
         AppAxAxisYTitleColor,
         AppAxAxisYTitleFontSize,
@@ -458,6 +466,8 @@ export default {
         AppAxAxisYTickLabelColor,
         AppAxAxisYTickLabelFontSize,
         AppAxAxisYTickLabelFontFamily,
+        AppAxAxisYGridLineColor,
+        AppAxAxisYGridLineWidth,
         AppAxAxisZTitle,
         AppAxAxisZTitleColor,
         AppAxAxisZTitleFontSize,
@@ -474,10 +484,8 @@ export default {
         AppAxAxisZTickLabelColor,
         AppAxAxisZTickLabelFontSize,
         AppAxAxisZTickLabelFontFamily,
-
-
-        //bbb
-
+        AppAxAxisZGridLineColor,
+        AppAxAxisZGridLineWidth,
         AppMhGetMeshsInfor,
         AppMhSetMeshVisible,
         AppMhSetMeshColor,
@@ -584,6 +592,8 @@ export default {
                             { name: 'axisXTickLabelColor' },
                             { name: 'axisXTickLabelFontSize' },
                             { name: 'axisXTickLabelFontFamily' },
+                            { name: 'axisXGridLineColor' },
+                            { name: 'axisXGridLineWidth' },
                         ],
                     },
                     {
@@ -605,6 +615,8 @@ export default {
                             { name: 'axisYTickLabelColor' },
                             { name: 'axisYTickLabelFontSize' },
                             { name: 'axisYTickLabelFontFamily' },
+                            { name: 'axisYGridLineColor' },
+                            { name: 'axisYGridLineWidth' },
                         ],
                     },
                     {
@@ -626,6 +638,8 @@ export default {
                             { name: 'axisZTickLabelColor' },
                             { name: 'axisZTickLabelFontSize' },
                             { name: 'axisZTickLabelFontFamily' },
+                            { name: 'axisZGridLineColor' },
+                            { name: 'axisZGridLineWidth' },
                         ],
                     },
                 ],
