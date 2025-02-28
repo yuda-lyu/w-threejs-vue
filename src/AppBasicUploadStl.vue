@@ -108,7 +108,7 @@ export default {
 
             async function core() {
 
-                let res = await domShowInputAndGetFiles('*', { multiple: true })
+                let res = await domShowInputAndGetFiles({ multiple: true })
                 // console.log('res', res)
 
                 let ms = []
