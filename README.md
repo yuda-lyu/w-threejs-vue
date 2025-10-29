@@ -18,22 +18,20 @@ To view some examples for more understanding, visit examples:
 > **all examples:** [web](https://yuda-lyu.github.io/w-threejs-vue/examples/app.html) [[source code](https://github.com/yuda-lyu/w-threejs-vue/blob/master/docs/examples/app.html)]
 
 ## Installation
+
 ### Using npm(ES6 module):
-> **Note:** w-threejs-vue is mainly dependent on `three`, `camera-controls`, `w-component-vue` and `wsemi`.
 ```alias
 npm i w-threejs-vue
 ```
 
 ### In a browser(UMD module):
-> **Note:** w-threejs-vue is mainly dependent on `vue`.
 
-> **Note:** umd file includes with `lodash-es` and `wsemi`, by using tree-shaking for dead-code elimination.
-
-[Necessary] Add script for vue.
+Add script for vue.
 ```alias
 <script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.min.js"></script>
 ```
-[Necessary] Add script for w-threejs-vue.
+
+Add script for w-threejs-vue.
 ```alias
 <script src="https://cdn.jsdelivr.net/npm/w-threejs-vue@1.0.9/dist/w-threejs-vue.umd.js"></script>
 ```

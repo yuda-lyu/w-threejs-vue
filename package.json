@@ -30,7 +30,7 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "test": "mocha --parallel --timeout 60000 --experimental-modules",
+    "test": "mocha --parallel --timeout 60000",
     "lint": "vue-cli-service lint",
     "deploy": "gh-pages -d docs"
   },
