@@ -649,9 +649,9 @@ async function plot3d(items, opt = {}) {
     //ev
     let ev = evem()
 
-    //clock
-    let clock = new THREE.Clock()
-    // console.log('clock',clock)
+    //tm
+    let tm = new THREE.Timer()
+    // console.log('tm',tm)
 
     //scene
     let scene = createScene()
@@ -2371,7 +2371,8 @@ async function plot3d(items, opt = {}) {
         try {
 
             //delta
-            let delta = clock.getDelta()
+            tm.update()
+            let delta = tm.getDelta()
             // console.log('delta',delta)
 
             //hasControlsUpdated
@@ -2463,9 +2464,9 @@ async function plot3d(items, opt = {}) {
         renderer = null
         rendererLabels = null
 
-        //free clock
-        // clock.dispose()
-        clock = null
+        //free tm
+        tm.dispose()
+        tm = null
 
         //disposeControls
         disposeControls()

@@ -33,5 +33,5 @@ Add script for vue.
 
 Add script for w-threejs-vue.
 ```alias
-<script src="https://cdn.jsdelivr.net/npm/w-threejs-vue@1.0.9/dist/w-threejs-vue.umd.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/w-threejs-vue@1.0.10/dist/w-threejs-vue.umd.js"></script>
 ```

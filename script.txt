@@ -19,7 +19,4 @@ npm run deploy
 
 #npm test
 
-#rm -r test-screenshot
-#node gUITest.mjs
-
 #npm publish
