@@ -7,7 +7,7 @@
         content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui"
     />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>example for AppBasicUploadStl</title>
+    <title>example for AppBasicUpload</title>
 
     <!-- @babel/polyfill -->
     <script
@@ -43,7 +43,7 @@
     />
 
     <!-- w-threejs-vue -->
-    <script src="https://cdn.jsdelivr.net/npm/w-threejs-vue@1.0.10/dist/w-threejs-vue.umd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/w-threejs-vue@1.0.11/dist/w-threejs-vue.umd.js"></script>
 
     <!-- lodash -->
     <script src="https://cdn.jsdelivr.net/npm/lodash@latest/lodash.min.js"></script>
@@ -54,11 +54,9 @@
     ></script>
 
     <!-- data -->
+    <script src="https://cdn.jsdelivr.net/npm/w-demores/res/data/dataRain.js"></script>
     <script
-        src="https://cdn.jsdelivr.net/npm/w-demores@1.0.27/res/data/dataRain.js"
-    ></script>
-    <script
-        src="https://cdn.jsdelivr.net/npm/w-demores@1.0.27/res/data/dataRainClip.js"
+        src="https://cdn.jsdelivr.net/npm/w-demores/res/data/dataRainClip.js"
     ></script>
 
     <!-- w-jsonview-tree -->
@@ -119,7 +117,7 @@
 >
     <div id="app" class="bkh" style>
         <div class="bkh">
-            <div style="font-size:1.5rem;">uploadStl</div>
+            <div style="font-size:1.5rem;">upload</div>
             <a
                 href="//yuda-lyu.github.io/w-threejs-vue/examples/ex-AppBasicBackgroundColor.html"
                 target="_blank"
@@ -133,21 +131,16 @@
         </div>
 
         <div class="bkp">
+            <div v-if="!loading">
+                <button
+                    style="margin:0px 3px 3px 0px;"
+                    @click="cleanAll"
+                >clean all</button>
+                <button style="margin:0px 3px 3px 0px;" @click="upload">upload</button>
+            </div>
+
             <div style="display:flex; padding-bottom:40px; overflow-x:auto;">
                 <div style="position:relative;">
-                    <div
-                        style="position:absolute; right:2px; top:1px; text-align:right; z-index:1;"
-                        v-if="!loading"
-                    >
-                        <button
-                            style="margin:0px 3px 3px 0px;"
-                            @click="cleanAll"
-                        >clean all</button>
-                        <button
-                            style="margin:0px 3px 3px 0px;"
-                            @click="upload"
-                        >upload stl</button>
-                    </div>
                     <w-threejs-vue ref="thr" :opt="opt" @init="loading=false"></w-threejs-vue>
                 </div>
 
@@ -181,18 +174,18 @@
           items: [
             {
               url:
-                "https://cdn.jsdelivr.net/npm/w-demores@1.0.27/res/model/stl/3d_wheel-hub.stl",
+                "https://cdn.jsdelivr.net/npm/w-demores/res/model/stl/3d_wheel-hub.stl",
               name: "Wheel Hub",
               color: "rgba(214, 92, 92, 0.9)"
             },
             {
               url:
-                "https://cdn.jsdelivr.net/npm/w-demores@1.0.27/res/model/stl/3d_ushape-connector.stl",
+                "https://cdn.jsdelivr.net/npm/w-demores/res/model/stl/3d_ushape-connector.stl",
               name: "Ushape Connector",
               color: "rgba(214, 214, 92, 0.9)"
             }
             // {
-            //     url: 'https://cdn.jsdelivr.net/npm/w-demores@1.0.27/res/model/stl/3d_bowl-short.stl',
+            //     url: 'https://cdn.jsdelivr.net/npm/w-demores/res/model/stl/3d_bowl-short.stl',
             //     name: 'Bowl Short',
             //     color: 'rgba(92, 214, 92, 0.9)',
             // },
@@ -223,11 +216,20 @@
         async function core() {
           let res = await domShowInputAndGetFiles({ multiple: true });
           // console.log('res', res)
+          let files = res && res.files ? res.files : [];
+          if (files.length === 0) {
+            return;
+          }
 
           let ms = [];
-          for (let i = 0; i < res.files.length; i++) {
-            let file = res.files[i];
+          for (let i = 0; i < files.length; i++) {
+            let file = files[i];
             console.log("file", file);
+
+            //type
+            let type = getFileNameExt(file.name);
+            type = type.toLowerCase();
+            console.log("type", type);
 
             //後端若傳u8a時, 先轉blob再轉url即可給STLLoader讀取
             let u8a = await blob2u8arr(file);
@@ -241,7 +243,7 @@
             console.log("url", url);
 
             let m = {
-              type: "stl",
+              type,
               url,
               name: file.name,
               color: "rgba(92, 214, 92, 0.9)"
@@ -258,7 +260,9 @@
           // console.log('ms', ms)
 
           try {
-            vo.$refs.thr.getInst().addMeshs(ms);
+            if (ms.length > 0) {
+              vo.$refs.thr.getInst().addMeshs(ms);
+            }
           } catch (err) {}
         }
 
