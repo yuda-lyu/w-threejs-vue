@@ -16,7 +16,6 @@
                 <button style="margin:0px 3px 3px 0px;" @click="setHeight(300)">set height to 300</button>
             </div>
 
-
             <div style="display:flex; padding-bottom:40px; overflow-x:auto;">
 
                 <div style="position:relative;">

@@ -1,5 +1,5 @@
 <template>
-    <div :style="`display:inline-block; width:${widthInp}px; min-width:${widthInp}px; height:${heightInp}px; overflow-y:hidden;`">
+    <div :style="`width:${widthInp}px; height:${heightInp}px;`">
 
         <div style="position:relative; width:0px; height:0px;" v-if="loading">
             <div style="position:absolute; top:0px; left:0px;">
