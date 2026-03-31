@@ -16,38 +16,49 @@
                 @domresize="resizePanel"
             ></div>
 
+            <!-- 須使用pointer-events:none吃掉事件, 才能點擊選單區透明區域 -->
             <div
-                :style="`position:absolute; top:0px; left:0px;`"
+                :style="`position:absolute; top:0px; left:0px; pointer-events:none;`"
                 v-if="!loading"
             >
 
-                <div style="padding:10px; display:flex; align-items:flex-start;">
+                <div :style="`padding:${space}px; display:flex; align-items:flex-start;`">
 
                     <!-- 設定區 -->
-                    <WGroupIconCheck
-                        :items="useItems"
-                        :dir="'vertical'"
-                        :iconColor="'#aaa'"
-                        :iconColorHover="'#ccc'"
-                        :iconColorFocus="'#ccc'"
-                        :iconColorActive="'#fff'"
-                        :backgroundColor="'#000'"
-                        :backgroundColorHover="'#111'"
-                        :backgroundColorFocus="'#111'"
-                        :backgroundColorActive="'#444'"
-                        :seplineColor="'#333'"
-                        :tooltipTextFontSize="'0.7rem'"
-                        :value="itemsSelects"
-                        _input="updateItem"
-                        @click="ckItem"
-                    ></WGroupIconCheck>
+                    <!-- 須使用pointer-events:auto恢復子元素接收事件, 才能點擊與捲動選單 -->
+                    <WPanelScrolly
+                        :style="`width:${panelItemsIconSize}px; height:${panelItemsHeight}px; pointer-events:auto;`"
+                        :bar-opacity="0"
+                        :bar-opacity-hover="0.8"
+                    >
+
+                        <WGroupIconCheck
+                            :items="useItems"
+                            :dir="'vertical'"
+                            :iconColor="'#aaa'"
+                            :iconColorHover="'#ccc'"
+                            :iconColorFocus="'#ccc'"
+                            :iconColorActive="'#fff'"
+                            :backgroundColor="'#000'"
+                            :backgroundColorHover="'#111'"
+                            :backgroundColorFocus="'#111'"
+                            :backgroundColorActive="'#444'"
+                            :seplineColor="'#333'"
+                            :tooltipTextFontSize="'0.7rem'"
+                            :value="itemsSelects"
+                            _input="updateItem"
+                            @click="ckItem"
+                        ></WGroupIconCheck>
+
+                    </WPanelScrolly>
 
                     <template v-if="useLegend">
 
-                        <div :style="`padding-left:10px;`"></div>
+                        <div :style="`padding-left:${space}px;`"></div>
 
                         <!-- 圖例區 -->
-                        <div :style="`padding:5px; border-radius:4px; background:${useLegnedBackgroundColor};`">
+                        <!-- 須使用pointer-events:none吃掉事件, 才能點擊選單區透明區域 -->
+                        <div :style="`padding:5px; border-radius:4px; background:${useLegnedBackgroundColor}; pointer-events:auto;`">
                             <div :style="`${useLegnedHeight}`">
 
                                 <div
@@ -141,6 +152,7 @@ import get from 'lodash-es/get.js'
 import each from 'lodash-es/each.js'
 import map from 'lodash-es/map.js'
 import find from 'lodash-es/find.js'
+import size from 'lodash-es/size.js'
 import toUpper from 'lodash-es/toUpper.js'
 import keys from 'lodash-es/keys.js'
 import pull from 'lodash-es/pull.js'
@@ -160,6 +172,7 @@ import strdelleft from 'wsemi/src/strdelleft.mjs'
 import oc from 'wsemi/src/color.mjs'
 import domResize from 'w-component-vue/src/js/domResize.mjs'
 import WIconLoading from 'w-component-vue/src/components/WIconLoading.vue'
+import WPanelScrolly from 'w-component-vue/src/components/WPanelScrolly.vue'
 import WGroupIconCheck from 'w-component-vue/src/components/WGroupIconCheck.vue'
 import WIcon from 'w-component-vue/src/components/WIcon.vue'
 import WColorSelect from 'w-component-vue/src/components/WColorSelect.vue'
@@ -180,6 +193,7 @@ export default {
     },
     components: {
         WIconLoading,
+        WPanelScrolly,
         WGroupIconCheck,
         WIcon,
         WColorSelect,
@@ -240,6 +254,9 @@ export default {
 
             useLegnedBackgroundColor: '',
             useLegnedHeight: '',
+
+            space: 10,
+            panelItemsIconSize: 30,
 
         }
     },
@@ -435,6 +452,20 @@ export default {
             }
             // console.log('computed gen useItems', rs)
             return rs
+        },
+
+        panelItemsHeight: function() {
+            let vo = this
+            let h = 0
+            if (vo.useSetting) {
+                let n = size(vo.items)
+                h = size(vo.items) * vo.panelItemsIconSize + (n - 1) * 1
+            }
+            else {
+                h = vo.panelItemsIconSize
+            }
+            h = Math.min(h, vo.heightInp - vo.space * 2)
+            return h
         },
 
     },

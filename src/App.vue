@@ -90,7 +90,7 @@
 
             <AppBasicAutoRotateDeg v-if="cmpPick==='autoRotateDeg'"></AppBasicAutoRotateDeg>
 
-            <AppBasicUploadStl v-if="cmpPick==='uploadStl'"></AppBasicUploadStl>
+            <AppBasicUpload v-if="cmpPick==='upload'"></AppBasicUpload>
 
             <AppCmCameraType v-if="cmpPick==='cameraType'"></AppCmCameraType>
 
@@ -298,7 +298,7 @@ import AppBasicSize from './AppBasicSize.vue'
 import AppBasicBackgroundColor from './AppBasicBackgroundColor.vue'
 import AppBasicUseAutoRotate from './AppBasicUseAutoRotate.vue'
 import AppBasicAutoRotateDeg from './AppBasicAutoRotateDeg.vue'
-import AppBasicUploadStl from './AppBasicUploadStl.vue'
+import AppBasicUpload from './AppBasicUpload.vue'
 import AppCmCameraType from './AppCmCameraType.vue'
 import AppCmCameraFov from './AppCmCameraFov.vue'
 import AppCmCameraNear from './AppCmCameraNear.vue'
@@ -403,7 +403,7 @@ export default {
         AppBasicBackgroundColor,
         AppBasicUseAutoRotate,
         AppBasicAutoRotateDeg,
-        AppBasicUploadStl,
+        AppBasicUpload,
         AppCmCameraType,
         AppCmCameraFov,
         AppCmCameraNear,
@@ -509,7 +509,7 @@ export default {
                     { name: 'backgroundColor' },
                     { name: 'useAutoRotate' },
                     { name: 'autoRotateDeg' },
-                    { name: 'uploadStl' },
+                    { name: 'upload' },
                 ],
             },
             {

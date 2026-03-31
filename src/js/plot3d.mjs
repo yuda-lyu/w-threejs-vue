@@ -41,6 +41,7 @@ import { createLabel, createLabels, disposeLabels } from './atLabel.mjs'
 import { calcTransform, resetTransform } from './atTransform.mjs'
 
 import addStl from './addStl.mjs'
+import addVtp from './addVtp.mjs'
 import getCsrdFromMeshs from './getCsrdFromMeshs.mjs'
 
 
@@ -674,6 +675,9 @@ async function plot3d(items, opt = {}) {
 
     let setUseHelperAxes = (b) => {
         useHelperAxes = b
+        if (!helperAxes) {
+            helperAxes = createHelperAxes(scene, { useHelperAxes, helperAxesLengthRatio })
+        }
         helperAxes.visible = b
         render()
     }
@@ -682,7 +686,7 @@ async function plot3d(items, opt = {}) {
         //因無直接設定AxesHelper size函數, 故使用重產
         helperAxesLengthRatio = r
         disposeHelperAxes(scene, helperAxes)
-        createHelperAxes(scene, { useHelperAxes, helperAxesLengthRatio })
+        helperAxes = createHelperAxes(scene, { useHelperAxes, helperAxesLengthRatio })
         render()
     }
 
@@ -695,6 +699,9 @@ async function plot3d(items, opt = {}) {
 
     let setUseHelperGrid = (b) => {
         useHelperGrid = b
+        if (!helperGrid) {
+            helperGrid = createHelperGrid(scene, { useHelperGrid, helperGridLengthRatio, helperGridDensity, helperGridPositionRatioZ })
+        }
         helperGrid.visible = b
         render()
     }
@@ -702,21 +709,21 @@ async function plot3d(items, opt = {}) {
     let setHelperGridLengthRatio = (r) => {
         helperGridLengthRatio = r
         disposeHelperGrid(scene, helperGrid)
-        createHelperGrid(scene, { useHelperGrid, helperGridLengthRatio, helperGridDensity, helperGridPositionRatioZ })
+        helperGrid = createHelperGrid(scene, { useHelperGrid, helperGridLengthRatio, helperGridDensity, helperGridPositionRatioZ })
         render()
     }
 
     let setHelperGridDensity = (r) => {
         helperGridDensity = r
         disposeHelperGrid(scene, helperGrid)
-        createHelperGrid(scene, { useHelperGrid, helperGridLengthRatio, helperGridDensity, helperGridPositionRatioZ })
+        helperGrid = createHelperGrid(scene, { useHelperGrid, helperGridLengthRatio, helperGridDensity, helperGridPositionRatioZ })
         render()
     }
 
     let setHelperGridPositionRatioZ = (r) => {
         helperGridPositionRatioZ = r
         disposeHelperGrid(scene, helperGrid)
-        createHelperGrid(scene, { useHelperGrid, helperGridLengthRatio, helperGridDensity, helperGridPositionRatioZ })
+        helperGrid = createHelperGrid(scene, { useHelperGrid, helperGridLengthRatio, helperGridDensity, helperGridPositionRatioZ })
         render()
     }
 
@@ -1807,7 +1814,7 @@ async function plot3d(items, opt = {}) {
         //disposeAxis
         disposeAxis()
 
-        if (useAxis) {
+        if (useAxis && size(meshs) > 0) {
 
             //createAxis
             createAxis()
@@ -1990,15 +1997,18 @@ async function plot3d(items, opt = {}) {
     //meshs
     let meshs = []
 
-    let addMeshCore = async (v) => {
+    let buildMeshCore = async (v) => {
 
         //type
         let type = get(v, 'type', '')
         if (!isestr(type)) {
             type = getFileNameExt(v.url)
         }
-        if (type !== 'stl') {
-            throw new Error(`現在僅支援stl檔`)
+        if (isestr(type)) {
+            type = type.toLowerCase()
+        }
+        if (type !== 'stl' && type !== 'vtp') {
+            throw new Error(`invalid mesh type[${type}], support stl/vtp only`)
         }
 
         //gc, a
@@ -2008,8 +2018,13 @@ async function plot3d(items, opt = {}) {
         let a = c.a
         // console.log('addStl before', c, gc, a)
 
+        let addMesh = addStl
+        if (type === 'vtp') {
+            addMesh = addVtp
+        }
+
         //load
-        let mesh = await addStl(ev, v.url, {
+        let mesh = await addMesh(ev, v.url, {
             color: gc,
             opacity: a,
         })
@@ -2019,12 +2034,17 @@ async function plot3d(items, opt = {}) {
         mesh.color = color
         // console.log('mesh', mesh)
 
+        return mesh
+    }
+
+    let addMeshCore = async (v) => {
+        let mesh = await buildMeshCore(v)
+
         //push
         meshs.push(mesh)
 
         //add
         group.add(mesh)
-
     }
 
     let addMeshsCore = async (vs) => {
@@ -2037,16 +2057,26 @@ async function plot3d(items, opt = {}) {
     // console.log('first addMeshsCore')
 
     let addMesh = async (v) => {
+        let mesh = await buildMeshCore(v)
         resetTransform(csr, meshs)
         disposeMeshLabels()
-        await addMeshCore(v)
+        meshs.push(mesh)
+        group.add(mesh)
         rdr()
     }
 
     let addMeshs = async (vs) => {
+        let newMeshs = []
+        await pmSeries(vs, async (v) => {
+            let mesh = await buildMeshCore(v)
+            newMeshs.push(mesh)
+        })
         resetTransform(csr, meshs)
         disposeMeshLabels()
-        await addMeshsCore(vs)
+        each(newMeshs, (mesh) => {
+            meshs.push(mesh)
+            group.add(mesh)
+        })
         rdr()
     }
 
@@ -2162,7 +2192,14 @@ async function plot3d(items, opt = {}) {
     //meshLabels
     let meshLabels = []
     let createMeshLabels = () => {
+        if (size(meshs) === 0) {
+            meshLabels = []
+            return
+        }
         let vs = map(meshs, (mesh) => {
+            if (mesh.geometry.boundingSphere == null) {
+                mesh.geometry.computeBoundingSphere()
+            }
             let c = mesh.geometry.boundingSphere.center //get(mesh, 'geometry.boundingSphere.center')
             let text = mesh.name
             let x = c.x
@@ -2183,6 +2220,15 @@ async function plot3d(items, opt = {}) {
                 textFontSize: labelTextFontSize,
                 textFontFamily: labelTextFontFamily,
             })
+
+        // 重建 labels 後，需把既有 mesh 的顯隱狀態同步回 label。
+        each(meshs, (mesh, ind) => {
+            let label = get(meshLabels, `${ind}.ele`)
+            if (!isEle(label)) {
+                return
+            }
+            label.style.visibility = mesh.visible === false ? 'hidden' : 'visible'
+        })
     }
     let disposeMeshLabels = () => {
         disposeLabels(scene, meshLabels)
@@ -2195,6 +2241,14 @@ async function plot3d(items, opt = {}) {
 
         await delay(1)
 
+        // 空場景不進行 csr/label/axis 計算，避免延用前次資料。
+        if (size(meshs) === 0) {
+            disposeMeshLabels()
+            disposeAxis()
+            render()
+            return
+        }
+
         //須先等初始渲染後才能取得csr
         calcCsr()
 
@@ -2205,7 +2259,7 @@ async function plot3d(items, opt = {}) {
         createMeshLabels()
 
         //check
-        if (useAxis) {
+        if (useAxis && size(meshs) > 0) {
 
             //須有csr才能繪製axis與tick
             createAxis()
@@ -2305,8 +2359,9 @@ async function plot3d(items, opt = {}) {
         })
         disposeGroup(scene, group)
         meshs = []
-        createGroup(scene)
+        group = createGroup(scene)
         disposeMeshLabels()
+        disposeAxis()
         render()
     }
 

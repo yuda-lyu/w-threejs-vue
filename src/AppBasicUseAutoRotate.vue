@@ -9,13 +9,15 @@
 
         <div class="bkp">
 
+            <div v-if="!loading">
+                <button style="margin:0px 3px 3px 0px;" @click="setUseAutoRotate(true)">set to true</button>
+                <button style="margin:0px 3px 3px 0px;" @click="setUseAutoRotate(false)">set to false</button>
+            </div>
+
+
             <div style="display:flex; padding-bottom:40px; overflow-x:auto;">
 
                 <div style="position:relative;">
-                    <div style="position:absolute; right:2px; top:1px; text-align:right; z-index:1;" v-if="!loading">
-                        <button style="margin:0px 3px 3px 0px;" @click="setUseAutoRotate(true)">set to true</button>
-                        <button style="margin:0px 3px 3px 0px;" @click="setUseAutoRotate(false)">set to false</button>
-                    </div>
                     <WThreejsVue
                         :opt="opt"
                         @init="loading=false"
@@ -55,12 +57,12 @@ export default {
                 height: 600,
                 items: [
                     {
-                        url: 'https://cdn.jsdelivr.net/npm/w-demores@1.0.27/res/model/stl/3d_wheel-hub.stl',
+                        url: 'https://cdn.jsdelivr.net/npm/w-demores/res/model/stl/3d_wheel-hub.stl',
                         name: 'Wheel Hub',
                         color: 'rgba(214, 92, 92, 0.9)',
                     },
                     {
-                        url: 'https://cdn.jsdelivr.net/npm/w-demores@1.0.27/res/model/stl/3d_ushape-connector.stl',
+                        url: 'https://cdn.jsdelivr.net/npm/w-demores/res/model/stl/3d_ushape-connector.stl',
                         name: 'Ushape Connector',
                         color: 'rgba(214, 214, 92, 0.9)',
                     },

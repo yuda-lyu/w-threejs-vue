@@ -7,6 +7,9 @@ let getCsrdFromMesh = (mesh) => {
     // console.log('mesh',mesh)
     let geometry = mesh.geometry
     // console.log('geometry',geometry)
+    if (geometry.boundingSphere == null) {
+        geometry.computeBoundingSphere()
+    }
     let cs = geometry.boundingSphere.center
     // console.log('cs',cloneDeep(cs))
     let rd = geometry.boundingSphere.radius
@@ -62,6 +65,23 @@ let getBoxFromMeshs = (meshs) => {
 
 
 let getCsrdFromMeshs = (meshs) => {
+    if (meshs.length === 0) {
+        return {
+            xc: 0,
+            yc: 0,
+            zc: 0,
+            xmin: 0,
+            xmax: 0,
+            ymin: 0,
+            ymax: 0,
+            zmin: 0,
+            zmax: 0,
+            xrng: 0,
+            yrng: 0,
+            zrng: 0,
+            rd: 0,
+        }
+    }
     let bx = getBoxFromMeshs(meshs)
     // console.log('bx(all)',bx)
     let xrng = bx.xmax - bx.xmin

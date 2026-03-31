@@ -53,8 +53,8 @@ function writeHtml(v) {
         <script src="https://cdn.jsdelivr.net/npm/wsemi@latest/dist/wsemi.umd.min.js"></script>
     
         <!-- data -->
-        <script src="https://cdn.jsdelivr.net/npm/w-demores@1.0.27/res/data/dataRain.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/w-demores@1.0.27/res/data/dataRainClip.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/w-demores/res/data/dataRain.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/w-demores/res/data/dataRainClip.js"></script>
 
         <!-- w-jsonview-tree -->
         <script src="https://cdn.jsdelivr.net/npm/w-jsonview-tree@latest/dist/w-jsonview-tree.umd.js"></script>

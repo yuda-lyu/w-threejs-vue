@@ -2,20 +2,21 @@
     <div>
 
         <div class="bkh">
-            <div style="font-size:1.5rem;">uploadStl</div>
+            <div style="font-size:1.5rem;">upload</div>
             <a href="//yuda-lyu.github.io/w-threejs-vue/examples/ex-AppBasicBackgroundColor.html" target="_blank" class="item-link">example</a>
             <a href="//github.com/yuda-lyu/w-threejs-vue/blob/master/docs/examples/ex-AppBasicBackgroundColor.html" target="_blank" class="item-link">code</a>
         </div>
 
         <div class="bkp">
 
+            <div v-if="!loading">
+                <button style="margin:0px 3px 3px 0px;" @click="cleanAll">clean all</button>
+                <button style="margin:0px 3px 3px 0px;" @click="upload">upload</button>
+            </div>
+
             <div style="display:flex; padding-bottom:40px; overflow-x:auto;">
 
                 <div style="position:relative;">
-                    <div style="position:absolute; right:2px; top:1px; text-align:right; z-index:1;" v-if="!loading">
-                        <button style="margin:0px 3px 3px 0px;" @click="cleanAll">clean all</button>
-                        <button style="margin:0px 3px 3px 0px;" @click="upload">upload stl</button>
-                    </div>
                     <WThreejsVue
                         ref="thr"
                         :opt="opt"
@@ -42,6 +43,7 @@
 
 <script>
 import domShowInputAndGetFiles from 'wsemi/src/domShowInputAndGetFiles.mjs'
+import getFileNameExt from 'wsemi/src/getFileNameExt.mjs'
 import blob2u8arr from 'wsemi/src/blob2u8arr.mjs'
 import WThreejsVue from './components/WThreejsVue.vue'
 import jv from 'w-jsonview-tree'
@@ -58,17 +60,17 @@ export default {
                 height: 600,
                 items: [
                     {
-                        url: 'https://cdn.jsdelivr.net/npm/w-demores@1.0.27/res/model/stl/3d_wheel-hub.stl',
+                        url: 'https://cdn.jsdelivr.net/npm/w-demores/res/model/stl/3d_wheel-hub.stl',
                         name: 'Wheel Hub',
                         color: 'rgba(214, 92, 92, 0.9)',
                     },
                     {
-                        url: 'https://cdn.jsdelivr.net/npm/w-demores@1.0.27/res/model/stl/3d_ushape-connector.stl',
+                        url: 'https://cdn.jsdelivr.net/npm/w-demores/res/model/stl/3d_ushape-connector.stl',
                         name: 'Ushape Connector',
                         color: 'rgba(214, 214, 92, 0.9)',
                     },
                     // {
-                    //     url: 'https://cdn.jsdelivr.net/npm/w-demores@1.0.27/res/model/stl/3d_bowl-short.stl',
+                    //     url: 'https://cdn.jsdelivr.net/npm/w-demores/res/model/stl/3d_bowl-short.stl',
                     //     name: 'Bowl Short',
                     //     color: 'rgba(92, 214, 92, 0.9)',
                     // },
@@ -110,12 +112,21 @@ export default {
 
                 let res = await domShowInputAndGetFiles({ multiple: true })
                 // console.log('res', res)
+                let files = res && res.files ? res.files : []
+                if (files.length === 0) {
+                    return
+                }
 
                 let ms = []
-                for (let i = 0; i < res.files.length; i++) {
+                for (let i = 0; i < files.length; i++) {
 
-                    let file = res.files[i]
+                    let file = files[i]
                     console.log('file', file)
+
+                    //type
+                    let type = getFileNameExt(file.name)
+                    type = type.toLowerCase()
+                    console.log('type', type)
 
                     //後端若傳u8a時, 先轉blob再轉url即可給STLLoader讀取
                     let u8a = await blob2u8arr(file)
@@ -129,7 +140,7 @@ export default {
                     console.log('url', url)
 
                     let m = {
-                        type: 'stl',
+                        type,
                         url,
                         name: file.name,
                         color: 'rgba(92, 214, 92, 0.9)',
@@ -147,7 +158,9 @@ export default {
                 // console.log('ms', ms)
 
                 try {
-                    vo.$refs.thr.getInst().addMeshs(ms)
+                    if (ms.length > 0) {
+                        vo.$refs.thr.getInst().addMeshs(ms)
+                    }
                 }
                 catch (err) {}
 

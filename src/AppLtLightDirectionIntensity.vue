@@ -9,13 +9,15 @@
 
         <div class="bkp">
 
+            <div v-if="!loading">
+                <button style="margin:0px 3px 3px 0px;" @click="setLightDirectionIntensity(3)">set to 3</button>
+                <button style="margin:0px 3px 3px 0px;" @click="setLightDirectionIntensity(2)">set to 2</button>
+            </div>
+
+
             <div style="display:flex; padding-bottom:40px; overflow-x:auto;">
 
                 <div style="position:relative;">
-                    <div style="position:absolute; right:2px; top:1px; text-align:right; z-index:1;" v-if="!loading">
-                        <button style="margin:0px 3px 3px 0px;" @click="setLightDirectionIntensity(3)">set to 3</button>
-                        <button style="margin:0px 3px 3px 0px;" @click="setLightDirectionIntensity(2)">set to 2</button>
-                    </div>
                     <WThreejsVue
                         :opt="opt"
                         @init="loading=false"
@@ -55,18 +57,18 @@ export default {
                 height: 600,
                 items: [
                     {
-                        url: 'https://cdn.jsdelivr.net/npm/w-demores@1.0.27/res/model/stl/3d_wheel-hub.stl',
+                        url: 'https://cdn.jsdelivr.net/npm/w-demores/res/model/stl/3d_wheel-hub.stl',
                         name: 'Wheel Hub',
                         color: 'rgba(214, 92, 92, 0.9)',
                     },
                     {
-                        url: 'https://cdn.jsdelivr.net/npm/w-demores@1.0.27/res/model/stl/3d_ushape-connector.stl',
+                        url: 'https://cdn.jsdelivr.net/npm/w-demores/res/model/stl/3d_ushape-connector.stl',
                         name: 'Ushape Connector',
                         color: 'rgba(214, 214, 92, 0.9)',
                     },
                 ],
-                useLightAmbient: false, //預設為true, 得關閉才能顯示效果
-                useLightPoint: false, //預設為false
+                useLightAmbient: false, //?身?演rue, 敺????賡＊蝷箸???
+                useLightPoint: false, //?身?榻alse
                 lightDirectionIntensity: 2,
             },
             'action': [

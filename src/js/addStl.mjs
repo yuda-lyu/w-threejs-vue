@@ -59,6 +59,10 @@ let addStl = async(ev, url, opt = {}) => {
     // let geometry = await lad(url)
     // console.log('geometry', geometry)
 
+    // STLLoader 不保證後續流程需要的 bounding 資訊已存在，這裡先補齊。
+    geometry.computeBoundingBox()
+    geometry.computeBoundingSphere()
+
     //material, MeshLambertMaterial, MeshPhysicalMaterial
     let material = new THREE.MeshLambertMaterial({
 
