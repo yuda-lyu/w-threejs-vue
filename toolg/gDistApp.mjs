@@ -18,14 +18,10 @@ let opt = {
     <link _href="https://fonts.googleapis.com/css?family=Material+Icons" rel="stylesheet">
 
     <!-- lodash -->
-    <script src="https://cdn.jsdelivr.net/npm/lodash@latest/lodash.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lodash/lodash.min.js"></script>
 
     <!-- wsemi -->
-    <script src="https://cdn.jsdelivr.net/npm/wsemi@latest/dist/wsemi.umd.min.js"></script>
-
-    <!-- data -->
-    <script src="https://cdn.jsdelivr.net/npm/w-demores/res/data/dataRain.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/w-demores/res/data/dataRainClip.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/wsemi/dist/wsemi.umd.min.js"></script>
 
     `,
     newVue: ``,

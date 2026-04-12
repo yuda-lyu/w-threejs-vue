@@ -185,7 +185,116 @@ let pathYZ = `M 22.049294,18.372083 H 12.678108 V 17.831045 L 20.097742,6.740768
 
 
 /**
- * @vue-prop {Object} [options={}] 輸入設定物件，預設{}
+ * @vue-prop {Object} [opt={}] 輸入設定物件，預設{}
+ * @vue-prop {Number} [opt.width] 輸入元件寬度數字，單位px
+ * @vue-prop {Number} [opt.height] 輸入元件高度數字，單位px
+ * @vue-prop {Array} [opt.items=[]] 輸入3D場景中要渲染的物件資料陣列，預設[]
+ * @vue-prop {String} [opt.backgroundColor] 輸入場景背景色字串
+ * @vue-prop {Boolean} [opt.useAutoRotate=false] 輸入是否啟用自動旋轉布林值，預設false
+ * @vue-prop {Number} [opt.autoRotateDeg] 輸入自動旋轉角度數字，單位度
+ * @vue-prop {Boolean} [opt.useHelperAxes=true] 輸入是否顯示輔助軸線布林值，預設true
+ * @vue-prop {Number} [opt.helperAxesLengthRatio] 輸入輔助軸線長度比例數字
+ * @vue-prop {Boolean} [opt.useHelperGrid=true] 輸入是否顯示輔助網格布林值，預設true
+ * @vue-prop {Number} [opt.helperGridLengthRatio] 輸入輔助網格長度比例數字
+ * @vue-prop {Number} [opt.helperGridDensity] 輸入輔助網格密度數字
+ * @vue-prop {Number} [opt.helperGridPositionRatioZ] 輸入輔助網格Z軸位置比例數字
+ * @vue-prop {Boolean} [opt.useLightAmbient] 輸入是否啟用環境光布林值
+ * @vue-prop {String} [opt.lightAmbientColor] 輸入環境光顏色字串
+ * @vue-prop {Boolean} [opt.useLightPoint] 輸入是否啟用點光源布林值
+ * @vue-prop {Array} [opt.lightPointPoss] 輸入點光源位置陣列
+ * @vue-prop {String} [opt.lightPointColor] 輸入點光源顏色字串
+ * @vue-prop {Number} [opt.lightPointIntensity] 輸入點光源強度數字
+ * @vue-prop {Number} [opt.lightPointDistance] 輸入點光源照射距離數字
+ * @vue-prop {Number} [opt.lightPointDecay] 輸入點光源衰減率數字
+ * @vue-prop {Boolean} [opt.useLightDirection] 輸入是否啟用平行光布林值
+ * @vue-prop {String} [opt.lightDirectionColor] 輸入平行光顏色字串
+ * @vue-prop {Number} [opt.lightDirectionIntensity] 輸入平行光強度數字
+ * @vue-prop {Object} [opt.lightDirectionPos] 輸入平行光位置物件
+ * @vue-prop {Boolean} [opt.useAxis=false] 輸入是否顯示座標軸布林值，預設false
+ * @vue-prop {String} [opt.axisXTitle] 輸入X軸標題文字字串
+ * @vue-prop {String} [opt.axisXTitleColor] 輸入X軸標題顏色字串
+ * @vue-prop {String} [opt.axisXTitleFontSize] 輸入X軸標題字型大小字串
+ * @vue-prop {String} [opt.axisXTitleFontFamily] 輸入X軸標題字型字串
+ * @vue-prop {Number} [opt.axisXTitleDistance] 輸入X軸標題與軸線距離數字
+ * @vue-prop {String} [opt.axisXLineColor] 輸入X軸線顏色字串
+ * @vue-prop {Number} [opt.axisXLineWidth] 輸入X軸線寬度數字
+ * @vue-prop {String} [opt.axisXTickLineColor] 輸入X軸刻度線顏色字串
+ * @vue-prop {Number} [opt.axisXTickLineWidth] 輸入X軸刻度線寬度數字
+ * @vue-prop {Number} [opt.axisXTickLineLength] 輸入X軸刻度線長度數字
+ * @vue-prop {Number} [opt.axisXTickNum] 輸入X軸刻度數量數字
+ * @vue-prop {Number} [opt.axisXTickLabelDistance] 輸入X軸刻度標籤與軸線距離數字
+ * @vue-prop {Number} [opt.axisXTickLabelDig] 輸入X軸刻度標籤小數位數數字
+ * @vue-prop {String} [opt.axisXTickLabelColor] 輸入X軸刻度標籤顏色字串
+ * @vue-prop {String} [opt.axisXTickLabelFontSize] 輸入X軸刻度標籤字型大小字串
+ * @vue-prop {String} [opt.axisXTickLabelFontFamily] 輸入X軸刻度標籤字型字串
+ * @vue-prop {String} [opt.axisXGridLineColor] 輸入X軸網格線顏色字串
+ * @vue-prop {Number} [opt.axisXGridLineWidth] 輸入X軸網格線寬度數字
+ * @vue-prop {String} [opt.axisYTitle] 輸入Y軸標題文字字串
+ * @vue-prop {String} [opt.axisYTitleColor] 輸入Y軸標題顏色字串
+ * @vue-prop {String} [opt.axisYTitleFontSize] 輸入Y軸標題字型大小字串
+ * @vue-prop {String} [opt.axisYTitleFontFamily] 輸入Y軸標題字型字串
+ * @vue-prop {Number} [opt.axisYTitleDistance] 輸入Y軸標題與軸線距離數字
+ * @vue-prop {String} [opt.axisYLineColor] 輸入Y軸線顏色字串
+ * @vue-prop {Number} [opt.axisYLineWidth] 輸入Y軸線寬度數字
+ * @vue-prop {String} [opt.axisYTickLineColor] 輸入Y軸刻度線顏色字串
+ * @vue-prop {Number} [opt.axisYTickLineWidth] 輸入Y軸刻度線寬度數字
+ * @vue-prop {Number} [opt.axisYTickLineLength] 輸入Y軸刻度線長度數字
+ * @vue-prop {Number} [opt.axisYTickNum] 輸入Y軸刻度數量數字
+ * @vue-prop {Number} [opt.axisYTickLabelDistance] 輸入Y軸刻度標籤與軸線距離數字
+ * @vue-prop {Number} [opt.axisYTickLabelDig] 輸入Y軸刻度標籤小數位數數字
+ * @vue-prop {String} [opt.axisYTickLabelColor] 輸入Y軸刻度標籤顏色字串
+ * @vue-prop {String} [opt.axisYTickLabelFontSize] 輸入Y軸刻度標籤字型大小字串
+ * @vue-prop {String} [opt.axisYTickLabelFontFamily] 輸入Y軸刻度標籤字型字串
+ * @vue-prop {String} [opt.axisYGridLineColor] 輸入Y軸網格線顏色字串
+ * @vue-prop {Number} [opt.axisYGridLineWidth] 輸入Y軸網格線寬度數字
+ * @vue-prop {String} [opt.axisZTitle] 輸入Z軸標題文字字串
+ * @vue-prop {String} [opt.axisZTitleColor] 輸入Z軸標題顏色字串
+ * @vue-prop {String} [opt.axisZTitleFontSize] 輸入Z軸標題字型大小字串
+ * @vue-prop {String} [opt.axisZTitleFontFamily] 輸入Z軸標題字型字串
+ * @vue-prop {Number} [opt.axisZTitleDistance] 輸入Z軸標題與軸線距離數字
+ * @vue-prop {String} [opt.axisZLineColor] 輸入Z軸線顏色字串
+ * @vue-prop {Number} [opt.axisZLineWidth] 輸入Z軸線寬度數字
+ * @vue-prop {String} [opt.axisZTickLineColor] 輸入Z軸刻度線顏色字串
+ * @vue-prop {Number} [opt.axisZTickLineWidth] 輸入Z軸刻度線寬度數字
+ * @vue-prop {Number} [opt.axisZTickLineLength] 輸入Z軸刻度線長度數字
+ * @vue-prop {Number} [opt.axisZTickNum] 輸入Z軸刻度數量數字
+ * @vue-prop {Number} [opt.axisZTickLabelDistance] 輸入Z軸刻度標籤與軸線距離數字
+ * @vue-prop {Number} [opt.axisZTickLabelDig] 輸入Z軸刻度標籤小數位數數字
+ * @vue-prop {String} [opt.axisZTickLabelColor] 輸入Z軸刻度標籤顏色字串
+ * @vue-prop {String} [opt.axisZTickLabelFontSize] 輸入Z軸刻度標籤字型大小字串
+ * @vue-prop {String} [opt.axisZTickLabelFontFamily] 輸入Z軸刻度標籤字型字串
+ * @vue-prop {String} [opt.axisZGridLineColor] 輸入Z軸網格線顏色字串
+ * @vue-prop {Number} [opt.axisZGridLineWidth] 輸入Z軸網格線寬度數字
+ * @vue-prop {String} [opt.cameraType='perspective'] 輸入相機類型字串，可選'perspective'或'orthographic'，預設'perspective'
+ * @vue-prop {Number} [opt.cameraFov] 輸入透視相機視野角度數字
+ * @vue-prop {Number} [opt.cameraNear] 輸入相機近裁剪面數字
+ * @vue-prop {Number} [opt.cameraFar] 輸入相機遠裁剪面數字
+ * @vue-prop {Number} [opt.cameraOrthographicRatio] 輸入正交相機比例數字
+ * @vue-prop {Number} [opt.cameraAzimuthAngle] 輸入相機方位角(水平角度)數字，因可通過UI改變導致Vue無法監聽變數有變而觸發computed，故建議直接使用setCameraAzimuthAngle變更
+ * @vue-prop {Number} [opt.cameraPolarAngle] 輸入相機極角(垂直角度)數字，因可通過UI改變導致Vue無法監聯變數有變而觸發computed，故建議直接使用setCameraPolarAngle變更
+ * @vue-prop {String} [opt.menuSettingIcon] 輸入設定選單圖示SVG path字串，預設mdiCogOutline
+ * @vue-prop {String} [opt.menuSettingTooltip='Settings'] 輸入設定選單tooltip文字字串，預設'Settings'
+ * @vue-prop {String} [opt.menuHelperAxesIcon] 輸入輔助軸線圖示SVG path字串，預設mdiAxis
+ * @vue-prop {String} [opt.menuHelperAxesTooltip='Help axes'] 輸入輔助軸線tooltip文字字串，預設'Help axes'
+ * @vue-prop {String} [opt.menuHelperGridIcon] 輸入輔助網格圖示SVG path字串，預設mdiGrid
+ * @vue-prop {String} [opt.menuHelperGridTooltip='Help grid'] 輸入輔助網格tooltip文字字串，預設'Help grid'
+ * @vue-prop {String} [opt.menuPerspectiveIcon] 輸入透視切換圖示SVG path字串，預設mdiProjectorScreenOutline
+ * @vue-prop {String} [opt.menuPerspectiveTooltip='Perspective'] 輸入透視切換tooltip文字字串，預設'Perspective'
+ * @vue-prop {String} [opt.menuAxisIcon] 輸入座標軸圖示SVG path字串，預設mdiPackageVariantClosed
+ * @vue-prop {String} [opt.menuAxisTooltip='Axis'] 輸入座標軸tooltip文字字串，預設'Axis'
+ * @vue-prop {String} [opt.menuAutoRotateIcon] 輸入自動旋轉圖示SVG path字串，預設mdiAxisZRotateCounterclockwise
+ * @vue-prop {String} [opt.menuAutoRotateTooltip='Auto rotate'] 輸入自動旋轉tooltip文字字串，預設'Auto rotate'
+ * @vue-prop {String} [opt.menuViewXYIcon] 輸入XY平面視角圖示SVG path字串
+ * @vue-prop {String} [opt.menuViewXYTooltip='XY plane'] 輸入XY平面視角tooltip文字字串，預設'XY plane'
+ * @vue-prop {String} [opt.menuViewXZIcon] 輸入XZ平面視角圖示SVG path字串
+ * @vue-prop {String} [opt.menuViewXZTooltip='XZ plane'] 輸入XZ平面視角tooltip文字字串，預設'XZ plane'
+ * @vue-prop {String} [opt.menuViewYZIcon] 輸入YZ平面視角圖示SVG path字串
+ * @vue-prop {String} [opt.menuViewYZTooltip='YZ plane'] 輸入YZ平面視角tooltip文字字串，預設'YZ plane'
+ * @vue-prop {String} [opt.menuLegendIcon] 輸入圖例圖示SVG path字串，預設mdiListBoxOutline
+ * @vue-prop {String} [opt.menuLegendTooltip='Legend'] 輸入圖例tooltip文字字串，預設'Legend'
+ * @vue-prop {String} [opt.legnedBackgroundColor='rgba(90,90,90,0.5)'] 輸入圖例區域背景色字串，預設'rgba(90,90,90,0.5)'
+ * @vue-prop {Number} [opt.legnedHeight=null] 輸入圖例區域固定高度數字，單位px，預設null
+ * @vue-prop {Number} [opt.legnedHeightMax=null] 輸入圖例區域最大高度數字，單位px，預設null
  */
 export default {
     directives: {
