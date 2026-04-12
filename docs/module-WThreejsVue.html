@@ -1,0 +1,1558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>WThreejsVue - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-WThreejsVue.html">WThreejsVue</a></li></ul>
+    
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">WThreejsVue</h1>
+    
+
+    
+
+
+
+
+<section>
+
+<header>
+    
+        
+            
+        
+    
+</header>
+
+<article>
+    
+        <div class="container-overview">
+        
+            
+                <div class="description usertext"></p></div></div> 
+
+
+<h3 class="subsection-title" style="margin-top: 1em" data-jsdoc-vuejs="section-props">Props</h3>
+<table data-jsdoc-vuejs="table-props">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Default value</th>
+        <th>Required?</th>
+        <th>Description</th>
+    </tr>
+    </thead>
+    <tbody><tr>
+        <td><code>opt</code></td>
+        <td>Object</td>
+        <td><code>{}</code></td>
+        <td>No</td>
+        <td>輸入設定物件，預設{}</td>
+    </tr><tr>
+        <td><code>opt.width</code></td>
+        <td>Number</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入元件寬度數字，單位px</td>
+    </tr><tr>
+        <td><code>opt.height</code></td>
+        <td>Number</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入元件高度數字，單位px</td>
+    </tr><tr>
+        <td><code>opt.items</code></td>
+        <td>Array</td>
+        <td><code>[]</code></td>
+        <td>No</td>
+        <td>輸入3D場景中要渲染的物件資料陣列，預設[]</td>
+    </tr><tr>
+        <td><code>opt.backgroundColor</code></td>
+        <td>String</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入場景背景色字串</td>
+    </tr><tr>
+        <td><code>opt.useAutoRotate</code></td>
+        <td>Boolean</td>
+        <td><code>false</code></td>
+        <td>No</td>
+        <td>輸入是否啟用自動旋轉布林值，預設false</td>
+    </tr><tr>
+        <td><code>opt.autoRotateDeg</code></td>
+        <td>Number</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入自動旋轉角度數字，單位度</td>
+    </tr><tr>
+        <td><code>opt.useHelperAxes</code></td>
+        <td>Boolean</td>
+        <td><code>true</code></td>
+        <td>No</td>
+        <td>輸入是否顯示輔助軸線布林值，預設true</td>
+    </tr><tr>
+        <td><code>opt.helperAxesLengthRatio</code></td>
+        <td>Number</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入輔助軸線長度比例數字</td>
+    </tr><tr>
+        <td><code>opt.useHelperGrid</code></td>
+        <td>Boolean</td>
+        <td><code>true</code></td>
+        <td>No</td>
+        <td>輸入是否顯示輔助網格布林值，預設true</td>
+    </tr><tr>
+        <td><code>opt.helperGridLengthRatio</code></td>
+        <td>Number</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入輔助網格長度比例數字</td>
+    </tr><tr>
+        <td><code>opt.helperGridDensity</code></td>
+        <td>Number</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入輔助網格密度數字</td>
+    </tr><tr>
+        <td><code>opt.helperGridPositionRatioZ</code></td>
+        <td>Number</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入輔助網格Z軸位置比例數字</td>
+    </tr><tr>
+        <td><code>opt.useLightAmbient</code></td>
+        <td>Boolean</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入是否啟用環境光布林值</td>
+    </tr><tr>
+        <td><code>opt.lightAmbientColor</code></td>
+        <td>String</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入環境光顏色字串</td>
+    </tr><tr>
+        <td><code>opt.useLightPoint</code></td>
+        <td>Boolean</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入是否啟用點光源布林值</td>
+    </tr><tr>
+        <td><code>opt.lightPointPoss</code></td>
+        <td>Array</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入點光源位置陣列</td>
+    </tr><tr>
+        <td><code>opt.lightPointColor</code></td>
+        <td>String</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入點光源顏色字串</td>
+    </tr><tr>
+        <td><code>opt.lightPointIntensity</code></td>
+        <td>Number</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入點光源強度數字</td>
+    </tr><tr>
+        <td><code>opt.lightPointDistance</code></td>
+        <td>Number</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入點光源照射距離數字</td>
+    </tr><tr>
+        <td><code>opt.lightPointDecay</code></td>
+        <td>Number</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入點光源衰減率數字</td>
+    </tr><tr>
+        <td><code>opt.useLightDirection</code></td>
+        <td>Boolean</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入是否啟用平行光布林值</td>
+    </tr><tr>
+        <td><code>opt.lightDirectionColor</code></td>
+        <td>String</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入平行光顏色字串</td>
+    </tr><tr>
+        <td><code>opt.lightDirectionIntensity</code></td>
+        <td>Number</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入平行光強度數字</td>
+    </tr><tr>
+        <td><code>opt.lightDirectionPos</code></td>
+        <td>Object</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入平行光位置物件</td>
+    </tr><tr>
+        <td><code>opt.useAxis</code></td>
+        <td>Boolean</td>
+        <td><code>false</code></td>
+        <td>No</td>
+        <td>輸入是否顯示座標軸布林值，預設false</td>
+    </tr><tr>
+        <td><code>opt.axisXTitle</code></td>
+        <td>String</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入X軸標題文字字串</td>
+    </tr><tr>
+        <td><code>opt.axisXTitleColor</code></td>
+        <td>String</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入X軸標題顏色字串</td>
+    </tr><tr>
+        <td><code>opt.axisXTitleFontSize</code></td>
+        <td>String</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入X軸標題字型大小字串</td>
+    </tr><tr>
+        <td><code>opt.axisXTitleFontFamily</code></td>
+        <td>String</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入X軸標題字型字串</td>
+    </tr><tr>
+        <td><code>opt.axisXTitleDistance</code></td>
+        <td>Number</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入X軸標題與軸線距離數字</td>
+    </tr><tr>
+        <td><code>opt.axisXLineColor</code></td>
+        <td>String</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入X軸線顏色字串</td>
+    </tr><tr>
+        <td><code>opt.axisXLineWidth</code></td>
+        <td>Number</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入X軸線寬度數字</td>
+    </tr><tr>
+        <td><code>opt.axisXTickLineColor</code></td>
+        <td>String</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入X軸刻度線顏色字串</td>
+    </tr><tr>
+        <td><code>opt.axisXTickLineWidth</code></td>
+        <td>Number</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入X軸刻度線寬度數字</td>
+    </tr><tr>
+        <td><code>opt.axisXTickLineLength</code></td>
+        <td>Number</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入X軸刻度線長度數字</td>
+    </tr><tr>
+        <td><code>opt.axisXTickNum</code></td>
+        <td>Number</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入X軸刻度數量數字</td>
+    </tr><tr>
+        <td><code>opt.axisXTickLabelDistance</code></td>
+        <td>Number</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入X軸刻度標籤與軸線距離數字</td>
+    </tr><tr>
+        <td><code>opt.axisXTickLabelDig</code></td>
+        <td>Number</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入X軸刻度標籤小數位數數字</td>
+    </tr><tr>
+        <td><code>opt.axisXTickLabelColor</code></td>
+        <td>String</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入X軸刻度標籤顏色字串</td>
+    </tr><tr>
+        <td><code>opt.axisXTickLabelFontSize</code></td>
+        <td>String</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入X軸刻度標籤字型大小字串</td>
+    </tr><tr>
+        <td><code>opt.axisXTickLabelFontFamily</code></td>
+        <td>String</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入X軸刻度標籤字型字串</td>
+    </tr><tr>
+        <td><code>opt.axisXGridLineColor</code></td>
+        <td>String</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入X軸網格線顏色字串</td>
+    </tr><tr>
+        <td><code>opt.axisXGridLineWidth</code></td>
+        <td>Number</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入X軸網格線寬度數字</td>
+    </tr><tr>
+        <td><code>opt.axisYTitle</code></td>
+        <td>String</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入Y軸標題文字字串</td>
+    </tr><tr>
+        <td><code>opt.axisYTitleColor</code></td>
+        <td>String</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入Y軸標題顏色字串</td>
+    </tr><tr>
+        <td><code>opt.axisYTitleFontSize</code></td>
+        <td>String</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入Y軸標題字型大小字串</td>
+    </tr><tr>
+        <td><code>opt.axisYTitleFontFamily</code></td>
+        <td>String</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入Y軸標題字型字串</td>
+    </tr><tr>
+        <td><code>opt.axisYTitleDistance</code></td>
+        <td>Number</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入Y軸標題與軸線距離數字</td>
+    </tr><tr>
+        <td><code>opt.axisYLineColor</code></td>
+        <td>String</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入Y軸線顏色字串</td>
+    </tr><tr>
+        <td><code>opt.axisYLineWidth</code></td>
+        <td>Number</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入Y軸線寬度數字</td>
+    </tr><tr>
+        <td><code>opt.axisYTickLineColor</code></td>
+        <td>String</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入Y軸刻度線顏色字串</td>
+    </tr><tr>
+        <td><code>opt.axisYTickLineWidth</code></td>
+        <td>Number</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入Y軸刻度線寬度數字</td>
+    </tr><tr>
+        <td><code>opt.axisYTickLineLength</code></td>
+        <td>Number</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入Y軸刻度線長度數字</td>
+    </tr><tr>
+        <td><code>opt.axisYTickNum</code></td>
+        <td>Number</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入Y軸刻度數量數字</td>
+    </tr><tr>
+        <td><code>opt.axisYTickLabelDistance</code></td>
+        <td>Number</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入Y軸刻度標籤與軸線距離數字</td>
+    </tr><tr>
+        <td><code>opt.axisYTickLabelDig</code></td>
+        <td>Number</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入Y軸刻度標籤小數位數數字</td>
+    </tr><tr>
+        <td><code>opt.axisYTickLabelColor</code></td>
+        <td>String</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入Y軸刻度標籤顏色字串</td>
+    </tr><tr>
+        <td><code>opt.axisYTickLabelFontSize</code></td>
+        <td>String</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入Y軸刻度標籤字型大小字串</td>
+    </tr><tr>
+        <td><code>opt.axisYTickLabelFontFamily</code></td>
+        <td>String</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入Y軸刻度標籤字型字串</td>
+    </tr><tr>
+        <td><code>opt.axisYGridLineColor</code></td>
+        <td>String</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入Y軸網格線顏色字串</td>
+    </tr><tr>
+        <td><code>opt.axisYGridLineWidth</code></td>
+        <td>Number</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入Y軸網格線寬度數字</td>
+    </tr><tr>
+        <td><code>opt.axisZTitle</code></td>
+        <td>String</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入Z軸標題文字字串</td>
+    </tr><tr>
+        <td><code>opt.axisZTitleColor</code></td>
+        <td>String</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入Z軸標題顏色字串</td>
+    </tr><tr>
+        <td><code>opt.axisZTitleFontSize</code></td>
+        <td>String</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入Z軸標題字型大小字串</td>
+    </tr><tr>
+        <td><code>opt.axisZTitleFontFamily</code></td>
+        <td>String</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入Z軸標題字型字串</td>
+    </tr><tr>
+        <td><code>opt.axisZTitleDistance</code></td>
+        <td>Number</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入Z軸標題與軸線距離數字</td>
+    </tr><tr>
+        <td><code>opt.axisZLineColor</code></td>
+        <td>String</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入Z軸線顏色字串</td>
+    </tr><tr>
+        <td><code>opt.axisZLineWidth</code></td>
+        <td>Number</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入Z軸線寬度數字</td>
+    </tr><tr>
+        <td><code>opt.axisZTickLineColor</code></td>
+        <td>String</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入Z軸刻度線顏色字串</td>
+    </tr><tr>
+        <td><code>opt.axisZTickLineWidth</code></td>
+        <td>Number</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入Z軸刻度線寬度數字</td>
+    </tr><tr>
+        <td><code>opt.axisZTickLineLength</code></td>
+        <td>Number</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入Z軸刻度線長度數字</td>
+    </tr><tr>
+        <td><code>opt.axisZTickNum</code></td>
+        <td>Number</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入Z軸刻度數量數字</td>
+    </tr><tr>
+        <td><code>opt.axisZTickLabelDistance</code></td>
+        <td>Number</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入Z軸刻度標籤與軸線距離數字</td>
+    </tr><tr>
+        <td><code>opt.axisZTickLabelDig</code></td>
+        <td>Number</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入Z軸刻度標籤小數位數數字</td>
+    </tr><tr>
+        <td><code>opt.axisZTickLabelColor</code></td>
+        <td>String</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入Z軸刻度標籤顏色字串</td>
+    </tr><tr>
+        <td><code>opt.axisZTickLabelFontSize</code></td>
+        <td>String</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入Z軸刻度標籤字型大小字串</td>
+    </tr><tr>
+        <td><code>opt.axisZTickLabelFontFamily</code></td>
+        <td>String</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入Z軸刻度標籤字型字串</td>
+    </tr><tr>
+        <td><code>opt.axisZGridLineColor</code></td>
+        <td>String</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入Z軸網格線顏色字串</td>
+    </tr><tr>
+        <td><code>opt.axisZGridLineWidth</code></td>
+        <td>Number</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入Z軸網格線寬度數字</td>
+    </tr><tr>
+        <td><code>opt.cameraType</code></td>
+        <td>String</td>
+        <td><code>'perspective'</code></td>
+        <td>No</td>
+        <td>輸入相機類型字串，可選'perspective'或'orthographic'，預設'perspective'</td>
+    </tr><tr>
+        <td><code>opt.cameraFov</code></td>
+        <td>Number</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入透視相機視野角度數字</td>
+    </tr><tr>
+        <td><code>opt.cameraNear</code></td>
+        <td>Number</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入相機近裁剪面數字</td>
+    </tr><tr>
+        <td><code>opt.cameraFar</code></td>
+        <td>Number</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入相機遠裁剪面數字</td>
+    </tr><tr>
+        <td><code>opt.cameraOrthographicRatio</code></td>
+        <td>Number</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入正交相機比例數字</td>
+    </tr><tr>
+        <td><code>opt.cameraAzimuthAngle</code></td>
+        <td>Number</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入相機方位角(水平角度)數字，因可通過UI改變導致Vue無法監聽變數有變而觸發computed，故建議直接使用setCameraAzimuthAngle變更</td>
+    </tr><tr>
+        <td><code>opt.cameraPolarAngle</code></td>
+        <td>Number</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入相機極角(垂直角度)數字，因可通過UI改變導致Vue無法監聯變數有變而觸發computed，故建議直接使用setCameraPolarAngle變更</td>
+    </tr><tr>
+        <td><code>opt.menuSettingIcon</code></td>
+        <td>String</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入設定選單圖示SVG path字串，預設mdiCogOutline</td>
+    </tr><tr>
+        <td><code>opt.menuSettingTooltip</code></td>
+        <td>String</td>
+        <td><code>'Settings'</code></td>
+        <td>No</td>
+        <td>輸入設定選單tooltip文字字串，預設'Settings'</td>
+    </tr><tr>
+        <td><code>opt.menuHelperAxesIcon</code></td>
+        <td>String</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入輔助軸線圖示SVG path字串，預設mdiAxis</td>
+    </tr><tr>
+        <td><code>opt.menuHelperAxesTooltip</code></td>
+        <td>String</td>
+        <td><code>'Help axes'</code></td>
+        <td>No</td>
+        <td>輸入輔助軸線tooltip文字字串，預設'Help axes'</td>
+    </tr><tr>
+        <td><code>opt.menuHelperGridIcon</code></td>
+        <td>String</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入輔助網格圖示SVG path字串，預設mdiGrid</td>
+    </tr><tr>
+        <td><code>opt.menuHelperGridTooltip</code></td>
+        <td>String</td>
+        <td><code>'Help grid'</code></td>
+        <td>No</td>
+        <td>輸入輔助網格tooltip文字字串，預設'Help grid'</td>
+    </tr><tr>
+        <td><code>opt.menuPerspectiveIcon</code></td>
+        <td>String</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入透視切換圖示SVG path字串，預設mdiProjectorScreenOutline</td>
+    </tr><tr>
+        <td><code>opt.menuPerspectiveTooltip</code></td>
+        <td>String</td>
+        <td><code>'Perspective'</code></td>
+        <td>No</td>
+        <td>輸入透視切換tooltip文字字串，預設'Perspective'</td>
+    </tr><tr>
+        <td><code>opt.menuAxisIcon</code></td>
+        <td>String</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入座標軸圖示SVG path字串，預設mdiPackageVariantClosed</td>
+    </tr><tr>
+        <td><code>opt.menuAxisTooltip</code></td>
+        <td>String</td>
+        <td><code>'Axis'</code></td>
+        <td>No</td>
+        <td>輸入座標軸tooltip文字字串，預設'Axis'</td>
+    </tr><tr>
+        <td><code>opt.menuAutoRotateIcon</code></td>
+        <td>String</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入自動旋轉圖示SVG path字串，預設mdiAxisZRotateCounterclockwise</td>
+    </tr><tr>
+        <td><code>opt.menuAutoRotateTooltip</code></td>
+        <td>String</td>
+        <td><code>'Auto rotate'</code></td>
+        <td>No</td>
+        <td>輸入自動旋轉tooltip文字字串，預設'Auto rotate'</td>
+    </tr><tr>
+        <td><code>opt.menuViewXYIcon</code></td>
+        <td>String</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入XY平面視角圖示SVG path字串</td>
+    </tr><tr>
+        <td><code>opt.menuViewXYTooltip</code></td>
+        <td>String</td>
+        <td><code>'XY plane'</code></td>
+        <td>No</td>
+        <td>輸入XY平面視角tooltip文字字串，預設'XY plane'</td>
+    </tr><tr>
+        <td><code>opt.menuViewXZIcon</code></td>
+        <td>String</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入XZ平面視角圖示SVG path字串</td>
+    </tr><tr>
+        <td><code>opt.menuViewXZTooltip</code></td>
+        <td>String</td>
+        <td><code>'XZ plane'</code></td>
+        <td>No</td>
+        <td>輸入XZ平面視角tooltip文字字串，預設'XZ plane'</td>
+    </tr><tr>
+        <td><code>opt.menuViewYZIcon</code></td>
+        <td>String</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入YZ平面視角圖示SVG path字串</td>
+    </tr><tr>
+        <td><code>opt.menuViewYZTooltip</code></td>
+        <td>String</td>
+        <td><code>'YZ plane'</code></td>
+        <td>No</td>
+        <td>輸入YZ平面視角tooltip文字字串，預設'YZ plane'</td>
+    </tr><tr>
+        <td><code>opt.menuLegendIcon</code></td>
+        <td>String</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入圖例圖示SVG path字串，預設mdiListBoxOutline</td>
+    </tr><tr>
+        <td><code>opt.menuLegendTooltip</code></td>
+        <td>String</td>
+        <td><code>'Legend'</code></td>
+        <td>No</td>
+        <td>輸入圖例tooltip文字字串，預設'Legend'</td>
+    </tr><tr>
+        <td><code>opt.legnedBackgroundColor</code></td>
+        <td>String</td>
+        <td><code>'rgba(90,90,90,0.5)'</code></td>
+        <td>No</td>
+        <td>輸入圖例區域背景色字串，預設'rgba(90,90,90,0.5)'</td>
+    </tr><tr>
+        <td><code>opt.legnedHeight</code></td>
+        <td>Number</td>
+        <td><code>null</code></td>
+        <td>No</td>
+        <td>輸入圖例區域固定高度數字，單位px，預設null</td>
+    </tr><tr>
+        <td><code>opt.legnedHeightMax</code></td>
+        <td>Number</td>
+        <td><code>null</code></td>
+        <td>No</td>
+        <td>輸入圖例區域最大高度數字，單位px，預設null</td>
+    </tr></tbody>
+</table>
+
+
+
+
+
+
+
+
+
+<div class="container-overview"><div><p> 
+</div>
+            
+
+            
+                
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li></p></div></div> 
+
+
+<h3 class="subsection-title" style="margin-top: 1em" data-jsdoc-vuejs="section-props">Props</h3>
+<table data-jsdoc-vuejs="table-props">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Default value</th>
+        <th>Required?</th>
+        <th>Description</th>
+    </tr>
+    </thead>
+    <tbody><tr>
+        <td><code>opt</code></td>
+        <td>Object</td>
+        <td><code>{}</code></td>
+        <td>No</td>
+        <td>輸入設定物件，預設{}</td>
+    </tr><tr>
+        <td><code>opt.width</code></td>
+        <td>Number</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入元件寬度數字，單位px</td>
+    </tr><tr>
+        <td><code>opt.height</code></td>
+        <td>Number</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入元件高度數字，單位px</td>
+    </tr><tr>
+        <td><code>opt.items</code></td>
+        <td>Array</td>
+        <td><code>[]</code></td>
+        <td>No</td>
+        <td>輸入3D場景中要渲染的物件資料陣列，預設[]</td>
+    </tr><tr>
+        <td><code>opt.backgroundColor</code></td>
+        <td>String</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入場景背景色字串</td>
+    </tr><tr>
+        <td><code>opt.useAutoRotate</code></td>
+        <td>Boolean</td>
+        <td><code>false</code></td>
+        <td>No</td>
+        <td>輸入是否啟用自動旋轉布林值，預設false</td>
+    </tr><tr>
+        <td><code>opt.autoRotateDeg</code></td>
+        <td>Number</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入自動旋轉角度數字，單位度</td>
+    </tr><tr>
+        <td><code>opt.useHelperAxes</code></td>
+        <td>Boolean</td>
+        <td><code>true</code></td>
+        <td>No</td>
+        <td>輸入是否顯示輔助軸線布林值，預設true</td>
+    </tr><tr>
+        <td><code>opt.helperAxesLengthRatio</code></td>
+        <td>Number</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入輔助軸線長度比例數字</td>
+    </tr><tr>
+        <td><code>opt.useHelperGrid</code></td>
+        <td>Boolean</td>
+        <td><code>true</code></td>
+        <td>No</td>
+        <td>輸入是否顯示輔助網格布林值，預設true</td>
+    </tr><tr>
+        <td><code>opt.helperGridLengthRatio</code></td>
+        <td>Number</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入輔助網格長度比例數字</td>
+    </tr><tr>
+        <td><code>opt.helperGridDensity</code></td>
+        <td>Number</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入輔助網格密度數字</td>
+    </tr><tr>
+        <td><code>opt.helperGridPositionRatioZ</code></td>
+        <td>Number</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入輔助網格Z軸位置比例數字</td>
+    </tr><tr>
+        <td><code>opt.useLightAmbient</code></td>
+        <td>Boolean</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入是否啟用環境光布林值</td>
+    </tr><tr>
+        <td><code>opt.lightAmbientColor</code></td>
+        <td>String</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入環境光顏色字串</td>
+    </tr><tr>
+        <td><code>opt.useLightPoint</code></td>
+        <td>Boolean</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入是否啟用點光源布林值</td>
+    </tr><tr>
+        <td><code>opt.lightPointPoss</code></td>
+        <td>Array</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入點光源位置陣列</td>
+    </tr><tr>
+        <td><code>opt.lightPointColor</code></td>
+        <td>String</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入點光源顏色字串</td>
+    </tr><tr>
+        <td><code>opt.lightPointIntensity</code></td>
+        <td>Number</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入點光源強度數字</td>
+    </tr><tr>
+        <td><code>opt.lightPointDistance</code></td>
+        <td>Number</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入點光源照射距離數字</td>
+    </tr><tr>
+        <td><code>opt.lightPointDecay</code></td>
+        <td>Number</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入點光源衰減率數字</td>
+    </tr><tr>
+        <td><code>opt.useLightDirection</code></td>
+        <td>Boolean</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入是否啟用平行光布林值</td>
+    </tr><tr>
+        <td><code>opt.lightDirectionColor</code></td>
+        <td>String</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入平行光顏色字串</td>
+    </tr><tr>
+        <td><code>opt.lightDirectionIntensity</code></td>
+        <td>Number</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入平行光強度數字</td>
+    </tr><tr>
+        <td><code>opt.lightDirectionPos</code></td>
+        <td>Object</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入平行光位置物件</td>
+    </tr><tr>
+        <td><code>opt.useAxis</code></td>
+        <td>Boolean</td>
+        <td><code>false</code></td>
+        <td>No</td>
+        <td>輸入是否顯示座標軸布林值，預設false</td>
+    </tr><tr>
+        <td><code>opt.axisXTitle</code></td>
+        <td>String</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入X軸標題文字字串</td>
+    </tr><tr>
+        <td><code>opt.axisXTitleColor</code></td>
+        <td>String</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入X軸標題顏色字串</td>
+    </tr><tr>
+        <td><code>opt.axisXTitleFontSize</code></td>
+        <td>String</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入X軸標題字型大小字串</td>
+    </tr><tr>
+        <td><code>opt.axisXTitleFontFamily</code></td>
+        <td>String</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入X軸標題字型字串</td>
+    </tr><tr>
+        <td><code>opt.axisXTitleDistance</code></td>
+        <td>Number</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入X軸標題與軸線距離數字</td>
+    </tr><tr>
+        <td><code>opt.axisXLineColor</code></td>
+        <td>String</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入X軸線顏色字串</td>
+    </tr><tr>
+        <td><code>opt.axisXLineWidth</code></td>
+        <td>Number</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入X軸線寬度數字</td>
+    </tr><tr>
+        <td><code>opt.axisXTickLineColor</code></td>
+        <td>String</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入X軸刻度線顏色字串</td>
+    </tr><tr>
+        <td><code>opt.axisXTickLineWidth</code></td>
+        <td>Number</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入X軸刻度線寬度數字</td>
+    </tr><tr>
+        <td><code>opt.axisXTickLineLength</code></td>
+        <td>Number</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入X軸刻度線長度數字</td>
+    </tr><tr>
+        <td><code>opt.axisXTickNum</code></td>
+        <td>Number</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入X軸刻度數量數字</td>
+    </tr><tr>
+        <td><code>opt.axisXTickLabelDistance</code></td>
+        <td>Number</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入X軸刻度標籤與軸線距離數字</td>
+    </tr><tr>
+        <td><code>opt.axisXTickLabelDig</code></td>
+        <td>Number</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入X軸刻度標籤小數位數數字</td>
+    </tr><tr>
+        <td><code>opt.axisXTickLabelColor</code></td>
+        <td>String</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入X軸刻度標籤顏色字串</td>
+    </tr><tr>
+        <td><code>opt.axisXTickLabelFontSize</code></td>
+        <td>String</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入X軸刻度標籤字型大小字串</td>
+    </tr><tr>
+        <td><code>opt.axisXTickLabelFontFamily</code></td>
+        <td>String</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入X軸刻度標籤字型字串</td>
+    </tr><tr>
+        <td><code>opt.axisXGridLineColor</code></td>
+        <td>String</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入X軸網格線顏色字串</td>
+    </tr><tr>
+        <td><code>opt.axisXGridLineWidth</code></td>
+        <td>Number</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入X軸網格線寬度數字</td>
+    </tr><tr>
+        <td><code>opt.axisYTitle</code></td>
+        <td>String</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入Y軸標題文字字串</td>
+    </tr><tr>
+        <td><code>opt.axisYTitleColor</code></td>
+        <td>String</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入Y軸標題顏色字串</td>
+    </tr><tr>
+        <td><code>opt.axisYTitleFontSize</code></td>
+        <td>String</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入Y軸標題字型大小字串</td>
+    </tr><tr>
+        <td><code>opt.axisYTitleFontFamily</code></td>
+        <td>String</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入Y軸標題字型字串</td>
+    </tr><tr>
+        <td><code>opt.axisYTitleDistance</code></td>
+        <td>Number</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入Y軸標題與軸線距離數字</td>
+    </tr><tr>
+        <td><code>opt.axisYLineColor</code></td>
+        <td>String</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入Y軸線顏色字串</td>
+    </tr><tr>
+        <td><code>opt.axisYLineWidth</code></td>
+        <td>Number</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入Y軸線寬度數字</td>
+    </tr><tr>
+        <td><code>opt.axisYTickLineColor</code></td>
+        <td>String</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入Y軸刻度線顏色字串</td>
+    </tr><tr>
+        <td><code>opt.axisYTickLineWidth</code></td>
+        <td>Number</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入Y軸刻度線寬度數字</td>
+    </tr><tr>
+        <td><code>opt.axisYTickLineLength</code></td>
+        <td>Number</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入Y軸刻度線長度數字</td>
+    </tr><tr>
+        <td><code>opt.axisYTickNum</code></td>
+        <td>Number</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入Y軸刻度數量數字</td>
+    </tr><tr>
+        <td><code>opt.axisYTickLabelDistance</code></td>
+        <td>Number</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入Y軸刻度標籤與軸線距離數字</td>
+    </tr><tr>
+        <td><code>opt.axisYTickLabelDig</code></td>
+        <td>Number</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入Y軸刻度標籤小數位數數字</td>
+    </tr><tr>
+        <td><code>opt.axisYTickLabelColor</code></td>
+        <td>String</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入Y軸刻度標籤顏色字串</td>
+    </tr><tr>
+        <td><code>opt.axisYTickLabelFontSize</code></td>
+        <td>String</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入Y軸刻度標籤字型大小字串</td>
+    </tr><tr>
+        <td><code>opt.axisYTickLabelFontFamily</code></td>
+        <td>String</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入Y軸刻度標籤字型字串</td>
+    </tr><tr>
+        <td><code>opt.axisYGridLineColor</code></td>
+        <td>String</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入Y軸網格線顏色字串</td>
+    </tr><tr>
+        <td><code>opt.axisYGridLineWidth</code></td>
+        <td>Number</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入Y軸網格線寬度數字</td>
+    </tr><tr>
+        <td><code>opt.axisZTitle</code></td>
+        <td>String</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入Z軸標題文字字串</td>
+    </tr><tr>
+        <td><code>opt.axisZTitleColor</code></td>
+        <td>String</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入Z軸標題顏色字串</td>
+    </tr><tr>
+        <td><code>opt.axisZTitleFontSize</code></td>
+        <td>String</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入Z軸標題字型大小字串</td>
+    </tr><tr>
+        <td><code>opt.axisZTitleFontFamily</code></td>
+        <td>String</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入Z軸標題字型字串</td>
+    </tr><tr>
+        <td><code>opt.axisZTitleDistance</code></td>
+        <td>Number</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入Z軸標題與軸線距離數字</td>
+    </tr><tr>
+        <td><code>opt.axisZLineColor</code></td>
+        <td>String</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入Z軸線顏色字串</td>
+    </tr><tr>
+        <td><code>opt.axisZLineWidth</code></td>
+        <td>Number</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入Z軸線寬度數字</td>
+    </tr><tr>
+        <td><code>opt.axisZTickLineColor</code></td>
+        <td>String</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入Z軸刻度線顏色字串</td>
+    </tr><tr>
+        <td><code>opt.axisZTickLineWidth</code></td>
+        <td>Number</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入Z軸刻度線寬度數字</td>
+    </tr><tr>
+        <td><code>opt.axisZTickLineLength</code></td>
+        <td>Number</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入Z軸刻度線長度數字</td>
+    </tr><tr>
+        <td><code>opt.axisZTickNum</code></td>
+        <td>Number</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入Z軸刻度數量數字</td>
+    </tr><tr>
+        <td><code>opt.axisZTickLabelDistance</code></td>
+        <td>Number</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入Z軸刻度標籤與軸線距離數字</td>
+    </tr><tr>
+        <td><code>opt.axisZTickLabelDig</code></td>
+        <td>Number</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入Z軸刻度標籤小數位數數字</td>
+    </tr><tr>
+        <td><code>opt.axisZTickLabelColor</code></td>
+        <td>String</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入Z軸刻度標籤顏色字串</td>
+    </tr><tr>
+        <td><code>opt.axisZTickLabelFontSize</code></td>
+        <td>String</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入Z軸刻度標籤字型大小字串</td>
+    </tr><tr>
+        <td><code>opt.axisZTickLabelFontFamily</code></td>
+        <td>String</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入Z軸刻度標籤字型字串</td>
+    </tr><tr>
+        <td><code>opt.axisZGridLineColor</code></td>
+        <td>String</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入Z軸網格線顏色字串</td>
+    </tr><tr>
+        <td><code>opt.axisZGridLineWidth</code></td>
+        <td>Number</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入Z軸網格線寬度數字</td>
+    </tr><tr>
+        <td><code>opt.cameraType</code></td>
+        <td>String</td>
+        <td><code>'perspective'</code></td>
+        <td>No</td>
+        <td>輸入相機類型字串，可選'perspective'或'orthographic'，預設'perspective'</td>
+    </tr><tr>
+        <td><code>opt.cameraFov</code></td>
+        <td>Number</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入透視相機視野角度數字</td>
+    </tr><tr>
+        <td><code>opt.cameraNear</code></td>
+        <td>Number</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入相機近裁剪面數字</td>
+    </tr><tr>
+        <td><code>opt.cameraFar</code></td>
+        <td>Number</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入相機遠裁剪面數字</td>
+    </tr><tr>
+        <td><code>opt.cameraOrthographicRatio</code></td>
+        <td>Number</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入正交相機比例數字</td>
+    </tr><tr>
+        <td><code>opt.cameraAzimuthAngle</code></td>
+        <td>Number</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入相機方位角(水平角度)數字，因可通過UI改變導致Vue無法監聽變數有變而觸發computed，故建議直接使用setCameraAzimuthAngle變更</td>
+    </tr><tr>
+        <td><code>opt.cameraPolarAngle</code></td>
+        <td>Number</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入相機極角(垂直角度)數字，因可通過UI改變導致Vue無法監聯變數有變而觸發computed，故建議直接使用setCameraPolarAngle變更</td>
+    </tr><tr>
+        <td><code>opt.menuSettingIcon</code></td>
+        <td>String</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入設定選單圖示SVG path字串，預設mdiCogOutline</td>
+    </tr><tr>
+        <td><code>opt.menuSettingTooltip</code></td>
+        <td>String</td>
+        <td><code>'Settings'</code></td>
+        <td>No</td>
+        <td>輸入設定選單tooltip文字字串，預設'Settings'</td>
+    </tr><tr>
+        <td><code>opt.menuHelperAxesIcon</code></td>
+        <td>String</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入輔助軸線圖示SVG path字串，預設mdiAxis</td>
+    </tr><tr>
+        <td><code>opt.menuHelperAxesTooltip</code></td>
+        <td>String</td>
+        <td><code>'Help axes'</code></td>
+        <td>No</td>
+        <td>輸入輔助軸線tooltip文字字串，預設'Help axes'</td>
+    </tr><tr>
+        <td><code>opt.menuHelperGridIcon</code></td>
+        <td>String</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入輔助網格圖示SVG path字串，預設mdiGrid</td>
+    </tr><tr>
+        <td><code>opt.menuHelperGridTooltip</code></td>
+        <td>String</td>
+        <td><code>'Help grid'</code></td>
+        <td>No</td>
+        <td>輸入輔助網格tooltip文字字串，預設'Help grid'</td>
+    </tr><tr>
+        <td><code>opt.menuPerspectiveIcon</code></td>
+        <td>String</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入透視切換圖示SVG path字串，預設mdiProjectorScreenOutline</td>
+    </tr><tr>
+        <td><code>opt.menuPerspectiveTooltip</code></td>
+        <td>String</td>
+        <td><code>'Perspective'</code></td>
+        <td>No</td>
+        <td>輸入透視切換tooltip文字字串，預設'Perspective'</td>
+    </tr><tr>
+        <td><code>opt.menuAxisIcon</code></td>
+        <td>String</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入座標軸圖示SVG path字串，預設mdiPackageVariantClosed</td>
+    </tr><tr>
+        <td><code>opt.menuAxisTooltip</code></td>
+        <td>String</td>
+        <td><code>'Axis'</code></td>
+        <td>No</td>
+        <td>輸入座標軸tooltip文字字串，預設'Axis'</td>
+    </tr><tr>
+        <td><code>opt.menuAutoRotateIcon</code></td>
+        <td>String</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入自動旋轉圖示SVG path字串，預設mdiAxisZRotateCounterclockwise</td>
+    </tr><tr>
+        <td><code>opt.menuAutoRotateTooltip</code></td>
+        <td>String</td>
+        <td><code>'Auto rotate'</code></td>
+        <td>No</td>
+        <td>輸入自動旋轉tooltip文字字串，預設'Auto rotate'</td>
+    </tr><tr>
+        <td><code>opt.menuViewXYIcon</code></td>
+        <td>String</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入XY平面視角圖示SVG path字串</td>
+    </tr><tr>
+        <td><code>opt.menuViewXYTooltip</code></td>
+        <td>String</td>
+        <td><code>'XY plane'</code></td>
+        <td>No</td>
+        <td>輸入XY平面視角tooltip文字字串，預設'XY plane'</td>
+    </tr><tr>
+        <td><code>opt.menuViewXZIcon</code></td>
+        <td>String</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入XZ平面視角圖示SVG path字串</td>
+    </tr><tr>
+        <td><code>opt.menuViewXZTooltip</code></td>
+        <td>String</td>
+        <td><code>'XZ plane'</code></td>
+        <td>No</td>
+        <td>輸入XZ平面視角tooltip文字字串，預設'XZ plane'</td>
+    </tr><tr>
+        <td><code>opt.menuViewYZIcon</code></td>
+        <td>String</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入YZ平面視角圖示SVG path字串</td>
+    </tr><tr>
+        <td><code>opt.menuViewYZTooltip</code></td>
+        <td>String</td>
+        <td><code>'YZ plane'</code></td>
+        <td>No</td>
+        <td>輸入YZ平面視角tooltip文字字串，預設'YZ plane'</td>
+    </tr><tr>
+        <td><code>opt.menuLegendIcon</code></td>
+        <td>String</td>
+        <td>-</td>
+        <td>No</td>
+        <td>輸入圖例圖示SVG path字串，預設mdiListBoxOutline</td>
+    </tr><tr>
+        <td><code>opt.menuLegendTooltip</code></td>
+        <td>String</td>
+        <td><code>'Legend'</code></td>
+        <td>No</td>
+        <td>輸入圖例tooltip文字字串，預設'Legend'</td>
+    </tr><tr>
+        <td><code>opt.legnedBackgroundColor</code></td>
+        <td>String</td>
+        <td><code>'rgba(90,90,90,0.5)'</code></td>
+        <td>No</td>
+        <td>輸入圖例區域背景色字串，預設'rgba(90,90,90,0.5)'</td>
+    </tr><tr>
+        <td><code>opt.legnedHeight</code></td>
+        <td>Number</td>
+        <td><code>null</code></td>
+        <td>No</td>
+        <td>輸入圖例區域固定高度數字，單位px，預設null</td>
+    </tr><tr>
+        <td><code>opt.legnedHeightMax</code></td>
+        <td>Number</td>
+        <td><code>null</code></td>
+        <td>No</td>
+        <td>輸入圖例區域最大高度數字，單位px，預設null</td>
+    </tr></tbody>
+</table>
+
+
+
+
+
+
+
+
+
+<div class="container-overview"><div><p> 
+</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
+        
+        </div>
+    
+
+    
+
+    
+
+    
+    
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.5</a> on Mon Apr 13 2026 00:01:24 GMT+0800 (台北標準時間) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+
+</body>
+</html>
