@@ -2,16 +2,16 @@
     <div>
 
         <div class="bkh">
-            <div style="font-size:1.5rem;">legnedHeight</div>
-            <a href="//yuda-lyu.github.io/w-threejs-vue/examples/ex-AppLgLegnedHeight.html" target="_blank" class="item-link">example</a>
-            <a href="//github.com/yuda-lyu/w-threejs-vue/blob/master/docs/examples/ex-AppLgLegnedHeight.html" target="_blank" class="item-link">code</a>
+            <div style="font-size:1.5rem;">legendHeightMax</div>
+            <a href="//yuda-lyu.github.io/w-threejs-vue/examples/ex-AppLgLegendHeightMax.html" target="_blank" class="item-link">example</a>
+            <a href="//github.com/yuda-lyu/w-threejs-vue/blob/master/docs/examples/ex-AppLgLegendHeightMax.html" target="_blank" class="item-link">code</a>
         </div>
 
         <div class="bkp">
 
             <div v-if="!loading">
-                <button style="margin:0px 3px 3px 0px;" @click="setLegnedHeight(100)">set to 100</button>
-                <button style="margin:0px 3px 3px 0px;" @click="setLegnedHeight(50)">set to 50</button>
+                <button style="margin:0px 3px 3px 0px;" @click="setLegendHeightMax(100)">set to 100</button>
+                <button style="margin:0px 3px 3px 0px;" @click="setLegendHeightMax(50)">set to 50</button>
             </div>
 
 
@@ -67,7 +67,7 @@ export default {
                         color: 'rgba(214, 214, 92, 0.9)',
                     },
                 ],
-                legnedHeight: 100,
+                legendHeightMax: 100,
             },
             'action': [
             ],
@@ -91,9 +91,9 @@ export default {
             let vo = this
             jv(vo.opt, document.querySelector('#optjson'), { expanded: true })
         },
-        setLegnedHeight: function(r) {
+        setLegendHeightMax: function(r) {
             let vo = this
-            vo.opt.legnedHeight = r
+            vo.opt.legendHeightMax = r
         },
     },
 }

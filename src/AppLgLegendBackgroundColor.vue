@@ -2,16 +2,16 @@
     <div>
 
         <div class="bkh">
-            <div style="font-size:1.5rem;">legnedBackgroundColor</div>
-            <a href="//yuda-lyu.github.io/w-threejs-vue/examples/ex-AppLgLegnedBackgroundColor.html" target="_blank" class="item-link">example</a>
-            <a href="//github.com/yuda-lyu/w-threejs-vue/blob/master/docs/examples/ex-AppLgLegnedBackgroundColor.html" target="_blank" class="item-link">code</a>
+            <div style="font-size:1.5rem;">legendBackgroundColor</div>
+            <a href="//yuda-lyu.github.io/w-threejs-vue/examples/ex-AppLgLegendBackgroundColor.html" target="_blank" class="item-link">example</a>
+            <a href="//github.com/yuda-lyu/w-threejs-vue/blob/master/docs/examples/ex-AppLgLegendBackgroundColor.html" target="_blank" class="item-link">code</a>
         </div>
 
         <div class="bkp">
 
             <div v-if="!loading">
-                <button style="margin:0px 3px 3px 0px;" @click="setLegnedBackgroundColor('rgba(0,0,0,0.5)')">set to rgba(0,0,0,0.5)</button>
-                <button style="margin:0px 3px 3px 0px;" @click="setLegnedBackgroundColor('rgba(10,30,30,0.5)')">set to rgba(10,30,30,0.5)</button>
+                <button style="margin:0px 3px 3px 0px;" @click="setLegendBackgroundColor('rgba(0,0,0,0.5)')">set to rgba(0,0,0,0.5)</button>
+                <button style="margin:0px 3px 3px 0px;" @click="setLegendBackgroundColor('rgba(10,30,30,0.5)')">set to rgba(10,30,30,0.5)</button>
             </div>
 
 
@@ -67,7 +67,7 @@ export default {
                         color: 'rgba(214, 214, 92, 0.9)',
                     },
                 ],
-                legnedBackgroundColor: 'rgba(10,10,10,0.5)',
+                legendBackgroundColor: 'rgba(10,10,10,0.5)',
             },
             'action': [
             ],
@@ -91,9 +91,9 @@ export default {
             let vo = this
             jv(vo.opt, document.querySelector('#optjson'), { expanded: true })
         },
-        setLegnedBackgroundColor: function(c) {
+        setLegendBackgroundColor: function(c) {
             let vo = this
-            vo.opt.legnedBackgroundColor = c
+            vo.opt.legendBackgroundColor = c
         },
     },
 }

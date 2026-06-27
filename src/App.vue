@@ -269,11 +269,11 @@
 
             <AppMhSetMeshLabelTextFontFamily v-if="cmpPick==='setMeshLabelTextFontFamily'"></AppMhSetMeshLabelTextFontFamily>
 
-            <AppLgLegnedBackgroundColor v-if="cmpPick==='legnedBackgroundColor'"></AppLgLegnedBackgroundColor>
+            <AppLgLegendBackgroundColor v-if="cmpPick==='legendBackgroundColor'"></AppLgLegendBackgroundColor>
 
-            <AppLgLegnedHeight v-if="cmpPick==='legnedHeight'"></AppLgLegnedHeight>
+            <AppLgLegendHeight v-if="cmpPick==='legendHeight'"></AppLgLegendHeight>
 
-            <AppLgLegnedHeightMax v-if="cmpPick==='legnedHeightMax'"></AppLgLegnedHeightMax>
+            <AppLgLegendHeightMax v-if="cmpPick==='legendHeightMax'"></AppLgLegendHeightMax>
 
             <AppMuMenuIcons v-if="cmpPick==='menuIcons'"></AppMuMenuIcons>
 
@@ -386,9 +386,9 @@ import AppMhSetMeshLabelText from './AppMhSetMeshLabelText.vue'
 import AppMhSetMeshLabelTextColor from './AppMhSetMeshLabelTextColor.vue'
 import AppMhSetMeshLabelTextFontSize from './AppMhSetMeshLabelTextFontSize.vue'
 import AppMhSetMeshLabelTextFontFamily from './AppMhSetMeshLabelTextFontFamily.vue'
-import AppLgLegnedBackgroundColor from './AppLgLegnedBackgroundColor.vue'
-import AppLgLegnedHeight from './AppLgLegnedHeight.vue'
-import AppLgLegnedHeightMax from './AppLgLegnedHeightMax.vue'
+import AppLgLegendBackgroundColor from './AppLgLegendBackgroundColor.vue'
+import AppLgLegendHeight from './AppLgLegendHeight.vue'
+import AppLgLegendHeightMax from './AppLgLegendHeightMax.vue'
 import AppMuMenuIcons from './AppMuMenuIcons.vue'
 import AppMuMenuTooltips from './AppMuMenuTooltips.vue'
 
@@ -491,9 +491,9 @@ export default {
         AppMhSetMeshLabelTextColor,
         AppMhSetMeshLabelTextFontSize,
         AppMhSetMeshLabelTextFontFamily,
-        AppLgLegnedBackgroundColor,
-        AppLgLegnedHeight,
-        AppLgLegnedHeightMax,
+        AppLgLegendBackgroundColor,
+        AppLgLegendHeight,
+        AppLgLegendHeightMax,
         AppMuMenuIcons,
         AppMuMenuTooltips,
     },
@@ -664,9 +664,9 @@ export default {
             {
                 name: 'legend',
                 cmps: [
-                    { name: 'legnedBackgroundColor' },
-                    { name: 'legnedHeight' },
-                    { name: 'legnedHeightMax' },
+                    { name: 'legendBackgroundColor' },
+                    { name: 'legendHeight' },
+                    { name: 'legendHeightMax' },
                 ],
             },
         ]

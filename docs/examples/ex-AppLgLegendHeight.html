@@ -7,7 +7,7 @@
         content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui"
     />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>example for AppLgLegnedHeight</title>
+    <title>example for AppLgLegendHeight</title>
 
     <!-- @babel/polyfill -->
     <script
@@ -109,14 +109,14 @@
 >
     <div id="app" class="bkh" style>
         <div class="bkh">
-            <div style="font-size:1.5rem;">legnedHeight</div>
+            <div style="font-size:1.5rem;">legendHeight</div>
             <a
-                href="//yuda-lyu.github.io/w-threejs-vue/examples/ex-AppLgLegnedHeight.html"
+                href="//yuda-lyu.github.io/w-threejs-vue/examples/ex-AppLgLegendHeight.html"
                 target="_blank"
                 class="item-link"
             >example</a>
             <a
-                href="//github.com/yuda-lyu/w-threejs-vue/blob/master/docs/examples/ex-AppLgLegnedHeight.html"
+                href="//github.com/yuda-lyu/w-threejs-vue/blob/master/docs/examples/ex-AppLgLegendHeight.html"
                 target="_blank"
                 class="item-link"
             >code</a>
@@ -126,11 +126,11 @@
             <div v-if="!loading">
                 <button
                     style="margin:0px 3px 3px 0px;"
-                    @click="setLegnedHeight(100)"
+                    @click="setLegendHeight(100)"
                 >set to 100</button>
                 <button
                     style="margin:0px 3px 3px 0px;"
-                    @click="setLegnedHeight(50)"
+                    @click="setLegendHeight(50)"
                 >set to 50</button>
             </div>
 
@@ -180,7 +180,7 @@
               color: "rgba(214, 214, 92, 0.9)"
             }
           ],
-          legnedHeight: 100
+          legendHeight: 100
         },
         action: []
       };
@@ -195,9 +195,9 @@
         let vo = this;
         jv(vo.opt, document.querySelector("#optjson"), { expanded: true });
       },
-      setLegnedHeight: function(r) {
+      setLegendHeight: function(r) {
         let vo = this;
-        vo.opt.legnedHeight = r;
+        vo.opt.legendHeight = r;
       }
     }
   });

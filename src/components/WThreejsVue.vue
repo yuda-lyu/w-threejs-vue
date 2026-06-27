@@ -58,8 +58,8 @@
 
                         <!-- 圖例區 -->
                         <!-- 須使用pointer-events:none吃掉事件, 才能點擊選單區透明區域 -->
-                        <div :style="`padding:5px; border-radius:4px; background:${useLegnedBackgroundColor}; pointer-events:auto;`">
-                            <div :style="`${useLegnedHeight}`">
+                        <div :style="`padding:5px; border-radius:4px; background:${useLegendBackgroundColor}; pointer-events:auto;`">
+                            <div :style="`${useLegendHeight}`">
 
                                 <div
                                     :style="``"
@@ -292,9 +292,9 @@ let pathYZ = `M 22.049294,18.372083 H 12.678108 V 17.831045 L 20.097742,6.740768
  * @vue-prop {String} [opt.menuViewYZTooltip='YZ plane'] 輸入YZ平面視角tooltip文字字串，預設'YZ plane'
  * @vue-prop {String} [opt.menuLegendIcon] 輸入圖例圖示SVG path字串，預設mdiListBoxOutline
  * @vue-prop {String} [opt.menuLegendTooltip='Legend'] 輸入圖例tooltip文字字串，預設'Legend'
- * @vue-prop {String} [opt.legnedBackgroundColor='rgba(90,90,90,0.5)'] 輸入圖例區域背景色字串，預設'rgba(90,90,90,0.5)'
- * @vue-prop {Number} [opt.legnedHeight=null] 輸入圖例區域固定高度數字，單位px，預設null
- * @vue-prop {Number} [opt.legnedHeightMax=null] 輸入圖例區域最大高度數字，單位px，預設null
+ * @vue-prop {String} [opt.legendBackgroundColor='rgba(90,90,90,0.5)'] 輸入圖例區域背景色字串，預設'rgba(90,90,90,0.5)'
+ * @vue-prop {Number} [opt.legendHeight=null] 輸入圖例區域固定高度數字，單位px，預設null
+ * @vue-prop {Number} [opt.legendHeightMax=null] 輸入圖例區域最大高度數字，單位px，預設null
  */
 export default {
     directives: {
@@ -363,8 +363,8 @@ export default {
             menuLegendIcon: '',
             menuLegendTooltip: '',
 
-            useLegnedBackgroundColor: '',
-            useLegnedHeight: '',
+            useLegendBackgroundColor: '',
+            useLegendHeight: '',
 
             space: 10,
             panelItemsIconSize: 30,
@@ -823,35 +823,35 @@ export default {
         refreshLegend: function() {
             let vo = this
 
-            //legnedBackgroundColor
-            let legnedBackgroundColor = get(vo, 'opt.legendBackgroundColor', get(vo, 'opt.legnedBackgroundColor', ''))
-            if (!isestr(legnedBackgroundColor)) {
-                legnedBackgroundColor = 'rgba(90,90,90,0.5)'
+            //legendBackgroundColor
+            let legendBackgroundColor = get(vo, 'opt.legendBackgroundColor', '')
+            if (!isestr(legendBackgroundColor)) {
+                legendBackgroundColor = 'rgba(90,90,90,0.5)'
             }
 
-            vo.useLegnedBackgroundColor = oc.toRgbaString(legnedBackgroundColor)
-            // console.log('useLegnedBackgroundColor', vo.useLegnedBackgroundColor)
+            vo.useLegendBackgroundColor = oc.toRgbaString(legendBackgroundColor)
+            // console.log('useLegendBackgroundColor', vo.useLegendBackgroundColor)
 
-            //legnedHeight
-            let legnedHeight = get(vo, 'opt.legendHeight', get(vo, 'opt.legnedHeight', null))
+            //legendHeight
+            let legendHeight = get(vo, 'opt.legendHeight', null)
 
-            //legnedHeightMax
-            let legnedHeightMax = get(vo, 'opt.legendHeightMax', get(vo, 'opt.legnedHeightMax', null))
+            //legendHeightMax
+            let legendHeightMax = get(vo, 'opt.legendHeightMax', null)
 
-            let useLegnedHeight = ''
-            if (isnum(legnedHeight)) {
-                legnedHeight = cdbl(legnedHeight)
-                useLegnedHeight += `height:${legnedHeight}px;`
+            let useLegendHeight = ''
+            if (isnum(legendHeight)) {
+                legendHeight = cdbl(legendHeight)
+                useLegendHeight += `height:${legendHeight}px;`
             }
-            if (isnum(legnedHeightMax)) {
-                legnedHeightMax = cdbl(legnedHeightMax)
-                useLegnedHeight += `max-height:${legnedHeightMax}px;`
+            if (isnum(legendHeightMax)) {
+                legendHeightMax = cdbl(legendHeightMax)
+                useLegendHeight += `max-height:${legendHeightMax}px;`
             }
-            if (isnum(legnedHeight) || isnum(legnedHeightMax)) {
-                useLegnedHeight += `overflow-y:auto;`
+            if (isnum(legendHeight) || isnum(legendHeightMax)) {
+                useLegendHeight += `overflow-y:auto;`
             }
-            vo.useLegnedHeight = useLegnedHeight
-            // console.log('useLegnedHeight', vo.useLegnedHeight)
+            vo.useLegendHeight = useLegendHeight
+            // console.log('useLegendHeight', vo.useLegendHeight)
 
         },
 
@@ -1168,9 +1168,6 @@ export default {
                     menuLegendIcon: 'updateMenus',
                     menuLegendTooltip: 'updateMenus',
 
-                    legnedBackgroundColor: 'refreshLegend',
-                    legnedHeight: 'refreshLegend',
-                    legnedHeightMax: 'refreshLegend',
                     legendBackgroundColor: 'refreshLegend',
                     legendHeight: 'refreshLegend',
                     legendHeightMax: 'refreshLegend',
