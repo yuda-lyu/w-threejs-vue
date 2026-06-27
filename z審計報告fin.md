@@ -569,9 +569,15 @@ Demo 上傳使用 `URL.createObjectURL(bb)`，未在載入後或清除時呼叫 
 - `addMeshsCore()` 與 public `addMeshs()` 改用 `pmMap(..., 2)`，多模型載入可保守並行，結果仍保持原輸入順序加入 scene。
 - mesh/background/light color setter 改用既有 `THREE.Color#set()` 就地更新，減少互動調色時的暫時物件配置。
 
+2026-06-27 續修第四批：
+
+- `plot3d.mjs` 移除 `addStl` 靜態 import，改為第一次讀取 STL 時才 dynamic import，並指定 `w-threejs-vue-stl` chunk。
+- build 顯示 STL chunk 約 3.77 KiB gzip 前、約 1.87 KiB gzip 後；此項主要降低無模型或非 STL 場景的初始依賴，而非大幅縮減 entry。
+- `WThreejsVue.vue` 的 deep watch modify 流程新增 `modifySeq`，300ms debounce 後只允許最新一次 prop 變更套用，避免連續變更時重複觸發 axis/helper/camera setter 與重建。
+
 續修後驗證：
 
 - `npm run lint`：通過。
 - `npm test`：通過，1 passing。
-- `npm run build`：通過，仍有 bundle size warning；warning 數由先前 3 個降為 2 個，VTP 已切分為 lazy chunk。
+- `npm run build`：通過，仍有 bundle size warning；warning 數由先前 3 個降為 2 個，VTP/STL 已切分為 lazy chunk。
 - `npm run build` 產生的暫時 `dist/index.html`、`dist/js`、`dist/css` 已清除，tracked UMD 檔已恢復。

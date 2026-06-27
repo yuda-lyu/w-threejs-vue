@@ -335,6 +335,7 @@ export default {
             useLegend: true,
 
             optTemp: null,
+            modifySeq: 0,
 
             meshs: [],
 
@@ -411,11 +412,14 @@ export default {
                     // console.log('modify')
 
                     //modify, vue監聽obj需要原本有鍵而值有變化才能偵測, 若需要用modify得須於設定opt時預先給予初始值
-                    vo.modify()
+                    let seq = ++vo.modifySeq
+                    vo.modify(seq)
                         .finally(() => {
 
                             //save
-                            vo.optTemp = cloneDeep(vo.opt)
+                            if (seq === vo.modifySeq) {
+                                vo.optTemp = cloneDeep(vo.opt)
+                            }
 
                         })
 
@@ -936,7 +940,7 @@ export default {
 
         },
 
-        modify: async function () {
+        modify: async function (seq) {
             let vo = this
 
             async function core() {
@@ -948,6 +952,9 @@ export default {
 
                 //delay
                 await delay(300)
+                if (seq !== vo.modifySeq) {
+                    return
+                }
 
                 //ks, ksTemp
                 let ks = keys(vo.opt)

@@ -40,13 +40,20 @@ import { createGroup, disposeGroup } from './atGroup.mjs'
 import { createLine, disposeLines } from './atLine.mjs'
 import { createLabel, createLabels, disposeLabels } from './atLabel.mjs'
 import { calcTransform, resetTransform } from './atTransform.mjs'
-import addStl from './addStl.mjs'
 import getCsrdFromMeshs from './getCsrdFromMeshs.mjs'
 
 
 let toRad = Math.PI / 180
 let toDeg = 180 / Math.PI
+let addStlPromise = null
 let addVtpPromise = null
+let loadAddStl = async () => {
+    if (!addStlPromise) {
+        addStlPromise = import(/* webpackChunkName: "w-threejs-vue-stl" */ './addStl.mjs')
+            .then((mod) => mod.default)
+    }
+    return addStlPromise
+}
 let loadAddVtp = async () => {
     if (!addVtpPromise) {
         addVtpPromise = import(/* webpackChunkName: "w-threejs-vue-vtp" */ './addVtp.mjs')
@@ -2077,9 +2084,12 @@ async function plot3d(items, opt = {}) {
         let a = c.a
         // console.log('addStl before', c, gc, a)
 
-        let addMesh = addStl
+        let addMesh
         if (type === 'vtp') {
             addMesh = await loadAddVtp()
+        }
+        else {
+            addMesh = await loadAddStl()
         }
 
         //load
