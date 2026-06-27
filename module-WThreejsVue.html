@@ -607,6 +607,12 @@
         <td>No</td>
         <td>輸入設定選單tooltip文字字串，預設'Settings'</td>
     </tr><tr>
+        <td><code>opt.useMenuItemHelperAxes</code></td>
+        <td>Boolean</td>
+        <td><code>true</code></td>
+        <td>No</td>
+        <td>輸入是否顯示輔助軸線選單項目布林值，預設true</td>
+    </tr><tr>
         <td><code>opt.menuHelperAxesIcon</code></td>
         <td>String</td>
         <td>-</td>
@@ -618,6 +624,12 @@
         <td><code>'Help axes'</code></td>
         <td>No</td>
         <td>輸入輔助軸線tooltip文字字串，預設'Help axes'</td>
+    </tr><tr>
+        <td><code>opt.useMenuItemHelperGrid</code></td>
+        <td>Boolean</td>
+        <td><code>true</code></td>
+        <td>No</td>
+        <td>輸入是否顯示輔助網格選單項目布林值，預設true</td>
     </tr><tr>
         <td><code>opt.menuHelperGridIcon</code></td>
         <td>String</td>
@@ -631,6 +643,12 @@
         <td>No</td>
         <td>輸入輔助網格tooltip文字字串，預設'Help grid'</td>
     </tr><tr>
+        <td><code>opt.useMenuItemPerspective</code></td>
+        <td>Boolean</td>
+        <td><code>true</code></td>
+        <td>No</td>
+        <td>輸入是否顯示透視切換選單項目布林值，預設true</td>
+    </tr><tr>
         <td><code>opt.menuPerspectiveIcon</code></td>
         <td>String</td>
         <td>-</td>
@@ -642,6 +660,12 @@
         <td><code>'Perspective'</code></td>
         <td>No</td>
         <td>輸入透視切換tooltip文字字串，預設'Perspective'</td>
+    </tr><tr>
+        <td><code>opt.useMenuItemAxis</code></td>
+        <td>Boolean</td>
+        <td><code>true</code></td>
+        <td>No</td>
+        <td>輸入是否顯示座標軸選單項目布林值，預設true</td>
     </tr><tr>
         <td><code>opt.menuAxisIcon</code></td>
         <td>String</td>
@@ -655,6 +679,12 @@
         <td>No</td>
         <td>輸入座標軸tooltip文字字串，預設'Axis'</td>
     </tr><tr>
+        <td><code>opt.useMenuItemAutoRotate</code></td>
+        <td>Boolean</td>
+        <td><code>true</code></td>
+        <td>No</td>
+        <td>輸入是否顯示自動旋轉選單項目布林值，預設true</td>
+    </tr><tr>
         <td><code>opt.menuAutoRotateIcon</code></td>
         <td>String</td>
         <td>-</td>
@@ -666,6 +696,12 @@
         <td><code>'Auto rotate'</code></td>
         <td>No</td>
         <td>輸入自動旋轉tooltip文字字串，預設'Auto rotate'</td>
+    </tr><tr>
+        <td><code>opt.useMenuItemViewXY</code></td>
+        <td>Boolean</td>
+        <td><code>true</code></td>
+        <td>No</td>
+        <td>輸入是否顯示XY平面視角選單項目布林值，預設true</td>
     </tr><tr>
         <td><code>opt.menuViewXYIcon</code></td>
         <td>String</td>
@@ -679,6 +715,12 @@
         <td>No</td>
         <td>輸入XY平面視角tooltip文字字串，預設'XY plane'</td>
     </tr><tr>
+        <td><code>opt.useMenuItemViewXZ</code></td>
+        <td>Boolean</td>
+        <td><code>true</code></td>
+        <td>No</td>
+        <td>輸入是否顯示XZ平面視角選單項目布林值，預設true</td>
+    </tr><tr>
         <td><code>opt.menuViewXZIcon</code></td>
         <td>String</td>
         <td>-</td>
@@ -690,6 +732,12 @@
         <td><code>'XZ plane'</code></td>
         <td>No</td>
         <td>輸入XZ平面視角tooltip文字字串，預設'XZ plane'</td>
+    </tr><tr>
+        <td><code>opt.useMenuItemViewYZ</code></td>
+        <td>Boolean</td>
+        <td><code>true</code></td>
+        <td>No</td>
+        <td>輸入是否顯示YZ平面視角選單項目布林值，預設true</td>
     </tr><tr>
         <td><code>opt.menuViewYZIcon</code></td>
         <td>String</td>
@@ -703,6 +751,12 @@
         <td>No</td>
         <td>輸入YZ平面視角tooltip文字字串，預設'YZ plane'</td>
     </tr><tr>
+        <td><code>opt.useMenuItemLegend</code></td>
+        <td>Boolean</td>
+        <td><code>true</code></td>
+        <td>No</td>
+        <td>輸入是否顯示圖例選單項目布林值，預設true</td>
+    </tr><tr>
         <td><code>opt.menuLegendIcon</code></td>
         <td>String</td>
         <td>-</td>
@@ -715,19 +769,19 @@
         <td>No</td>
         <td>輸入圖例tooltip文字字串，預設'Legend'</td>
     </tr><tr>
-        <td><code>opt.legnedBackgroundColor</code></td>
+        <td><code>opt.legendBackgroundColor</code></td>
         <td>String</td>
         <td><code>'rgba(90,90,90,0.5)'</code></td>
         <td>No</td>
         <td>輸入圖例區域背景色字串，預設'rgba(90,90,90,0.5)'</td>
     </tr><tr>
-        <td><code>opt.legnedHeight</code></td>
+        <td><code>opt.legendHeight</code></td>
         <td>Number</td>
         <td><code>null</code></td>
         <td>No</td>
         <td>輸入圖例區域固定高度數字，單位px，預設null</td>
     </tr><tr>
-        <td><code>opt.legnedHeightMax</code></td>
+        <td><code>opt.legendHeightMax</code></td>
         <td>Number</td>
         <td><code>null</code></td>
         <td>No</td>
@@ -1305,6 +1359,12 @@
         <td>No</td>
         <td>輸入設定選單tooltip文字字串，預設'Settings'</td>
     </tr><tr>
+        <td><code>opt.useMenuItemHelperAxes</code></td>
+        <td>Boolean</td>
+        <td><code>true</code></td>
+        <td>No</td>
+        <td>輸入是否顯示輔助軸線選單項目布林值，預設true</td>
+    </tr><tr>
         <td><code>opt.menuHelperAxesIcon</code></td>
         <td>String</td>
         <td>-</td>
@@ -1316,6 +1376,12 @@
         <td><code>'Help axes'</code></td>
         <td>No</td>
         <td>輸入輔助軸線tooltip文字字串，預設'Help axes'</td>
+    </tr><tr>
+        <td><code>opt.useMenuItemHelperGrid</code></td>
+        <td>Boolean</td>
+        <td><code>true</code></td>
+        <td>No</td>
+        <td>輸入是否顯示輔助網格選單項目布林值，預設true</td>
     </tr><tr>
         <td><code>opt.menuHelperGridIcon</code></td>
         <td>String</td>
@@ -1329,6 +1395,12 @@
         <td>No</td>
         <td>輸入輔助網格tooltip文字字串，預設'Help grid'</td>
     </tr><tr>
+        <td><code>opt.useMenuItemPerspective</code></td>
+        <td>Boolean</td>
+        <td><code>true</code></td>
+        <td>No</td>
+        <td>輸入是否顯示透視切換選單項目布林值，預設true</td>
+    </tr><tr>
         <td><code>opt.menuPerspectiveIcon</code></td>
         <td>String</td>
         <td>-</td>
@@ -1340,6 +1412,12 @@
         <td><code>'Perspective'</code></td>
         <td>No</td>
         <td>輸入透視切換tooltip文字字串，預設'Perspective'</td>
+    </tr><tr>
+        <td><code>opt.useMenuItemAxis</code></td>
+        <td>Boolean</td>
+        <td><code>true</code></td>
+        <td>No</td>
+        <td>輸入是否顯示座標軸選單項目布林值，預設true</td>
     </tr><tr>
         <td><code>opt.menuAxisIcon</code></td>
         <td>String</td>
@@ -1353,6 +1431,12 @@
         <td>No</td>
         <td>輸入座標軸tooltip文字字串，預設'Axis'</td>
     </tr><tr>
+        <td><code>opt.useMenuItemAutoRotate</code></td>
+        <td>Boolean</td>
+        <td><code>true</code></td>
+        <td>No</td>
+        <td>輸入是否顯示自動旋轉選單項目布林值，預設true</td>
+    </tr><tr>
         <td><code>opt.menuAutoRotateIcon</code></td>
         <td>String</td>
         <td>-</td>
@@ -1364,6 +1448,12 @@
         <td><code>'Auto rotate'</code></td>
         <td>No</td>
         <td>輸入自動旋轉tooltip文字字串，預設'Auto rotate'</td>
+    </tr><tr>
+        <td><code>opt.useMenuItemViewXY</code></td>
+        <td>Boolean</td>
+        <td><code>true</code></td>
+        <td>No</td>
+        <td>輸入是否顯示XY平面視角選單項目布林值，預設true</td>
     </tr><tr>
         <td><code>opt.menuViewXYIcon</code></td>
         <td>String</td>
@@ -1377,6 +1467,12 @@
         <td>No</td>
         <td>輸入XY平面視角tooltip文字字串，預設'XY plane'</td>
     </tr><tr>
+        <td><code>opt.useMenuItemViewXZ</code></td>
+        <td>Boolean</td>
+        <td><code>true</code></td>
+        <td>No</td>
+        <td>輸入是否顯示XZ平面視角選單項目布林值，預設true</td>
+    </tr><tr>
         <td><code>opt.menuViewXZIcon</code></td>
         <td>String</td>
         <td>-</td>
@@ -1388,6 +1484,12 @@
         <td><code>'XZ plane'</code></td>
         <td>No</td>
         <td>輸入XZ平面視角tooltip文字字串，預設'XZ plane'</td>
+    </tr><tr>
+        <td><code>opt.useMenuItemViewYZ</code></td>
+        <td>Boolean</td>
+        <td><code>true</code></td>
+        <td>No</td>
+        <td>輸入是否顯示YZ平面視角選單項目布林值，預設true</td>
     </tr><tr>
         <td><code>opt.menuViewYZIcon</code></td>
         <td>String</td>
@@ -1401,6 +1503,12 @@
         <td>No</td>
         <td>輸入YZ平面視角tooltip文字字串，預設'YZ plane'</td>
     </tr><tr>
+        <td><code>opt.useMenuItemLegend</code></td>
+        <td>Boolean</td>
+        <td><code>true</code></td>
+        <td>No</td>
+        <td>輸入是否顯示圖例選單項目布林值，預設true</td>
+    </tr><tr>
         <td><code>opt.menuLegendIcon</code></td>
         <td>String</td>
         <td>-</td>
@@ -1413,19 +1521,19 @@
         <td>No</td>
         <td>輸入圖例tooltip文字字串，預設'Legend'</td>
     </tr><tr>
-        <td><code>opt.legnedBackgroundColor</code></td>
+        <td><code>opt.legendBackgroundColor</code></td>
         <td>String</td>
         <td><code>'rgba(90,90,90,0.5)'</code></td>
         <td>No</td>
         <td>輸入圖例區域背景色字串，預設'rgba(90,90,90,0.5)'</td>
     </tr><tr>
-        <td><code>opt.legnedHeight</code></td>
+        <td><code>opt.legendHeight</code></td>
         <td>Number</td>
         <td><code>null</code></td>
         <td>No</td>
         <td>輸入圖例區域固定高度數字，單位px，預設null</td>
     </tr><tr>
-        <td><code>opt.legnedHeightMax</code></td>
+        <td><code>opt.legendHeightMax</code></td>
         <td>Number</td>
         <td><code>null</code></td>
         <td>No</td>
@@ -1545,7 +1653,7 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.5</a> on Mon Apr 13 2026 00:01:24 GMT+0800 (台北標準時間) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.5</a> on Sat Jun 27 2026 22:32:37 GMT+0800 (台北標準時間) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
 <script>prettyPrint();</script>

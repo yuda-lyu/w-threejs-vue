@@ -43,7 +43,7 @@
     />
 
     <!-- w-threejs-vue -->
-    <script src="https://cdn.jsdelivr.net/npm/w-threejs-vue@1.0.15/dist/w-threejs-vue.umd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/w-threejs-vue@1.0.16/dist/w-threejs-vue.umd.js"></script>
 
     <!-- lodash -->
     <script src="https://cdn.jsdelivr.net/npm/lodash/lodash.min.js"></script>
@@ -214,6 +214,7 @@
           }
 
           let ms = [];
+          let objectUrls = [];
           for (let i = 0; i < files.length; i++) {
             let file = files[i];
             console.log("file", file);
@@ -232,6 +233,7 @@
 
             // let url = window.URL.createObjectURL(file)
             let url = window.URL.createObjectURL(bb);
+            objectUrls.push(url);
             console.log("url", url);
 
             let m = {
@@ -253,9 +255,13 @@
 
           try {
             if (ms.length > 0) {
-              vo.$refs.thr.getInst().addMeshs(ms);
+              await vo.$refs.thr.getInst().addMeshs(ms);
             }
-          } catch (err) {}
+          } finally {
+            objectUrls.forEach(url => {
+              window.URL.revokeObjectURL(url);
+            });
+          }
         }
 
         //core
