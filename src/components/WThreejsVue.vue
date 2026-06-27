@@ -335,6 +335,7 @@ export default {
             useLegend: true,
 
             optTemp: null,
+            initSeq: 0,
             modifySeq: 0,
 
             meshs: [],
@@ -399,11 +400,14 @@ export default {
                     // console.log('init')
 
                     //init
-                    vo.init()
+                    let seq = ++vo.initSeq
+                    vo.init(seq)
                         .finally(() => {
 
                             //save
-                            vo.optTemp = cloneDeep(vo.opt)
+                            if (seq === vo.initSeq) {
+                                vo.optTemp = cloneDeep(vo.opt)
+                            }
 
                         })
 
@@ -851,8 +855,11 @@ export default {
 
         },
 
-        init: async function() {
+        init: async function(seq) {
             let vo = this
+            if (!isnum(seq)) {
+                seq = ++vo.initSeq
+            }
 
             async function core() {
 
@@ -864,6 +871,9 @@ export default {
                     return isEle(vo.$refs.panel)
                 })
                 // console.log('vo.$refs.panel', vo.$refs.panel)
+                if (seq !== vo.initSeq) {
+                    return
+                }
 
                 //show loading
                 vo.loading = true
@@ -878,12 +888,19 @@ export default {
 
                 //plot3d
                 let ev = await plot3d(items, optPlot3d)
+                if (seq !== vo.initSeq) {
+                    ev.dispose()
+                    return
+                }
 
                 //save
                 vo.ev = ev
 
                 //on
                 ev.on('init', () => {
+                    if (seq !== vo.initSeq) {
+                        return
+                    }
                     // console.log('init')
                     vo.$emit('init')
 
@@ -904,27 +921,45 @@ export default {
 
                 })
                 ev.on('loading', (msg) => {
+                    if (seq !== vo.initSeq) {
+                        return
+                    }
                     // console.log('loading', msg)
                     vo.$emit('loading', msg)
                 })
                 ev.on('error', (err) => {
+                    if (seq !== vo.initSeq) {
+                        return
+                    }
                     // console.log('error', err)
                     vo.loading = false
                     vo.$emit('error', err)
                 })
                 ev.on('dispose', () => {
+                    if (seq !== vo.initSeq) {
+                        return
+                    }
                     // console.log('dispose')
                     vo.$emit('dispose')
                 })
                 ev.on('change-view-angle', (msg) => {
+                    if (seq !== vo.initSeq) {
+                        return
+                    }
                     // console.log('change-view-angle')
                     vo.$emit('change-view-angle', msg)
                 })
                 ev.on('mesh-change', () => {
+                    if (seq !== vo.initSeq) {
+                        return
+                    }
                     // console.log('mesh-change')
                     vo.refreshMeshsState()
                 })
                 ev.on('config-change', () => {
+                    if (seq !== vo.initSeq) {
+                        return
+                    }
                     // console.log('config-change')
                     vo.refreshControlState()
                 })
@@ -934,6 +969,9 @@ export default {
             //core
             await core()
                 .catch((err) => {
+                    if (seq !== vo.initSeq) {
+                        return
+                    }
                     vo.loading = false
                     vo.$emit('error', err)
                     console.log(err)

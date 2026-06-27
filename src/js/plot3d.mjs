@@ -722,10 +722,12 @@ async function plot3d(items, opt = {}) {
     }
 
     let helperGridRefreshPending = false
-    let refreshHelperGridCore = () => {
+    let refreshHelperGridCore = (renderNow = true) => {
         disposeHelperGrid(scene, helperGrid)
         helperGrid = createHelperGrid(scene, { useHelperGrid, helperGridLengthRatio, helperGridDensity, helperGridPositionRatioZ })
-        render()
+        if (renderNow) {
+            render()
+        }
     }
     let refreshHelperGrid = () => {
         if (batchUpdateDepth > 0) {
@@ -1887,7 +1889,7 @@ async function plot3d(items, opt = {}) {
 
     let axisRefreshPending = false
 
-    let refreshAxisCore = () => {
+    let refreshAxisCore = (renderNow = true) => {
 
         //disposeAxis
         disposeAxis()
@@ -1903,7 +1905,9 @@ async function plot3d(items, opt = {}) {
         }
 
         //render
-        render()
+        if (renderNow) {
+            render()
+        }
 
     }
     let refreshAxis = () => {
@@ -1919,15 +1923,18 @@ async function plot3d(items, opt = {}) {
     let endBatchUpdate = () => {
         batchUpdateDepth = Math.max(batchUpdateDepth - 1, 0)
         if (batchUpdateDepth === 0) {
+            let shouldRender = renderPending
             if (helperGridRefreshPending) {
                 helperGridRefreshPending = false
-                refreshHelperGridCore()
+                refreshHelperGridCore(false)
+                shouldRender = true
             }
             if (axisRefreshPending) {
                 axisRefreshPending = false
-                refreshAxisCore()
+                refreshAxisCore(false)
+                shouldRender = true
             }
-            if (renderPending) {
+            if (shouldRender) {
                 render()
             }
         }

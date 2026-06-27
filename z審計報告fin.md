@@ -594,6 +594,12 @@ Demo 上傳使用 `URL.createObjectURL(bb)`，未在載入後或清除時呼叫 
 - `updateItemsSelects()` 改為先用 `keyBy(vo.items, 'id')` 建索引，再依 `itemsSelectIds` 取值，避免每個 id 都用 `find()` 掃描整個 items。
 - 此項降低 wrapper 在大量 option 或選單設定同時變更時的重複 Vue state assignment 與查找成本。
 
+2026-06-27 續修第八批：
+
+- `WThreejsVue.vue` 新增 `initSeq`，避免 `loading` 期間 deep watch 連續觸發造成多個 `init()` 並行，舊初始化完成後覆蓋新 viewer 狀態。
+- `init()` 在等待 DOM、完成 `plot3d()`、處理 `init/loading/error/dispose/change-view-angle/mesh-change/config-change` event 前皆檢查序號；過期初始化會 dispose 自身 ev 並停止更新 wrapper 狀態。
+- 額外執行 `node toolg/gDistRollupComps.mjs` 驗證 UMD 打包仍可成功；該驗證產生的 tracked `dist/w-threejs-vue.umd.js` 與 `.map` 已還原。
+
 續修後驗證：
 
 - `npm run lint`：通過。
