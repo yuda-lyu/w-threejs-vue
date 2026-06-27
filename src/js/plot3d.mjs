@@ -323,6 +323,7 @@ async function plot3d(items, opt = {}) {
 
     let emitConfigChange = () => {}
     let batchUpdateDepth = 0
+    let renderPending = false
 
     //useAutoRotate
     let useAutoRotate = get(opt, 'useAutoRotate')
@@ -1926,6 +1927,9 @@ async function plot3d(items, opt = {}) {
                 axisRefreshPending = false
                 refreshAxisCore()
             }
+            if (renderPending) {
+                render()
+            }
         }
     }
 
@@ -2505,7 +2509,12 @@ async function plot3d(items, opt = {}) {
     let render = () => {
         // iRender++
         // console.log('render', iRender)
+        if (batchUpdateDepth > 0) {
+            renderPending = true
+            return
+        }
         try {
+            renderPending = false
             renderer.render(scene, camera)
             rendererLabels.render(scene, camera)
         }

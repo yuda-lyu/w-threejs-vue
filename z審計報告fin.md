@@ -582,6 +582,12 @@ Demo 上傳使用 `URL.createObjectURL(bb)`，未在載入後或清除時呼叫 
 - helper grid 的 `lengthRatio`、`density`、`positionRatioZ` setter 改走 `refreshHelperGrid()`，batch 期間同樣只於最後重建一次 grid。
 - `WThreejsVue.vue` 的 `modify()` 會於套用整批 diff 前後呼叫 core batch API，因此父層一次更新多個 axis/helper option 時可減少 DOM label、line geometry、grid helper 的重複建立與 render。
 
+2026-06-27 續修第六批：
+
+- `plot3d.mjs` 的 `render()` 支援 batch：batch 期間呼叫 render 只標記 `renderPending`，等 `endBatchUpdate()` 後再統一 render 一次。
+- batch flush 順序會先處理 pending helper grid / axis 重建，再視 `renderPending` 補一次 render；若重建流程已 render，pending 會被清除，避免多 render。
+- 此項可降低同一批 option diff 中 background/light/camera/axis/helper setter 連續觸發時的同步 render 次數。
+
 續修後驗證：
 
 - `npm run lint`：通過。
