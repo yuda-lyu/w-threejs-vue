@@ -897,10 +897,15 @@ export default {
                 vo.ev = ev
 
                 //on
-                ev.on('init', () => {
+                let initHandled = false
+                let handleInit = () => {
                     if (seq !== vo.initSeq) {
                         return
                     }
+                    if (initHandled) {
+                        return
+                    }
+                    initHandled = true
                     // console.log('init')
                     vo.$emit('init')
 
@@ -919,7 +924,16 @@ export default {
                     //hide loading
                     vo.loading = false
 
-                })
+                }
+                let handleError = (err) => {
+                    if (seq !== vo.initSeq) {
+                        return
+                    }
+                    // console.log('error', err)
+                    vo.loading = false
+                    vo.$emit('error', err)
+                }
+                ev.on('init', handleInit)
                 ev.on('loading', (msg) => {
                     if (seq !== vo.initSeq) {
                         return
@@ -927,14 +941,7 @@ export default {
                     // console.log('loading', msg)
                     vo.$emit('loading', msg)
                 })
-                ev.on('error', (err) => {
-                    if (seq !== vo.initSeq) {
-                        return
-                    }
-                    // console.log('error', err)
-                    vo.loading = false
-                    vo.$emit('error', err)
-                })
+                ev.on('error', handleError)
                 ev.on('dispose', () => {
                     if (seq !== vo.initSeq) {
                         return
@@ -963,6 +970,13 @@ export default {
                     // console.log('config-change')
                     vo.refreshControlState()
                 })
+                if (isfun(ev.isReady) && ev.isReady()) {
+                    handleInit()
+                }
+                let readyError = isfun(ev.getReadyError) ? ev.getReadyError() : null
+                if (readyError) {
+                    handleError(readyError)
+                }
 
             }
 

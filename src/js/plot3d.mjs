@@ -669,6 +669,12 @@ async function plot3d(items, opt = {}) {
 
     //ev
     let ev = evem()
+    let ready = false
+    let readyError = null
+    let getIniReady = null
+    let disposed = false
+    let getReadyState = () => ready
+    let getReadyError = () => readyError
     emitConfigChange = (key, value) => {
         ev.emit('config-change', { key, value })
     }
@@ -2405,6 +2411,9 @@ async function plot3d(items, opt = {}) {
             //須有csr才能繪製axis與tick
             createAxis()
 
+            //初始化須直接收斂最優顯示邊, 不可依賴syncViewAngle(角度未變會被短路)
+            autoDisplayAxis()
+
         }
 
         //sync view angle and update axis visibility
@@ -2559,13 +2568,24 @@ async function plot3d(items, opt = {}) {
     }
 
     //第1次渲染
-    rdr() //非同步驅動, 故不能用await等待
-        .then(() => {
+    getIniReady = delay(0)
+        .then(async() => {
+            if (disposed) {
+                return null
+            }
+            await rdr()
+            if (disposed) {
+                return null
+            }
+            ready = true
             emitMeshChange()
             ev.emit('init')
+            return ev
         })
         .catch((err) => {
+            readyError = err
             ev.emit('error', err)
+            return null
         })
 
     //stop
@@ -2619,6 +2639,12 @@ async function plot3d(items, opt = {}) {
 
     let disposeAll = () => {
         // console.log('disposeAll')
+
+        //check
+        if (disposed) {
+            return
+        }
+        disposed = true
 
         //emit
         ev.emit('dispose')
@@ -2737,6 +2763,9 @@ async function plot3d(items, opt = {}) {
     ev.render = render
     ev.resize = resize
     ev.dispose = disposeAll
+    ev.getIniReady = getIniReady
+    ev.getReadyState = getReadyState
+    ev.getReadyError = getReadyError
     ev.beginBatchUpdate = beginBatchUpdate
     ev.endBatchUpdate = endBatchUpdate
 
