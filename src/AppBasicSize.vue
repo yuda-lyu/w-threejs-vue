@@ -13,7 +13,7 @@
                 <button style="margin:0px 3px 3px 0px;" @click="setWidth(800)">set width to 800</button>
                 <button style="margin:0px 3px 3px 0px;" @click="setWidth(300)">set width to 300</button>
                 <button style="margin:0px 3px 3px 0px;" @click="setHeight(600)">set height to 600</button>
-                <button style="margin:0px 3px 3px 0px;" @click="setHeight(300)">set height to 300</button>
+                <button style="margin:0px 3px 3px 0px;" @click="setHeight(250)">set height to 250</button>
             </div>
 
             <div style="display:flex; padding-bottom:40px; overflow-x:auto;">
