@@ -322,6 +322,7 @@ async function plot3d(items, opt = {}) {
     }
 
     let emitConfigChange = () => {}
+    let batchUpdateDepth = 0
 
     //useAutoRotate
     let useAutoRotate = get(opt, 'useAutoRotate')
@@ -719,6 +720,20 @@ async function plot3d(items, opt = {}) {
         return useHelperGrid
     }
 
+    let helperGridRefreshPending = false
+    let refreshHelperGridCore = () => {
+        disposeHelperGrid(scene, helperGrid)
+        helperGrid = createHelperGrid(scene, { useHelperGrid, helperGridLengthRatio, helperGridDensity, helperGridPositionRatioZ })
+        render()
+    }
+    let refreshHelperGrid = () => {
+        if (batchUpdateDepth > 0) {
+            helperGridRefreshPending = true
+            return
+        }
+        refreshHelperGridCore()
+    }
+
     let setUseHelperGrid = (b) => {
         useHelperGrid = b
         if (!helperGrid) {
@@ -731,23 +746,17 @@ async function plot3d(items, opt = {}) {
 
     let setHelperGridLengthRatio = (r) => {
         helperGridLengthRatio = r
-        disposeHelperGrid(scene, helperGrid)
-        helperGrid = createHelperGrid(scene, { useHelperGrid, helperGridLengthRatio, helperGridDensity, helperGridPositionRatioZ })
-        render()
+        refreshHelperGrid()
     }
 
     let setHelperGridDensity = (r) => {
         helperGridDensity = r
-        disposeHelperGrid(scene, helperGrid)
-        helperGrid = createHelperGrid(scene, { useHelperGrid, helperGridLengthRatio, helperGridDensity, helperGridPositionRatioZ })
-        render()
+        refreshHelperGrid()
     }
 
     let setHelperGridPositionRatioZ = (r) => {
         helperGridPositionRatioZ = r
-        disposeHelperGrid(scene, helperGrid)
-        helperGrid = createHelperGrid(scene, { useHelperGrid, helperGridLengthRatio, helperGridDensity, helperGridPositionRatioZ })
-        render()
+        refreshHelperGrid()
     }
 
     // //fog
@@ -1875,7 +1884,9 @@ async function plot3d(items, opt = {}) {
 
     }
 
-    let refreshAxis = () => {
+    let axisRefreshPending = false
+
+    let refreshAxisCore = () => {
 
         //disposeAxis
         disposeAxis()
@@ -1893,6 +1904,29 @@ async function plot3d(items, opt = {}) {
         //render
         render()
 
+    }
+    let refreshAxis = () => {
+        if (batchUpdateDepth > 0) {
+            axisRefreshPending = true
+            return
+        }
+        refreshAxisCore()
+    }
+    let beginBatchUpdate = () => {
+        batchUpdateDepth++
+    }
+    let endBatchUpdate = () => {
+        batchUpdateDepth = Math.max(batchUpdateDepth - 1, 0)
+        if (batchUpdateDepth === 0) {
+            if (helperGridRefreshPending) {
+                helperGridRefreshPending = false
+                refreshHelperGridCore()
+            }
+            if (axisRefreshPending) {
+                axisRefreshPending = false
+                refreshAxisCore()
+            }
+        }
     }
 
     let setAxisXTitle = (v) => {
@@ -2687,6 +2721,8 @@ async function plot3d(items, opt = {}) {
     ev.render = render
     ev.resize = resize
     ev.dispose = disposeAll
+    ev.beginBatchUpdate = beginBatchUpdate
+    ev.endBatchUpdate = endBatchUpdate
 
     ev.getUseAutoRotate = getUseAutoRotate
     ev.setUseAutoRotate = setUseAutoRotate

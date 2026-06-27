@@ -1125,25 +1125,37 @@ export default {
                 }
 
                 //call
-                each(rs, (v) => {
-                    let k = v.k
-                    if (haskey(kpSet, k)) {
-                        let cf = kpSet[k]
-                        // console.log('call', k, cf)
-                        let fun = get(vo, cf)
-                        if (isfun(fun)) {
-                            try {
-                                fun(v.vNew)
-                            }
-                            catch (err) {
-                                console.log(err)
+                let beginBatchUpdate = get(vo, 'ev.beginBatchUpdate')
+                let endBatchUpdate = get(vo, 'ev.endBatchUpdate')
+                if (isfun(beginBatchUpdate)) {
+                    beginBatchUpdate()
+                }
+                try {
+                    each(rs, (v) => {
+                        let k = v.k
+                        if (haskey(kpSet, k)) {
+                            let cf = kpSet[k]
+                            // console.log('call', k, cf)
+                            let fun = get(vo, cf)
+                            if (isfun(fun)) {
+                                try {
+                                    fun(v.vNew)
+                                }
+                                catch (err) {
+                                    console.log(err)
+                                }
                             }
                         }
+                        else {
+                            console.log(`尚未建置 ${k} 之 set 函數`)
+                        }
+                    })
+                }
+                finally {
+                    if (isfun(endBatchUpdate)) {
+                        endBatchUpdate()
                     }
-                    else {
-                        console.log(`尚未建置 ${k} 之 set 函數`)
-                    }
-                })
+                }
 
             }
 

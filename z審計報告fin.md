@@ -575,6 +575,13 @@ Demo 上傳使用 `URL.createObjectURL(bb)`，未在載入後或清除時呼叫 
 - build 顯示 STL chunk 約 3.77 KiB gzip 前、約 1.87 KiB gzip 後；此項主要降低無模型或非 STL 場景的初始依賴，而非大幅縮減 entry。
 - `WThreejsVue.vue` 的 deep watch modify 流程新增 `modifySeq`，300ms debounce 後只允許最新一次 prop 變更套用，避免連續變更時重複觸發 axis/helper/camera setter 與重建。
 
+2026-06-27 續修第五批：
+
+- `plot3d.mjs` 新增 `beginBatchUpdate()` / `endBatchUpdate()`，目前用於合併同一批 option 更新中的 axis 與 helper grid 重建。
+- `refreshAxis()` 於 batch 期間只標記 pending，等 batch 結束後才 `disposeAxis()` / `createAxis()` 一次，避免多個 axis option 同時變更時反覆重建。
+- helper grid 的 `lengthRatio`、`density`、`positionRatioZ` setter 改走 `refreshHelperGrid()`，batch 期間同樣只於最後重建一次 grid。
+- `WThreejsVue.vue` 的 `modify()` 會於套用整批 diff 前後呼叫 core batch API，因此父層一次更新多個 axis/helper option 時可減少 DOM label、line geometry、grid helper 的重複建立與 render。
+
 續修後驗證：
 
 - `npm run lint`：通過。
