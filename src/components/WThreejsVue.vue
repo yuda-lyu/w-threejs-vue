@@ -160,6 +160,7 @@ import isEqual from 'lodash-es/isEqual.js'
 import cloneDeep from 'lodash-es/cloneDeep.js'
 import waitFun from 'wsemi/src/waitFun.mjs'
 import haskey from 'wsemi/src/haskey.mjs'
+import isbol from 'wsemi/src/isbol.mjs'
 import isnum from 'wsemi/src/isnum.mjs'
 import isestr from 'wsemi/src/isestr.mjs'
 import iseobj from 'wsemi/src/iseobj.mjs'
@@ -274,22 +275,31 @@ let pathYZ = `M 22.049294,18.372083 H 12.678108 V 17.831045 L 20.097742,6.740768
  * @vue-prop {Number} [opt.cameraPolarAngle] 輸入相機極角(垂直角度)數字，因可通過UI改變導致Vue無法監聯變數有變而觸發computed，故建議直接使用setCameraPolarAngle變更
  * @vue-prop {String} [opt.menuSettingIcon] 輸入設定選單圖示SVG path字串，預設mdiCogOutline
  * @vue-prop {String} [opt.menuSettingTooltip='Settings'] 輸入設定選單tooltip文字字串，預設'Settings'
+ * @vue-prop {Boolean} [opt.useMenuItemHelperAxes=true] 輸入是否顯示輔助軸線選單項目布林值，預設true
  * @vue-prop {String} [opt.menuHelperAxesIcon] 輸入輔助軸線圖示SVG path字串，預設mdiAxis
  * @vue-prop {String} [opt.menuHelperAxesTooltip='Help axes'] 輸入輔助軸線tooltip文字字串，預設'Help axes'
+ * @vue-prop {Boolean} [opt.useMenuItemHelperGrid=true] 輸入是否顯示輔助網格選單項目布林值，預設true
  * @vue-prop {String} [opt.menuHelperGridIcon] 輸入輔助網格圖示SVG path字串，預設mdiGrid
  * @vue-prop {String} [opt.menuHelperGridTooltip='Help grid'] 輸入輔助網格tooltip文字字串，預設'Help grid'
+ * @vue-prop {Boolean} [opt.useMenuItemPerspective=true] 輸入是否顯示透視切換選單項目布林值，預設true
  * @vue-prop {String} [opt.menuPerspectiveIcon] 輸入透視切換圖示SVG path字串，預設mdiProjectorScreenOutline
  * @vue-prop {String} [opt.menuPerspectiveTooltip='Perspective'] 輸入透視切換tooltip文字字串，預設'Perspective'
+ * @vue-prop {Boolean} [opt.useMenuItemAxis=true] 輸入是否顯示座標軸選單項目布林值，預設true
  * @vue-prop {String} [opt.menuAxisIcon] 輸入座標軸圖示SVG path字串，預設mdiPackageVariantClosed
  * @vue-prop {String} [opt.menuAxisTooltip='Axis'] 輸入座標軸tooltip文字字串，預設'Axis'
+ * @vue-prop {Boolean} [opt.useMenuItemAutoRotate=true] 輸入是否顯示自動旋轉選單項目布林值，預設true
  * @vue-prop {String} [opt.menuAutoRotateIcon] 輸入自動旋轉圖示SVG path字串，預設mdiAxisZRotateCounterclockwise
  * @vue-prop {String} [opt.menuAutoRotateTooltip='Auto rotate'] 輸入自動旋轉tooltip文字字串，預設'Auto rotate'
+ * @vue-prop {Boolean} [opt.useMenuItemViewXY=true] 輸入是否顯示XY平面視角選單項目布林值，預設true
  * @vue-prop {String} [opt.menuViewXYIcon] 輸入XY平面視角圖示SVG path字串
  * @vue-prop {String} [opt.menuViewXYTooltip='XY plane'] 輸入XY平面視角tooltip文字字串，預設'XY plane'
+ * @vue-prop {Boolean} [opt.useMenuItemViewXZ=true] 輸入是否顯示XZ平面視角選單項目布林值，預設true
  * @vue-prop {String} [opt.menuViewXZIcon] 輸入XZ平面視角圖示SVG path字串
  * @vue-prop {String} [opt.menuViewXZTooltip='XZ plane'] 輸入XZ平面視角tooltip文字字串，預設'XZ plane'
+ * @vue-prop {Boolean} [opt.useMenuItemViewYZ=true] 輸入是否顯示YZ平面視角選單項目布林值，預設true
  * @vue-prop {String} [opt.menuViewYZIcon] 輸入YZ平面視角圖示SVG path字串
  * @vue-prop {String} [opt.menuViewYZTooltip='YZ plane'] 輸入YZ平面視角tooltip文字字串，預設'YZ plane'
+ * @vue-prop {Boolean} [opt.useMenuItemLegend=true] 輸入是否顯示圖例選單項目布林值，預設true
  * @vue-prop {String} [opt.menuLegendIcon] 輸入圖例圖示SVG path字串，預設mdiListBoxOutline
  * @vue-prop {String} [opt.menuLegendTooltip='Legend'] 輸入圖例tooltip文字字串，預設'Legend'
  * @vue-prop {String} [opt.legendBackgroundColor='rgba(90,90,90,0.5)'] 輸入圖例區域背景色字串，預設'rgba(90,90,90,0.5)'
@@ -467,6 +477,132 @@ export default {
             return h
         },
 
+        useMenuItemHelperAxesInp: function() {
+            //console.log('computed useMenuItemHelperAxesInp')
+
+            let vo = this
+
+            //b
+            let b = get(vo, 'opt.useMenuItemHelperAxes', null)
+            if (!isbol(b)) {
+                b = true
+            }
+
+            return b
+        },
+
+        useMenuItemHelperGridInp: function() {
+            //console.log('computed useMenuItemHelperGridInp')
+
+            let vo = this
+
+            //b
+            let b = get(vo, 'opt.useMenuItemHelperGrid', null)
+            if (!isbol(b)) {
+                b = true
+            }
+
+            return b
+        },
+
+        useMenuItemPerspectiveInp: function() {
+            //console.log('computed useMenuItemPerspectiveInp')
+
+            let vo = this
+
+            //b
+            let b = get(vo, 'opt.useMenuItemPerspective', null)
+            if (!isbol(b)) {
+                b = true
+            }
+
+            return b
+        },
+
+        useMenuItemAxisInp: function() {
+            //console.log('computed useMenuItemAxisInp')
+
+            let vo = this
+
+            //b
+            let b = get(vo, 'opt.useMenuItemAxis', null)
+            if (!isbol(b)) {
+                b = true
+            }
+
+            return b
+        },
+
+        useMenuItemAutoRotateInp: function() {
+            //console.log('computed useMenuItemAutoRotateInp')
+
+            let vo = this
+
+            //b
+            let b = get(vo, 'opt.useMenuItemAutoRotate', null)
+            if (!isbol(b)) {
+                b = true
+            }
+
+            return b
+        },
+
+        useMenuItemViewXYInp: function() {
+            //console.log('computed useMenuItemViewXYInp')
+
+            let vo = this
+
+            //b
+            let b = get(vo, 'opt.useMenuItemViewXY', null)
+            if (!isbol(b)) {
+                b = true
+            }
+
+            return b
+        },
+
+        useMenuItemViewXZInp: function() {
+            //console.log('computed useMenuItemViewXZInp')
+
+            let vo = this
+
+            //b
+            let b = get(vo, 'opt.useMenuItemViewXZ', null)
+            if (!isbol(b)) {
+                b = true
+            }
+
+            return b
+        },
+
+        useMenuItemViewYZInp: function() {
+            //console.log('computed useMenuItemViewYZInp')
+
+            let vo = this
+
+            //b
+            let b = get(vo, 'opt.useMenuItemViewYZ', null)
+            if (!isbol(b)) {
+                b = true
+            }
+
+            return b
+        },
+
+        useMenuItemLegendInp: function() {
+            //console.log('computed useMenuItemLegendInp')
+
+            let vo = this
+
+            //b
+            let b = get(vo, 'opt.useMenuItemLegend', null)
+            if (!isbol(b)) {
+                b = true
+            }
+
+            return b
+        },
+
         items: function() {
             let vo = this
             let rs = [
@@ -475,52 +611,70 @@ export default {
                     icon: vo.menuSettingIcon,
                     tooltip: vo.menuSettingTooltip,
                 },
-                {
+            ]
+            if (vo.useMenuItemHelperAxesInp) {
+                rs.push({
                     id: 'helperAxes',
                     icon: vo.menuHelperAxesIcon,
                     tooltip: vo.menuHelperAxesTooltip,
-                },
-                {
+                })
+            }
+            if (vo.useMenuItemHelperGridInp) {
+                rs.push({
                     id: 'helperGrid',
                     icon: vo.menuHelperGridIcon,
                     tooltip: vo.menuHelperGridTooltip,
-                },
-                {
+                })
+            }
+            if (vo.useMenuItemPerspectiveInp) {
+                rs.push({
                     id: 'perspective',
                     icon: vo.menuPerspectiveIcon,
                     tooltip: vo.menuPerspectiveTooltip,
-                },
-                {
+                })
+            }
+            if (vo.useMenuItemAxisInp) {
+                rs.push({
                     id: 'axis',
                     icon: vo.menuAxisIcon,
                     tooltip: vo.menuAxisTooltip,
-                },
-                {
+                })
+            }
+            if (vo.useMenuItemViewXYInp) {
+                rs.push({
                     id: 'viewxy',
                     icon: vo.menuViewXYIcon,
                     tooltip: vo.menuViewXYTooltip,
-                },
-                {
+                })
+            }
+            if (vo.useMenuItemViewXZInp) {
+                rs.push({
                     id: 'viewxz',
                     icon: vo.menuViewXZIcon,
                     tooltip: vo.menuViewXZTooltip,
-                },
-                {
+                })
+            }
+            if (vo.useMenuItemViewYZInp) {
+                rs.push({
                     id: 'viewyz',
                     icon: vo.menuViewYZIcon,
                     tooltip: vo.menuViewYZTooltip,
-                },
-                {
+                })
+            }
+            if (vo.useMenuItemAutoRotateInp) {
+                rs.push({
                     id: 'autoRotate',
                     icon: vo.menuAutoRotateIcon,
                     tooltip: vo.menuAutoRotateTooltip,
-                },
-                {
+                })
+            }
+            if (vo.useMenuItemLegendInp) {
+                rs.push({
                     id: 'legend',
                     icon: vo.menuLegendIcon,
                     tooltip: vo.menuLegendTooltip,
-                },
-            ]
+                })
+            }
             // console.log('computed gen items', rs)
             return rs
         },
