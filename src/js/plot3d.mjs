@@ -22,7 +22,7 @@ import cdbl from 'wsemi/src/cdbl.mjs'
 import cint from 'wsemi/src/cint.mjs'
 import dig from 'wsemi/src/dig.mjs'
 import delay from 'wsemi/src/delay.mjs'
-import pmSeries from 'wsemi/src/pmSeries.mjs'
+import pmMap from 'wsemi/src/pmMap.mjs'
 import domRemove from 'wsemi/src/domRemove.mjs'
 import getFileNameExt from 'wsemi/src/getFileNameExt.mjs'
 import * as THREE from 'three'
@@ -40,14 +40,20 @@ import { createGroup, disposeGroup } from './atGroup.mjs'
 import { createLine, disposeLines } from './atLine.mjs'
 import { createLabel, createLabels, disposeLabels } from './atLabel.mjs'
 import { calcTransform, resetTransform } from './atTransform.mjs'
-
 import addStl from './addStl.mjs'
-import addVtp from './addVtp.mjs'
 import getCsrdFromMeshs from './getCsrdFromMeshs.mjs'
 
 
 let toRad = Math.PI / 180
 let toDeg = 180 / Math.PI
+let addVtpPromise = null
+let loadAddVtp = async () => {
+    if (!addVtpPromise) {
+        addVtpPromise = import(/* webpackChunkName: "w-threejs-vue-vtp" */ './addVtp.mjs')
+            .then((mod) => mod.default)
+    }
+    return addVtpPromise
+}
 
 
 async function plot3d(items, opt = {}) {
@@ -670,7 +676,7 @@ async function plot3d(items, opt = {}) {
 
     let setBackgroundColor = (c) => {
         backgroundColor = c
-        scene.background = new THREE.Color(oc.toRgbString(c))
+        scene.background.set(oc.toRgbString(c))
         render()
     }
 
@@ -753,7 +759,7 @@ async function plot3d(items, opt = {}) {
 
     let setLightAmbientColor = (c) => {
         lightAmbientColor = c
-        lightAmbient.color = new THREE.Color(oc.toRgbString(c))
+        lightAmbient.color.set(oc.toRgbString(c))
         render()
     }
 
@@ -789,7 +795,7 @@ async function plot3d(items, opt = {}) {
     let setLightPointColor = (c) => {
         lightPointColor = c
         each(lightPoints, (lightPoint) => {
-            lightPoint.color = new THREE.Color(oc.toRgbString(c))
+            lightPoint.color.set(oc.toRgbString(c))
         })
         render()
     }
@@ -829,7 +835,7 @@ async function plot3d(items, opt = {}) {
 
     let setLightDirectionColor = (c) => {
         lightDirectionColor = c
-        lightDirection.color = new THREE.Color(oc.toRgbString(c))
+        lightDirection.color.set(oc.toRgbString(c))
         render()
     }
 
@@ -2073,7 +2079,7 @@ async function plot3d(items, opt = {}) {
 
         let addMesh = addStl
         if (type === 'vtp') {
-            addMesh = addVtp
+            addMesh = await loadAddVtp()
         }
 
         //load
@@ -2090,19 +2096,13 @@ async function plot3d(items, opt = {}) {
         return mesh
     }
 
-    let addMeshCore = async (v) => {
-        let mesh = await buildMeshCore(v)
-
-        //push
-        meshs.push(mesh)
-
-        //add
-        group.add(mesh)
-    }
-
     let addMeshsCore = async (vs) => {
-        await pmSeries(vs, async(v) => {
-            await addMeshCore(v)
+        let newMeshs = await pmMap(vs, async(v) => {
+            return buildMeshCore(v)
+        }, 2)
+        each(newMeshs, (mesh) => {
+            meshs.push(mesh)
+            group.add(mesh)
         })
     }
 
@@ -2127,11 +2127,9 @@ async function plot3d(items, opt = {}) {
 
     let addMeshs = async (vs) => {
         try {
-            let newMeshs = []
-            await pmSeries(vs, async (v) => {
-                let mesh = await buildMeshCore(v)
-                newMeshs.push(mesh)
-            })
+            let newMeshs = await pmMap(vs, async (v) => {
+                return buildMeshCore(v)
+            }, 2)
             resetTransform(csr, meshs)
             disposeMeshLabels()
             each(newMeshs, (mesh) => {
@@ -2205,7 +2203,7 @@ async function plot3d(items, opt = {}) {
             let a = c.a
             // console.log('gc', gc)
             // console.log('a', a)
-            meshs[ind].material.color = new THREE.Color(gc)
+            meshs[ind].material.color.set(gc)
             meshs[ind].material.opacity = a
             meshs[ind].color = color
         }
