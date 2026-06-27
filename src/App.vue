@@ -1,8 +1,5 @@
 <template>
-    <div
-        style=""
-        :changeMenus="changeMenus"
-    >
+    <div style="">
 
 
         <template v-if="!isNarrow">
@@ -690,6 +687,7 @@ export default {
             cmpsL4: null,
 
             cmpPick: '',
+            menuUpdateTimer: null,
 
         }
     },
@@ -709,20 +707,38 @@ export default {
         vo.viewPick(get(p, 'cmp', ''))
 
     },
-    computed: {
-
-        changeMenus: function() {
+    beforeDestroy: function() {
+        let vo = this
+        clearTimeout(vo.menuUpdateTimer)
+    },
+    watch: {
+        indP1: function() {
             let vo = this
-            vo.modifyMenus(vo.indP1, vo.indP2, vo.indP3)
-            return ''
+            vo.queueModifyMenus()
         },
-
+        indP2: function() {
+            let vo = this
+            vo.queueModifyMenus()
+        },
+        indP3: function() {
+            let vo = this
+            vo.queueModifyMenus()
+        },
+    },
+    computed: {
         isNarrow: function() {
             return window.innerWidth < 1000
         },
 
     },
     methods: {
+        queueModifyMenus: function() {
+            let vo = this
+            clearTimeout(vo.menuUpdateTimer)
+            vo.menuUpdateTimer = setTimeout(() => {
+                vo.modifyMenus()
+            }, 0)
+        },
 
         modifyMenus: function() {
             let vo = this

@@ -14,6 +14,7 @@ import isestr from 'wsemi/src/isestr.mjs'
 import isbol from 'wsemi/src/isbol.mjs'
 import isearr from 'wsemi/src/isearr.mjs'
 import iseobj from 'wsemi/src/iseobj.mjs'
+import isfun from 'wsemi/src/isfun.mjs'
 import ispint from 'wsemi/src/ispint.mjs'
 import isp0int from 'wsemi/src/isp0int.mjs'
 import isEle from 'wsemi/src/isEle.mjs'
@@ -91,10 +92,10 @@ async function plot3d(items, opt = {}) {
             throw new Error(`can not get width from ele`)
         }
         let h = 0
-        if (isNumber(ele.innerWidth)) {
+        if (isNumber(ele.innerHeight)) {
             h = ele.innerHeight
         }
-        else if (isNumber(ele.clientWidth)) {
+        else if (isNumber(ele.clientHeight)) {
             h = ele.clientHeight
         }
         else {
@@ -307,6 +308,8 @@ async function plot3d(items, opt = {}) {
         labelTextFontSize = '0.8rem'
     }
 
+    let emitConfigChange = () => {}
+
     //useAutoRotate
     let useAutoRotate = get(opt, 'useAutoRotate')
     if (!isbol(useAutoRotate)) {
@@ -319,6 +322,7 @@ async function plot3d(items, opt = {}) {
 
     let setUseAutoRotate = (b) => {
         useAutoRotate = b
+        emitConfigChange('useAutoRotate', useAutoRotate)
     }
 
     //autoRotateDeg
@@ -345,6 +349,7 @@ async function plot3d(items, opt = {}) {
     let setUseAxis = (b) => {
         useAxis = b
         refreshAxis()
+        emitConfigChange('useAxis', useAxis)
     }
 
     //axisX
@@ -649,6 +654,9 @@ async function plot3d(items, opt = {}) {
 
     //ev
     let ev = evem()
+    emitConfigChange = (key, value) => {
+        ev.emit('config-change', { key, value })
+    }
 
     //tm
     let tm = new THREE.Timer()
@@ -680,6 +688,7 @@ async function plot3d(items, opt = {}) {
         }
         helperAxes.visible = b
         render()
+        emitConfigChange('useHelperAxes', useHelperAxes)
     }
 
     let setHelperAxesLengthRatio = (r) => {
@@ -704,6 +713,7 @@ async function plot3d(items, opt = {}) {
         }
         helperGrid.visible = b
         render()
+        emitConfigChange('useHelperGrid', useHelperGrid)
     }
 
     let setHelperGridLengthRatio = (r) => {
@@ -760,36 +770,51 @@ async function plot3d(items, opt = {}) {
 
     let setLightPointPoss = (poss) => {
         lightPointPoss = poss
-        disposeLightPoints(scene, lightPoints)
-        createLightPoints(scene, { useLightPoint, lightPointPoss, lightPointColor, lightPointIntensity, lightPointDistance, lightPointDecay })
+        if (size(lightPoints) === size(lightPointPoss)) {
+            each(lightPoints, (lightPoint, k) => {
+                let lp = get(lightPointPoss, k, [])
+                let x = get(lp, 0, 0)
+                let y = get(lp, 1, 0)
+                let z = get(lp, 2, 0)
+                lightPoint.position.set(x, y, z)
+            })
+        }
+        else {
+            disposeLightPoints(scene, lightPoints)
+            lightPoints = createLightPoints(scene, { useLightPoint, lightPointPoss, lightPointColor, lightPointIntensity, lightPointDistance, lightPointDecay })
+        }
         render()
     }
 
     let setLightPointColor = (c) => {
         lightPointColor = c
-        disposeLightPoints(scene, lightPoints)
-        createLightPoints(scene, { useLightPoint, lightPointPoss, lightPointColor, lightPointIntensity, lightPointDistance, lightPointDecay })
+        each(lightPoints, (lightPoint) => {
+            lightPoint.color = new THREE.Color(oc.toRgbString(c))
+        })
         render()
     }
 
     let setLightPointIntensity = (r) => {
         lightPointIntensity = r
-        disposeLightPoints(scene, lightPoints)
-        createLightPoints(scene, { useLightPoint, lightPointPoss, lightPointColor, lightPointIntensity, lightPointDistance, lightPointDecay })
+        each(lightPoints, (lightPoint) => {
+            lightPoint.intensity = r
+        })
         render()
     }
 
     let setLightPointDistance = (r) => {
         lightPointDistance = r
-        disposeLightPoints(scene, lightPoints)
-        createLightPoints(scene, { useLightPoint, lightPointPoss, lightPointColor, lightPointIntensity, lightPointDistance, lightPointDecay })
+        each(lightPoints, (lightPoint) => {
+            lightPoint.distance = r
+        })
         render()
     }
 
     let setLightPointDecay = (r) => {
         lightPointDecay = r
-        disposeLightPoints(scene, lightPoints)
-        createLightPoints(scene, { useLightPoint, lightPointPoss, lightPointColor, lightPointIntensity, lightPointDistance, lightPointDecay })
+        each(lightPoints, (lightPoint) => {
+            lightPoint.decay = r
+        })
         render()
     }
 
@@ -810,15 +835,16 @@ async function plot3d(items, opt = {}) {
 
     let setLightDirectionIntensity = (r) => {
         lightDirectionIntensity = r
-        disposeLightDirection(scene, lightDirection)
-        createLightDirection(scene, { useLightDirection, lightDirectionPos, lightDirectionColor, lightDirectionIntensity })
+        lightDirection.intensity = r
         render()
     }
 
     let setLightDirectionPos = (pos) => {
         lightDirectionPos = pos
-        disposeLightDirection(scene, lightDirection)
-        createLightDirection(scene, { useLightDirection, lightDirectionPos, lightDirectionColor, lightDirectionIntensity })
+        let x = get(lightDirectionPos, 0, 0)
+        let y = get(lightDirectionPos, 1, 0)
+        let z = get(lightDirectionPos, 2, 0)
+        lightDirection.position.set(x, y, z)
         render()
     }
 
@@ -909,6 +935,9 @@ async function plot3d(items, opt = {}) {
         return cameraType
     }
 
+    let syncViewAngle = () => {}
+    let bindControlsEvents = () => {}
+
     let setCameraType = (c) => {
         cameraType = c
         disposeCamera() //camera無dispose
@@ -916,7 +945,9 @@ async function plot3d(items, opt = {}) {
         //因controls須由camera產生, 故變更camera也得要重產controls
         disposeControls()
         createControls()
+        bindControlsEvents()
         render()
+        emitConfigChange('cameraType', cameraType)
     }
 
     // let setCameraPos = (pos) => { //不提供直接修改camera position, 外部改變視角須改變azimuthAngle或polarAngle
@@ -953,6 +984,7 @@ async function plot3d(items, opt = {}) {
         //因controls須由camera產生, 故變更camera也得要重產controls
         disposeControls()
         createControls()
+        bindControlsEvents()
         render()
     }
 
@@ -1017,6 +1049,9 @@ async function plot3d(items, opt = {}) {
 
     }
     let disposeControls = () => {
+        if (controls && isfun(controls.dispose)) {
+            controls.dispose()
+        }
         controls = null
     }
     createControls()
@@ -1043,6 +1078,7 @@ async function plot3d(items, opt = {}) {
     let setCameraViewAngle = (az, polar) => {
         set(controls, 'azimuthAngle', az * toRad)
         set(controls, 'polarAngle', polar * toRad)
+        syncViewAngle({ renderNow: true })
     }
 
     //dollyTo( distance, enableTransition )
@@ -1064,7 +1100,16 @@ async function plot3d(items, opt = {}) {
     }
 
     let _viewAngle = null //前次viewAngle
-    let timer = setInterval(() => { //timer偵測
+    let onControlsUpdate = () => {
+        syncViewAngle({ renderNow: false })
+    }
+    syncViewAngle = (opt = {}) => {
+
+        let renderNow = get(opt, 'renderNow', null)
+        if (!isbol(renderNow)) {
+            renderNow = false
+        }
+
         let viewAngle = getCameraViewAngle()
         if (!isEqual(viewAngle, _viewAngle)) {
             // console.log('viewAngle', viewAngle)
@@ -1076,16 +1121,24 @@ async function plot3d(items, opt = {}) {
             autoDisplayAxis()
 
             //更新顯隱座標標題、軸與刻度
-            try {
-                render() //因使用timer偵測, 故可能發生render尚未創建定義而報錯
+            if (renderNow) {
+                render()
             }
-            catch (err) {}
 
             //emit
             ev.emit('change-view-angle', viewAngle)
 
         }
-    }, 50)
+        else if (renderNow) {
+            render()
+        }
+    }
+    bindControlsEvents = () => {
+        if (controls && isfun(controls.addEventListener)) {
+            controls.addEventListener('update', onControlsUpdate)
+        }
+    }
+    bindControlsEvents()
 
     //group
     let group = createGroup(scene)
@@ -2057,27 +2110,41 @@ async function plot3d(items, opt = {}) {
     // console.log('first addMeshsCore')
 
     let addMesh = async (v) => {
-        let mesh = await buildMeshCore(v)
-        resetTransform(csr, meshs)
-        disposeMeshLabels()
-        meshs.push(mesh)
-        group.add(mesh)
-        rdr()
+        try {
+            let mesh = await buildMeshCore(v)
+            resetTransform(csr, meshs)
+            disposeMeshLabels()
+            meshs.push(mesh)
+            group.add(mesh)
+            await rdr()
+            emitMeshChange()
+        }
+        catch (err) {
+            ev.emit('error', err)
+            throw err
+        }
     }
 
     let addMeshs = async (vs) => {
-        let newMeshs = []
-        await pmSeries(vs, async (v) => {
-            let mesh = await buildMeshCore(v)
-            newMeshs.push(mesh)
-        })
-        resetTransform(csr, meshs)
-        disposeMeshLabels()
-        each(newMeshs, (mesh) => {
-            meshs.push(mesh)
-            group.add(mesh)
-        })
-        rdr()
+        try {
+            let newMeshs = []
+            await pmSeries(vs, async (v) => {
+                let mesh = await buildMeshCore(v)
+                newMeshs.push(mesh)
+            })
+            resetTransform(csr, meshs)
+            disposeMeshLabels()
+            each(newMeshs, (mesh) => {
+                meshs.push(mesh)
+                group.add(mesh)
+            })
+            await rdr()
+            emitMeshChange()
+        }
+        catch (err) {
+            ev.emit('error', err)
+            throw err
+        }
     }
 
     let getMeshsInfor = () => {
@@ -2101,6 +2168,10 @@ async function plot3d(items, opt = {}) {
         return rs
     }
 
+    let emitMeshChange = () => {
+        ev.emit('mesh-change', getMeshsInfor())
+    }
+
     let setMeshVisibleCore = (ind, visible) => {
         let mesh = get(meshs, ind)
         if (!iseobj(mesh)) {
@@ -2118,6 +2189,7 @@ async function plot3d(items, opt = {}) {
         setMeshVisibleCore(ind, visible)
         setMeshLabelVisibleCore(ind, visible)
         render()
+        emitMeshChange()
     }
 
     let setMeshColor = (ind, color) => {
@@ -2141,14 +2213,30 @@ async function plot3d(items, opt = {}) {
             console.log(err)
         }
         render()
+        emitMeshChange()
     }
 
     //csr
     let csr = {}
-    let calcCsr = () => {
+    let calcCsr = (opt = {}) => {
+
+        //onlyVisible
+        let onlyVisible = get(opt, 'onlyVisible', null)
+        if (!isbol(onlyVisible)) {
+            onlyVisible = true
+        }
+
+        //ms
+        let ms = meshs
+        if (onlyVisible) {
+            let vis = meshs.filter((m) => m.visible !== false)
+            if (size(vis) > 0) {
+                ms = vis
+            }
+        }
 
         //csrd
-        let csrd = getCsrdFromMeshs(meshs)
+        let csrd = getCsrdFromMeshs(ms)
         // console.log('csrd', csrd)
 
         //r
@@ -2241,7 +2329,7 @@ async function plot3d(items, opt = {}) {
 
         await delay(1)
 
-        // 空場景不進行 csr/label/axis 計算，避免延用前次資料。
+        //空場景不進行csr/label/axis計算, 避免延用前次資料
         if (size(meshs) === 0) {
             disposeMeshLabels()
             disposeAxis()
@@ -2264,10 +2352,10 @@ async function plot3d(items, opt = {}) {
             //須有csr才能繪製axis與tick
             createAxis()
 
-            //autoDisplayAxis
-            autoDisplayAxis()
-
         }
+
+        //sync view angle and update axis visibility
+        syncViewAngle({ renderNow: false })
 
         //更新平移與縮放後渲染
         render()
@@ -2295,6 +2383,7 @@ async function plot3d(items, opt = {}) {
     let setMeshLabelVisible = (ind, visible) => {
         setMeshLabelVisibleCore(ind, visible)
         render()
+        emitMeshChange()
     }
 
     let setMeshLabelText = (ind, text) => {
@@ -2309,6 +2398,7 @@ async function plot3d(items, opt = {}) {
             console.log(err)
         }
         render()
+        emitMeshChange()
     }
 
     let setMeshLabelTextColor = (ind, color) => {
@@ -2323,6 +2413,7 @@ async function plot3d(items, opt = {}) {
             console.log(err)
         }
         render()
+        emitMeshChange()
     }
 
     let setMeshLabelTextFontSize = (ind, fontSize) => {
@@ -2337,6 +2428,7 @@ async function plot3d(items, opt = {}) {
             console.log(err)
         }
         render()
+        emitMeshChange()
     }
 
     let setMeshLabelTextFontFamily = (ind, fontFamily) => {
@@ -2351,6 +2443,7 @@ async function plot3d(items, opt = {}) {
             console.log(err)
         }
         render()
+        emitMeshChange()
     }
 
     let cleanMeshs = () => {
@@ -2363,6 +2456,7 @@ async function plot3d(items, opt = {}) {
         disposeMeshLabels()
         disposeAxis()
         render()
+        emitMeshChange()
     }
 
     // let iRender = 0
@@ -2409,7 +2503,11 @@ async function plot3d(items, opt = {}) {
     //第1次渲染
     rdr() //非同步驅動, 故不能用await等待
         .then(() => {
+            emitMeshChange()
             ev.emit('init')
+        })
+        .catch((err) => {
+            ev.emit('error', err)
         })
 
     //stop
@@ -2433,20 +2531,23 @@ async function plot3d(items, opt = {}) {
             //hasControlsUpdated
             let hasControlsUpdated = controls.update(delta)
             // console.log('hasControlsUpdated',hasControlsUpdated)
+            let shouldRender = hasControlsUpdated
 
             //useAutoRotate
             if (useAutoRotate) {
                 let az = -autoRotateDeg * toRad * delta
                 // console.log('az', az)
                 controls.azimuthAngle += az
+                syncViewAngle({ renderNow: false })
+                shouldRender = true
             }
 
             //requestAnimationFrame
             requestAnimationFrame(animate)
 
             //check
-            if (hasControlsUpdated) {
-                // console.log('hasControlsUpdated and render')
+            if (shouldRender) {
+                // console.log('shouldRender')
                 render()
             }
         }
@@ -2463,9 +2564,6 @@ async function plot3d(items, opt = {}) {
 
         //emit
         ev.emit('dispose')
-
-        //clearInterval
-        clearInterval(timer)
 
         //stop
         stop = true
@@ -2535,6 +2633,48 @@ async function plot3d(items, opt = {}) {
 
     }
 
+    let resetView = (opt = {}) => {
+        // console.log('resetView')
+
+        //onlyVisible
+        let onlyVisible = get(opt, 'onlyVisible', null)
+        if (!isbol(onlyVisible)) {
+            onlyVisible = true
+        }
+
+        //resetCamera
+        let resetCamera = get(opt, 'resetCamera', null)
+        if (!isbol(resetCamera)) {
+            resetCamera = true
+        }
+
+        //check
+        if (size(meshs) === 0) {
+            return
+        }
+
+        resetTransform(csr, meshs) //先用舊 csr 還原正規化
+        calcCsr({ onlyVisible }) //以可見集合重算 csr
+        calcTransform(csr, meshs) //用新 csr 重新正規化全部 mesh
+        disposeMeshLabels()
+        createMeshLabels()
+
+        if (useAxis && size(meshs) > 0) {
+            disposeAxis()
+            createAxis()
+            autoDisplayAxis()
+        }
+
+        //iniCameraViewAngle
+        if (resetCamera) {
+            iniCameraViewAngle()
+        }
+
+        //render
+        render()
+
+    }
+
     //save
     ev.render = render
     ev.resize = resize
@@ -2593,6 +2733,7 @@ async function plot3d(items, opt = {}) {
     ev.getMeshsInfor = getMeshsInfor
     ev.setMeshVisible = setMeshVisible
     ev.setMeshColor = setMeshColor
+    ev.resetView = resetView
     ev.setMeshLabelVisible = setMeshLabelVisible
     ev.setMeshLabelText = setMeshLabelText
     ev.setMeshLabelTextColor = setMeshLabelTextColor

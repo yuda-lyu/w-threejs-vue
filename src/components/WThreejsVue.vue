@@ -310,7 +310,7 @@ export default {
     props: {
         opt: {
             type: Object,
-            default: () => {},
+            default: () => ({}),
         },
     },
     data: function() {
@@ -371,49 +371,16 @@ export default {
     },
     mounted: function() {
         let vo = this
-        let t
         vo.timer = setInterval(() => {
 
-            // vo.useSetting
-
-            t = vo.getParam('useHelperAxes')
-            if (vo.useHelperAxes !== t) {
-                vo.useHelperAxes = t
+            if (vo.ev === null) {
+                return
             }
 
-            t = vo.getParam('useAutoRotate')
-            if (vo.useAutoRotate !== t) {
-                vo.useAutoRotate = t
-            }
+            vo.refreshControlState()
+            vo.refreshMeshsState()
 
-            t = vo.getParam('useHelperGrid')
-            if (vo.useHelperGrid !== t) {
-                vo.useHelperGrid = t
-            }
-
-            t = vo.getParam('cameraType') === 'perspective'
-            if (vo.usePerspective !== t) {
-                vo.usePerspective = t
-            }
-
-            t = vo.getParam('useAxis')
-            if (vo.useAxis !== t) {
-                vo.useAxis = t
-            }
-
-            // vo.useLegend
-
-            t = vo.getMeshs()
-            if (!isEqual(vo.meshs, t)) {
-                vo.meshs = t
-                // console.log('meshs', vo.meshs)
-            }
-
-            vo.syncItemsSelectIds()
-
-            vo.updateItemsSelects(false)
-
-        }, 50)
+        }, 1000)
     },
     beforeDestroy: function() {
         let vo = this
@@ -668,6 +635,50 @@ export default {
 
         },
 
+        refreshControlState: function() {
+            let vo = this
+
+            let t = vo.getParam('useHelperAxes')
+            if (vo.useHelperAxes !== t) {
+                vo.useHelperAxes = t
+            }
+
+            t = vo.getParam('useAutoRotate')
+            if (vo.useAutoRotate !== t) {
+                vo.useAutoRotate = t
+            }
+
+            t = vo.getParam('useHelperGrid')
+            if (vo.useHelperGrid !== t) {
+                vo.useHelperGrid = t
+            }
+
+            t = vo.getParam('cameraType') === 'perspective'
+            if (vo.usePerspective !== t) {
+                vo.usePerspective = t
+            }
+
+            t = vo.getParam('useAxis')
+            if (vo.useAxis !== t) {
+                vo.useAxis = t
+            }
+
+            vo.syncItemsSelectIds()
+            vo.updateItemsSelects(false)
+
+        },
+
+        refreshMeshsState: function() {
+            let vo = this
+
+            let meshs = vo.getMeshs()
+            if (!isEqual(vo.meshs, meshs)) {
+                vo.meshs = meshs
+                // console.log('meshs', vo.meshs)
+            }
+
+        },
+
         updateMenus: function() {
             let vo = this
 
@@ -804,7 +815,7 @@ export default {
             let vo = this
 
             //legnedBackgroundColor
-            let legnedBackgroundColor = get(vo, 'opt.legnedBackgroundColor', '')
+            let legnedBackgroundColor = get(vo, 'opt.legendBackgroundColor', get(vo, 'opt.legnedBackgroundColor', ''))
             if (!isestr(legnedBackgroundColor)) {
                 legnedBackgroundColor = 'rgba(90,90,90,0.5)'
             }
@@ -813,10 +824,10 @@ export default {
             // console.log('useLegnedBackgroundColor', vo.useLegnedBackgroundColor)
 
             //legnedHeight
-            let legnedHeight = get(vo, 'opt.legnedHeight', null)
+            let legnedHeight = get(vo, 'opt.legendHeight', get(vo, 'opt.legnedHeight', null))
 
             //legnedHeightMax
-            let legnedHeightMax = get(vo, 'opt.legnedHeightMax', null)
+            let legnedHeightMax = get(vo, 'opt.legendHeightMax', get(vo, 'opt.legnedHeightMax', null))
 
             let useLegnedHeight = ''
             if (isnum(legnedHeight)) {
@@ -863,6 +874,9 @@ export default {
                 //plot3d
                 let ev = await plot3d(items, optPlot3d)
 
+                //save
+                vo.ev = ev
+
                 //on
                 ev.on('init', () => {
                     // console.log('init')
@@ -874,6 +888,12 @@ export default {
                     //refreshLegend
                     vo.refreshLegend()
 
+                    //refreshControlState
+                    vo.refreshControlState()
+
+                    //refreshMeshsState
+                    vo.refreshMeshsState()
+
                     //hide loading
                     vo.loading = false
 
@@ -881,6 +901,11 @@ export default {
                 ev.on('loading', (msg) => {
                     // console.log('loading', msg)
                     vo.$emit('loading', msg)
+                })
+                ev.on('error', (err) => {
+                    // console.log('error', err)
+                    vo.loading = false
+                    vo.$emit('error', err)
                 })
                 ev.on('dispose', () => {
                     // console.log('dispose')
@@ -890,15 +915,22 @@ export default {
                     // console.log('change-view-angle')
                     vo.$emit('change-view-angle', msg)
                 })
-
-                //save
-                vo.ev = ev
+                ev.on('mesh-change', () => {
+                    // console.log('mesh-change')
+                    vo.refreshMeshsState()
+                })
+                ev.on('config-change', () => {
+                    // console.log('config-change')
+                    vo.refreshControlState()
+                })
 
             }
 
             //core
             await core()
                 .catch((err) => {
+                    vo.loading = false
+                    vo.$emit('error', err)
                     console.log(err)
                 })
 
@@ -1079,6 +1111,9 @@ export default {
                     legnedBackgroundColor: 'refreshLegend',
                     legnedHeight: 'refreshLegend',
                     legnedHeightMax: 'refreshLegend',
+                    legendBackgroundColor: 'refreshLegend',
+                    legendHeight: 'refreshLegend',
+                    legendHeightMax: 'refreshLegend',
 
                 }
 
@@ -1139,6 +1174,14 @@ export default {
         getInst: function() {
             let vo = this
             return get(vo, 'ev')
+        },
+
+        resetView: function(opt) {
+            let vo = this
+            let fun = get(vo, 'ev.resetView')
+            if (isfun(fun)) {
+                fun(opt)
+            }
         },
 
         getMeshs: function() {

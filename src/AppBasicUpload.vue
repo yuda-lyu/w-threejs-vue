@@ -118,6 +118,7 @@ export default {
                 }
 
                 let ms = []
+                let objectUrls = []
                 for (let i = 0; i < files.length; i++) {
 
                     let file = files[i]
@@ -137,6 +138,7 @@ export default {
 
                     // let url = window.URL.createObjectURL(file)
                     let url = window.URL.createObjectURL(bb)
+                    objectUrls.push(url)
                     console.log('url', url)
 
                     let m = {
@@ -159,10 +161,14 @@ export default {
 
                 try {
                     if (ms.length > 0) {
-                        vo.$refs.thr.getInst().addMeshs(ms)
+                        await vo.$refs.thr.getInst().addMeshs(ms)
                     }
                 }
-                catch (err) {}
+                finally {
+                    objectUrls.forEach((url) => {
+                        window.URL.revokeObjectURL(url)
+                    })
+                }
 
             }
 

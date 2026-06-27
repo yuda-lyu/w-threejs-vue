@@ -4,6 +4,13 @@ module.exports = {
         proxy: {
         }
     },
+    configureWebpack: {
+        resolve: {
+            fallback: {
+                url: require.resolve('url/'),
+            },
+        },
+    },
     //transpileDependencies: ['abc'],
     //publicPath: process.env.NODE_ENV === 'production' ? '/abc/' : '/',
 }
