@@ -588,6 +588,12 @@ Demo 上傳使用 `URL.createObjectURL(bb)`，未在載入後或清除時呼叫 
 - batch flush 順序會先處理 pending helper grid / axis 重建，再視 `renderPending` 補一次 render；若重建流程已 render，pending 會被清除，避免多 render。
 - 此項可降低同一批 option diff 中 background/light/camera/axis/helper setter 連續觸發時的同步 render 次數。
 
+2026-06-27 續修第七批：
+
+- `WThreejsVue.vue` 的 `modify()` 對 `updateMenus` 與 `refreshLegend` 做批次合併；同一批 prop diff 中多個 menu/legend option 變更時，各自只執行一次。
+- `updateItemsSelects()` 改為先用 `keyBy(vo.items, 'id')` 建索引，再依 `itemsSelectIds` 取值，避免每個 id 都用 `find()` 掃描整個 items。
+- 此項降低 wrapper 在大量 option 或選單設定同時變更時的重複 Vue state assignment 與查找成本。
+
 續修後驗證：
 
 - `npm run lint`：通過。

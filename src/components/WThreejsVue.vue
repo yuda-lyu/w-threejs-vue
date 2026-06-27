@@ -151,7 +151,7 @@ import { mdiCogOutline, mdiAxis, mdiAxisZRotateCounterclockwise, mdiGrid, mdiPro
 import get from 'lodash-es/get.js'
 import each from 'lodash-es/each.js'
 import map from 'lodash-es/map.js'
-import find from 'lodash-es/find.js'
+import keyBy from 'lodash-es/keyBy.js'
 import size from 'lodash-es/size.js'
 import toUpper from 'lodash-es/toUpper.js'
 import keys from 'lodash-es/keys.js'
@@ -622,9 +622,10 @@ export default {
                 return
             }
 
+            let itemsById = keyBy(vo.items, 'id')
             let rs = []
             each(vo.itemsSelectIds, (id) => {
-                let r = find(vo.items, { id })
+                let r = get(itemsById, id)
                 if (iseobj(r)) {
                     rs.push(r)
                 }
@@ -1125,6 +1126,8 @@ export default {
                 }
 
                 //call
+                let needUpdateMenus = false
+                let needRefreshLegend = false
                 let beginBatchUpdate = get(vo, 'ev.beginBatchUpdate')
                 let endBatchUpdate = get(vo, 'ev.endBatchUpdate')
                 if (isfun(beginBatchUpdate)) {
@@ -1136,13 +1139,21 @@ export default {
                         if (haskey(kpSet, k)) {
                             let cf = kpSet[k]
                             // console.log('call', k, cf)
-                            let fun = get(vo, cf)
-                            if (isfun(fun)) {
-                                try {
-                                    fun(v.vNew)
-                                }
-                                catch (err) {
-                                    console.log(err)
+                            if (cf === 'updateMenus') {
+                                needUpdateMenus = true
+                            }
+                            else if (cf === 'refreshLegend') {
+                                needRefreshLegend = true
+                            }
+                            else {
+                                let fun = get(vo, cf)
+                                if (isfun(fun)) {
+                                    try {
+                                        fun(v.vNew)
+                                    }
+                                    catch (err) {
+                                        console.log(err)
+                                    }
                                 }
                             }
                         }
@@ -1155,6 +1166,12 @@ export default {
                     if (isfun(endBatchUpdate)) {
                         endBatchUpdate()
                     }
+                }
+                if (needUpdateMenus) {
+                    vo.updateMenus()
+                }
+                if (needRefreshLegend) {
+                    vo.refreshLegend()
                 }
 
             }
