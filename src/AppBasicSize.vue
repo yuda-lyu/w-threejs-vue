@@ -68,6 +68,8 @@ export default {
                         color: 'rgba(214, 214, 92, 0.9)',
                     },
                 ],
+                // useLegend: false,
+                // useMenuItemLegend: false,
             },
             'action': [
             ],

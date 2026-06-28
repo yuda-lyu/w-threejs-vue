@@ -273,6 +273,7 @@ let pathYZ = `M 22.049294,18.372083 H 12.678108 V 17.831045 L 20.097742,6.740768
  * @vue-prop {Number} [opt.cameraOrthographicRatio] 輸入正交相機比例數字
  * @vue-prop {Number} [opt.cameraAzimuthAngle] 輸入相機方位角(水平角度)數字，因可通過UI改變導致Vue無法監聽變數有變而觸發computed，故建議直接使用setCameraAzimuthAngle變更
  * @vue-prop {Number} [opt.cameraPolarAngle] 輸入相機極角(垂直角度)數字，因可通過UI改變導致Vue無法監聯變數有變而觸發computed，故建議直接使用setCameraPolarAngle變更
+ * @vue-prop {Boolean} [opt.useSetting=true] 輸入是否顯示設定選單布林值，預設true
  * @vue-prop {String} [opt.menuSettingIcon] 輸入設定選單圖示SVG path字串，預設mdiCogOutline
  * @vue-prop {String} [opt.menuSettingTooltip='Settings'] 輸入設定選單tooltip文字字串，預設'Settings'
  * @vue-prop {Boolean} [opt.useMenuItemHelperAxes=true] 輸入是否顯示輔助軸線選單項目布林值，預設true
@@ -299,6 +300,7 @@ let pathYZ = `M 22.049294,18.372083 H 12.678108 V 17.831045 L 20.097742,6.740768
  * @vue-prop {Boolean} [opt.useMenuItemViewYZ=true] 輸入是否顯示YZ平面視角選單項目布林值，預設true
  * @vue-prop {String} [opt.menuViewYZIcon] 輸入YZ平面視角圖示SVG path字串
  * @vue-prop {String} [opt.menuViewYZTooltip='YZ plane'] 輸入YZ平面視角tooltip文字字串，預設'YZ plane'
+ * @vue-prop {Boolean} [opt.useLegend=true] 輸入是否顯示圖例布林值，預設true
  * @vue-prop {Boolean} [opt.useMenuItemLegend=true] 輸入是否顯示圖例選單項目布林值，預設true
  * @vue-prop {String} [opt.menuLegendIcon] 輸入圖例圖示SVG path字串，預設mdiListBoxOutline
  * @vue-prop {String} [opt.menuLegendTooltip='Legend'] 輸入圖例tooltip文字字串，預設'Legend'
@@ -816,6 +818,16 @@ export default {
         updateMenus: function() {
             let vo = this
 
+            let useSetting = get(vo, 'opt.useSetting', null)
+            if (!isbol(useSetting)) {
+                useSetting = true
+            }
+
+            let useLegend = get(vo, 'opt.useLegend', null)
+            if (!isbol(useLegend)) {
+                useLegend = true
+            }
+
             let menuSettingIcon = get(vo, 'opt.menuSettingIcon', '')
             if (!isestr(menuSettingIcon)) {
                 menuSettingIcon = mdiCogOutline
@@ -917,6 +929,8 @@ export default {
             }
 
             //save
+            vo.useSetting = useSetting
+            vo.useLegend = useLegend
             vo.menuSettingIcon = menuSettingIcon
             vo.menuSettingTooltip = menuSettingTooltip
             vo.menuHelperAxesIcon = menuHelperAxesIcon
@@ -1257,6 +1271,9 @@ export default {
                     useMenuItemLegend: 'updateMenus',
 
                     backgroundColor: 'ev.setBackgroundColor',
+
+                    useSetting: 'updateMenus',
+                    useLegend: 'updateMenus',
 
                     useAutoRotate: 'ev.setUseAutoRotate',
                     autoRotateDeg: 'ev.setAutoRotateDeg',
