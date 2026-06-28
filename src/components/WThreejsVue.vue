@@ -22,7 +22,7 @@
                 v-if="!loading"
             >
 
-                <div :style="`padding:${space}px; display:flex; align-items:flex-start;`">
+                <div :style="`padding:${space+menuYShiftInp}px ${space}px ${space}px ${space}px; display:flex; align-items:flex-start;`">
 
                     <!-- 設定區 -->
                     <!-- 須使用pointer-events:auto恢復子元素接收事件, 才能點擊與捲動選單 -->
@@ -273,6 +273,7 @@ let pathYZ = `M 22.049294,18.372083 H 12.678108 V 17.831045 L 20.097742,6.740768
  * @vue-prop {Number} [opt.cameraOrthographicRatio] 輸入正交相機比例數字
  * @vue-prop {Number} [opt.cameraAzimuthAngle] 輸入相機方位角(水平角度)數字，因可通過UI改變導致Vue無法監聽變數有變而觸發computed，故建議直接使用setCameraAzimuthAngle變更
  * @vue-prop {Number} [opt.cameraPolarAngle] 輸入相機極角(垂直角度)數字，因可通過UI改變導致Vue無法監聯變數有變而觸發computed，故建議直接使用setCameraPolarAngle變更
+ * @vue-prop {Number} [opt.menuYShift=0] 輸入選單區域頂部位移數字，單位px，正值向下移動，預設0
  * @vue-prop {Boolean} [opt.useSetting=true] 輸入是否顯示設定選單布林值，預設true
  * @vue-prop {String} [opt.menuSettingIcon] 輸入設定選單圖示SVG path字串，預設mdiCogOutline
  * @vue-prop {String} [opt.menuSettingTooltip='Settings'] 輸入設定選單tooltip文字字串，預設'Settings'
@@ -449,6 +450,21 @@ export default {
             }
 
             return h
+        },
+
+        menuYShiftInp: function() {
+            //console.log('computed menuYShiftInp')
+
+            let vo = this
+
+            //y
+            let y = get(vo, 'opt.menuYShift', null)
+            if (!isnum(y)) {
+                y = 0
+            }
+            y = cdbl(y)
+
+            return y
         },
 
         useMenuItemHelperAxesInp: function() {
