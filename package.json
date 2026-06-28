@@ -1,6 +1,6 @@
 {
   "name": "w-threejs-vue",
-  "version": "1.0.17",
+  "version": "1.0.18",
   "main": "dist/w-threejs-vue.umd.js",
   "dependencies": {
     "@kitware/vtk.js": "^36.2.1",
@@ -11,7 +11,7 @@
     "url": "^0.11.4",
     "w-component-vue": "^2.4.68",
     "w-jsonview-tree": "^1.0.31",
-    "wsemi": "^1.8.61"
+    "wsemi": "^1.8.62"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^5.0.8",

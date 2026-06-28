@@ -2174,7 +2174,9 @@ async function plot3d(items, opt = {}) {
     }
 
     let buildMeshs = async (vs) => {
-        let newMeshs = []
+        if (size(vs) === 0) {
+            return []
+        }
         let rs = await pmMap(vs, async (v) => {
             try {
                 let mesh = await buildMeshCore(v)
@@ -2185,6 +2187,7 @@ async function plot3d(items, opt = {}) {
             }
         }, 2)
         let errBuild = null
+        let newMeshs = []
         each(rs, (r) => {
             let mesh = get(r, 'mesh')
             let err = get(r, 'err')
