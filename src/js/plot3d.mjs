@@ -671,9 +671,8 @@ async function plot3d(items, opt = {}) {
     let ev = evem()
     let ready = false
     let readyError = null
-    let getIniReady = null
     let disposed = false
-    let getReadyState = () => ready
+    let getReady = () => ready
     let getReadyError = () => readyError
     emitConfigChange = (key, value) => {
         ev.emit('config-change', { key, value })
@@ -2157,10 +2156,62 @@ async function plot3d(items, opt = {}) {
         return mesh
     }
 
-    let addMeshsCore = async (vs) => {
-        let newMeshs = await pmMap(vs, async(v) => {
-            return buildMeshCore(v)
+    let isObject3D = (v) => {
+        return v && v.isObject3D
+    }
+
+    let disposeDetachedMeshs = (vs) => {
+        if (size(vs) === 0) {
+            return
+        }
+        let groupTemp = new THREE.Group()
+        each(vs, (mesh) => {
+            if (isObject3D(mesh)) {
+                groupTemp.add(mesh)
+            }
+        })
+        disposeGroup(null, groupTemp)
+    }
+
+    let buildMeshs = async (vs) => {
+        let newMeshs = []
+        let rs = await pmMap(vs, async (v) => {
+            try {
+                let mesh = await buildMeshCore(v)
+                return { mesh }
+            }
+            catch (err) {
+                return { err }
+            }
         }, 2)
+        let errBuild = null
+        each(rs, (r) => {
+            let mesh = get(r, 'mesh')
+            let err = get(r, 'err')
+            if (isObject3D(mesh)) {
+                newMeshs.push(mesh)
+            }
+            if (err && errBuild === null) {
+                errBuild = err
+            }
+        })
+        if (disposed) {
+            disposeDetachedMeshs(newMeshs)
+            return []
+        }
+        if (errBuild) {
+            disposeDetachedMeshs(newMeshs)
+            throw errBuild
+        }
+        return newMeshs
+    }
+
+    let addMeshsCore = async (vs) => {
+        let newMeshs = await buildMeshs(vs)
+        if (disposed) {
+            disposeDetachedMeshs(newMeshs)
+            return
+        }
         each(newMeshs, (mesh) => {
             meshs.push(mesh)
             group.add(mesh)
@@ -2172,7 +2223,15 @@ async function plot3d(items, opt = {}) {
 
     let addMesh = async (v) => {
         try {
-            let mesh = await buildMeshCore(v)
+            let newMeshs = await buildMeshs([v])
+            if (disposed) {
+                disposeDetachedMeshs(newMeshs)
+                return
+            }
+            let mesh = get(newMeshs, 0)
+            if (!isObject3D(mesh)) {
+                return
+            }
             resetTransform(csr, meshs)
             disposeMeshLabels()
             meshs.push(mesh)
@@ -2181,6 +2240,9 @@ async function plot3d(items, opt = {}) {
             emitMeshChange()
         }
         catch (err) {
+            if (disposed) {
+                return
+            }
             ev.emit('error', err)
             throw err
         }
@@ -2188,9 +2250,11 @@ async function plot3d(items, opt = {}) {
 
     let addMeshs = async (vs) => {
         try {
-            let newMeshs = await pmMap(vs, async (v) => {
-                return buildMeshCore(v)
-            }, 2)
+            let newMeshs = await buildMeshs(vs)
+            if (disposed) {
+                disposeDetachedMeshs(newMeshs)
+                return
+            }
             resetTransform(csr, meshs)
             disposeMeshLabels()
             each(newMeshs, (mesh) => {
@@ -2201,6 +2265,40 @@ async function plot3d(items, opt = {}) {
             emitMeshChange()
         }
         catch (err) {
+            if (disposed) {
+                return
+            }
+            ev.emit('error', err)
+            throw err
+        }
+    }
+
+    let setMeshs = async (vs) => {
+        try {
+            let newMeshs = await buildMeshs(vs)
+            if (disposed) {
+                disposeDetachedMeshs(newMeshs)
+                return
+            }
+
+            //先disposeGroup才能釋放舊mesh的geometry/material(靠group.traverse找子mesh), 不可先group.remove清空group
+            disposeGroup(scene, group)
+            meshs = []
+            group = createGroup(scene)
+            disposeMeshLabels()
+            disposeAxis()
+
+            each(newMeshs, (mesh) => {
+                meshs.push(mesh)
+                group.add(mesh)
+            })
+            await rdr()
+            emitMeshChange()
+        }
+        catch (err) {
+            if (disposed) {
+                return
+            }
             ev.emit('error', err)
             throw err
         }
@@ -2264,8 +2362,28 @@ async function plot3d(items, opt = {}) {
             let a = c.a
             // console.log('gc', gc)
             // console.log('a', a)
-            meshs[ind].material.color.set(gc)
-            meshs[ind].material.opacity = a
+            let transparent = a < 1
+            let setMat = (material) => {
+                if (!material) {
+                    return
+                }
+                if (material.color && material.color.set) {
+                    material.color.set(gc)
+                }
+                //切換transparent須needsUpdate才會重編material program
+                if (material.transparent !== transparent) {
+                    material.transparent = transparent
+                    material.needsUpdate = true
+                }
+                material.opacity = a
+            }
+            let material = meshs[ind].material
+            if (Array.isArray(material)) {
+                each(material, (m) => setMat(m))
+            }
+            else {
+                setMat(material)
+            }
             meshs[ind].color = color
         }
         catch (err) {
@@ -2509,9 +2627,7 @@ async function plot3d(items, opt = {}) {
     }
 
     let cleanMeshs = () => {
-        each(meshs, (mesh) => {
-            group.remove(mesh)
-        })
+        //先disposeGroup才能釋放舊mesh的geometry/material(靠group.traverse找子mesh), 不可先group.remove清空group
         disposeGroup(scene, group)
         meshs = []
         group = createGroup(scene)
@@ -2525,6 +2641,9 @@ async function plot3d(items, opt = {}) {
     let render = () => {
         // iRender++
         // console.log('render', iRender)
+        if (disposed || renderer === null || rendererLabels === null || scene === null || camera === null) {
+            return
+        }
         if (batchUpdateDepth > 0) {
             renderPending = true
             return
@@ -2541,6 +2660,9 @@ async function plot3d(items, opt = {}) {
 
     let resize = () => {
         // console.log('resize')
+        if (disposed || renderer === null || rendererLabels === null || scene === null || camera === null) {
+            return
+        }
 
         //rendererWidth, rendererHeight, cameraAspect
         let rwh = gs(domPanel)
@@ -2568,7 +2690,7 @@ async function plot3d(items, opt = {}) {
     }
 
     //第1次渲染
-    getIniReady = delay(0)
+    delay(0)
         .then(async() => {
             if (disposed) {
                 return null
@@ -2583,6 +2705,9 @@ async function plot3d(items, opt = {}) {
             return ev
         })
         .catch((err) => {
+            if (disposed) {
+                return null
+            }
             readyError = err
             ev.emit('error', err)
             return null
@@ -2697,6 +2822,14 @@ async function plot3d(items, opt = {}) {
 
         //dispose & free renderer
         renderer.dispose()
+        try {
+            if (isfun(renderer.forceContextLoss)) {
+                renderer.forceContextLoss()
+            }
+        }
+        catch (err) {
+            console.log(err)
+        }
         // rendererLabels.dispose()
         renderer = null
         rendererLabels = null
@@ -2763,8 +2896,7 @@ async function plot3d(items, opt = {}) {
     ev.render = render
     ev.resize = resize
     ev.dispose = disposeAll
-    ev.getIniReady = getIniReady
-    ev.getReadyState = getReadyState
+    ev.getReady = getReady
     ev.getReadyError = getReadyError
     ev.beginBatchUpdate = beginBatchUpdate
     ev.endBatchUpdate = endBatchUpdate
@@ -2819,6 +2951,7 @@ async function plot3d(items, opt = {}) {
 
     ev.addMesh = addMesh
     ev.addMeshs = addMeshs
+    ev.setMeshs = setMeshs
     ev.getMeshsInfor = getMeshsInfor
     ev.setMeshVisible = setMeshVisible
     ev.setMeshColor = setMeshColor

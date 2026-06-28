@@ -1,6 +1,6 @@
 {
   "name": "w-threejs-vue",
-  "version": "1.0.16",
+  "version": "1.0.17",
   "main": "dist/w-threejs-vue.umd.js",
   "dependencies": {
     "@kitware/vtk.js": "^36.2.1",

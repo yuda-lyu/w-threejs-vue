@@ -12,14 +12,39 @@ let createGroup = (scene) => {
 }
 
 
+let disposeMaterial = (material) => {
+    if (Array.isArray(material)) {
+        material.forEach((m) => {
+            disposeMaterial(m)
+        })
+    }
+    else if (material && material.dispose) {
+        material.dispose()
+        Object.keys(material).forEach((key) => {
+            let value = material[key]
+            if (value && typeof value === 'object' && 'minFilter' in value && value.dispose) {
+                value.dispose()
+            }
+        })
+    }
+}
+
+
 let disposeGroup = (scene, group) => {
+    if (!group) {
+        return
+    }
     group.traverse(function(obj) {
         if (obj.isMesh) {
-            obj.geometry.dispose()
-            obj.material.dispose()
+            if (obj.geometry && obj.geometry.dispose) {
+                obj.geometry.dispose()
+            }
+            disposeMaterial(obj.material)
         }
     })
-    scene.remove(group)
+    if (scene && scene.remove) {
+        scene.remove(group)
+    }
     group = null
 }
 

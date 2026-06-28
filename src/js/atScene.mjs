@@ -11,12 +11,23 @@ let disposeScene = (scene) => {
 
     //cleanMaterial, 已預先執行多種dispose, 此函數暫時用不到
     let cleanMaterial = (material) => {
+        if (Array.isArray(material)) {
+            material.forEach((m) => {
+                cleanMaterial(m)
+            })
+            return
+        }
+        if (!material) {
+            return
+        }
         // console.log('dispose material')
-        material.dispose()
+        if (material.dispose) {
+            material.dispose()
+        }
         // dispose textures
         for (let key of Object.keys(material)) {
             let value = material[key]
-            if (value && typeof value === 'object' && 'minFilter' in value) {
+            if (value && typeof value === 'object' && 'minFilter' in value && value.dispose) {
                 // console.log('dispose texture')
                 value.dispose()
             }
@@ -27,18 +38,16 @@ let disposeScene = (scene) => {
         // console.log('object', object)
         if (object.isLight) {
             // console.log('dispose light')
-            object.dispose()
+            if (object.dispose) {
+                object.dispose()
+            }
         }
         if (object.isMesh) {
             // console.log('dispose geometry')
-            object.geometry.dispose()
-            if (object.material.isMaterial) {
-                cleanMaterial(object.material)
+            if (object.geometry && object.geometry.dispose) {
+                object.geometry.dispose()
             }
-            else {
-                // an array of materials
-                for (let material of object.material) cleanMaterial(material)
-            }
+            cleanMaterial(object.material)
         }
     })
 

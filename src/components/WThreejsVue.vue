@@ -167,7 +167,7 @@ import iseobj from 'wsemi/src/iseobj.mjs'
 import isEle from 'wsemi/src/isEle.mjs'
 import isfun from 'wsemi/src/isfun.mjs'
 import cdbl from 'wsemi/src/cdbl.mjs'
-import delay from 'wsemi/src/delay.mjs'
+import debounce from 'wsemi/src/debounce.mjs'
 import strleft from 'wsemi/src/strleft.mjs'
 import strdelleft from 'wsemi/src/strdelleft.mjs'
 import oc from 'wsemi/src/color.mjs'
@@ -331,6 +331,10 @@ export default {
             loading: true,
 
             timer: null,
+            dbcRefresh: debounce(),
+            syncRunning: false,
+            syncPending: false,
+            disposed: false,
 
             // items,
             itemsSelectIds: [],
@@ -344,9 +348,9 @@ export default {
             useAxis: false,
             useLegend: true,
 
+            nidInit: 0,
+            nidRefresh: 0,
             optTemp: null,
-            initSeq: 0,
-            modifySeq: 0,
 
             meshs: [],
 
@@ -384,20 +388,19 @@ export default {
     mounted: function() {
         let vo = this
         vo.timer = setInterval(() => {
-
             if (vo.ev === null) {
                 return
             }
-
             vo.refreshControlState()
             vo.refreshMeshsState()
-
         }, 1000)
     },
     beforeDestroy: function() {
         let vo = this
+        vo.disposed = true
+        vo.syncPending = false
         clearInterval(vo.timer)
-        vo.dispose()
+        vo.dispose(true)
     },
     watch: {
         'opt': {
@@ -406,39 +409,8 @@ export default {
 
                 let vo = this
 
-                if (vo.loading) {
-                    // console.log('init')
-
-                    //init
-                    let seq = ++vo.initSeq
-                    vo.init(seq)
-                        .finally(() => {
-
-                            //save
-                            if (seq === vo.initSeq) {
-                                vo.optTemp = cloneDeep(vo.opt)
-                            }
-
-                        })
-
-                }
-                else {
-                    // console.log('modify')
-
-                    //modify, vue監聽obj需要原本有鍵而值有變化才能偵測, 若需要用modify得須於設定opt時預先給予初始值
-                    let seq = ++vo.modifySeq
-                    vo.modify(seq)
-                        .finally(() => {
-
-                            //save
-                            if (seq === vo.modifySeq) {
-                                vo.optTemp = cloneDeep(vo.opt)
-                            }
-
-                        })
-
-                }
-
+                //refreshDebounce
+                vo.refreshDebounce()
 
             },
             immediate: true,
@@ -715,7 +687,7 @@ export default {
             let vo = this
 
             //check
-            if (vo.ev === null) {
+            if (vo.disposed || vo.ev === null) {
                 return
             }
 
@@ -730,7 +702,6 @@ export default {
                 vo.$emit('resize', msg)
 
             }
-
 
         },
 
@@ -1009,23 +980,27 @@ export default {
 
         },
 
-        init: async function(seq) {
+        init: async function(nid) {
             let vo = this
-            if (!isnum(seq)) {
-                seq = ++vo.initSeq
+
+            //check disposed
+            if (vo.disposed) {
+                return
             }
 
-            async function core() {
+            //nid
+            if (!isnum(nid)) {
+                nid = ++vo.nidInit
+            }
 
-                //dispose
-                vo.dispose()
+            let core = async () => {
 
                 //waitFun
                 await waitFun(() => {
-                    return isEle(vo.$refs.panel)
+                    return vo.disposed || isEle(vo.$refs.panel)
                 })
                 // console.log('vo.$refs.panel', vo.$refs.panel)
-                if (seq !== vo.initSeq) {
+                if (vo.disposed || nid !== vo.nidInit) {
                     return
                 }
 
@@ -1033,7 +1008,8 @@ export default {
                 vo.loading = true
 
                 //optPlot3d
-                let optPlot3d = cloneDeep(vo.opt)
+                let optUsed = cloneDeep(vo.opt)
+                let optPlot3d = cloneDeep(optUsed)
                 optPlot3d.domPanel = vo.$refs.panel
 
                 //items
@@ -1042,7 +1018,7 @@ export default {
 
                 //plot3d
                 let ev = await plot3d(items, optPlot3d)
-                if (seq !== vo.initSeq) {
+                if (vo.disposed || nid !== vo.nidInit) {
                     ev.dispose()
                     return
                 }
@@ -1050,10 +1026,17 @@ export default {
                 //save
                 vo.ev = ev
 
-                //on
+                //resolveInit
+                let resolveInit = () => {}
+                let initPromise = new Promise((resolve) => {
+                    resolveInit = resolve
+                })
+
+                //handleInit
                 let initHandled = false
                 let handleInit = () => {
-                    if (seq !== vo.initSeq) {
+                    if (vo.disposed || nid !== vo.nidInit) {
+                        resolveInit()
                         return
                     }
                     if (initHandled) {
@@ -1061,6 +1044,8 @@ export default {
                     }
                     initHandled = true
                     // console.log('init')
+
+                    //emit
                     vo.$emit('init')
 
                     //updateMenus
@@ -1075,21 +1060,42 @@ export default {
                     //refreshMeshsState
                     vo.refreshMeshsState()
 
+                    //save applied opt
+                    vo.optTemp = cloneDeep(optUsed)
+
                     //hide loading
                     vo.loading = false
 
+                    //resolveInit
+                    resolveInit()
+
                 }
+
+                //handleError
                 let handleError = (err) => {
-                    if (seq !== vo.initSeq) {
+
+                    //check
+                    if (vo.disposed || nid !== vo.nidInit) {
+                        resolveInit()
                         return
                     }
                     // console.log('error', err)
+
+                    //reset
                     vo.loading = false
+
+                    //emit
                     vo.$emit('error', err)
+
+                    //resolveInit
+                    resolveInit()
+
                 }
+
+                //on
                 ev.on('init', handleInit)
                 ev.on('loading', (msg) => {
-                    if (seq !== vo.initSeq) {
+                    if (vo.disposed || nid !== vo.nidInit) {
                         return
                     }
                     // console.log('loading', msg)
@@ -1097,70 +1103,100 @@ export default {
                 })
                 ev.on('error', handleError)
                 ev.on('dispose', () => {
-                    if (seq !== vo.initSeq) {
+                    if (vo.disposed || nid !== vo.nidInit) {
+                        resolveInit()
                         return
                     }
                     // console.log('dispose')
                     vo.$emit('dispose')
+                    resolveInit()
                 })
                 ev.on('change-view-angle', (msg) => {
-                    if (seq !== vo.initSeq) {
+                    if (vo.disposed || nid !== vo.nidInit) {
                         return
                     }
                     // console.log('change-view-angle')
                     vo.$emit('change-view-angle', msg)
                 })
                 ev.on('mesh-change', () => {
-                    if (seq !== vo.initSeq) {
+                    if (vo.disposed || nid !== vo.nidInit) {
                         return
                     }
                     // console.log('mesh-change')
                     vo.refreshMeshsState()
                 })
                 ev.on('config-change', () => {
-                    if (seq !== vo.initSeq) {
+                    if (vo.disposed || nid !== vo.nidInit) {
                         return
                     }
                     // console.log('config-change')
                     vo.refreshControlState()
                 })
-                if (isfun(ev.isReady) && ev.isReady()) {
+
+                //check
+                if (isfun(ev.getReady) && ev.getReady()) {
                     handleInit()
                 }
+
+                //readyError
                 let readyError = isfun(ev.getReadyError) ? ev.getReadyError() : null
+
+                //check
                 if (readyError) {
                     handleError(readyError)
                 }
+
+                //initPromise
+                await initPromise
 
             }
 
             //core
             await core()
                 .catch((err) => {
-                    if (seq !== vo.initSeq) {
+
+                    //check
+                    if (vo.disposed || nid !== vo.nidInit) {
                         return
                     }
+
+                    //reset
                     vo.loading = false
+
+                    //emit
                     vo.$emit('error', err)
                     console.log(err)
+
                 })
 
         },
 
-        modify: async function (seq) {
+        refreshCore: async function (nid) {
             let vo = this
 
-            async function core() {
+            //check
+            if (vo.disposed) {
+                return false
+            }
 
-                //check
+            let core = async () => {
+
+                //check ev
                 if (vo.ev === null) {
-                    return
+                    let nidInit = ++vo.nidInit
+                    await vo.init(nidInit)
+                    return true
                 }
 
-                //delay
-                await delay(300)
-                if (seq !== vo.modifySeq) {
-                    return
+                //check nid
+                if (nid !== vo.nidRefresh) {
+                    return false
+                }
+
+                //check optTemp
+                if (vo.optTemp === null) {
+                    vo.optTemp = cloneDeep(vo.opt)
+                    return true
                 }
 
                 //ks, ksTemp
@@ -1205,8 +1241,20 @@ export default {
                 //kpSet
                 let kpSet = {
 
-                    width: '', //由vue處理不需要另外處理
-                    height: '', //由vue處理不需要另外處理
+                    items: 'reloadItems',
+
+                    width: 'resize',
+                    height: 'resize',
+
+                    useMenuItemHelperAxes: 'updateMenus',
+                    useMenuItemHelperGrid: 'updateMenus',
+                    useMenuItemPerspective: 'updateMenus',
+                    useMenuItemAxis: 'updateMenus',
+                    useMenuItemAutoRotate: 'updateMenus',
+                    useMenuItemViewXY: 'updateMenus',
+                    useMenuItemViewXZ: 'updateMenus',
+                    useMenuItemViewYZ: 'updateMenus',
+                    useMenuItemLegend: 'updateMenus',
 
                     backgroundColor: 'ev.setBackgroundColor',
 
@@ -1331,13 +1379,16 @@ export default {
                 //call
                 let needUpdateMenus = false
                 let needRefreshLegend = false
+                let needResize = false
+                let needReloadItems = false
+                let itemsToReload = []
                 let beginBatchUpdate = get(vo, 'ev.beginBatchUpdate')
                 let endBatchUpdate = get(vo, 'ev.endBatchUpdate')
                 if (isfun(beginBatchUpdate)) {
                     beginBatchUpdate()
                 }
                 try {
-                    each(rs, (v) => {
+                    for (let v of rs) {
                         let k = v.k
                         if (haskey(kpSet, k)) {
                             let cf = kpSet[k]
@@ -1348,11 +1399,18 @@ export default {
                             else if (cf === 'refreshLegend') {
                                 needRefreshLegend = true
                             }
+                            else if (cf === 'resize') {
+                                needResize = true
+                            }
+                            else if (cf === 'reloadItems') {
+                                needReloadItems = true
+                                itemsToReload = Array.isArray(v.vNew) ? cloneDeep(v.vNew) : []
+                            }
                             else {
                                 let fun = get(vo, cf)
                                 if (isfun(fun)) {
                                     try {
-                                        fun(v.vNew)
+                                        await fun(v.vNew)
                                     }
                                     catch (err) {
                                         console.log(err)
@@ -1363,50 +1421,153 @@ export default {
                         else {
                             console.log(`尚未建置 ${k} 之 set 函數`)
                         }
-                    })
+                    }
+                    if (needReloadItems) {
+                        let setMeshs = get(vo, 'ev.setMeshs')
+                        if (isfun(setMeshs)) {
+                            await setMeshs(itemsToReload)
+                        }
+                    }
                 }
                 finally {
                     if (isfun(endBatchUpdate)) {
                         endBatchUpdate()
                     }
                 }
+
+                //updateMenus
                 if (needUpdateMenus) {
                     vo.updateMenus()
                 }
+
+                //refreshLegend
                 if (needRefreshLegend) {
                     vo.refreshLegend()
                 }
 
+                //resizePanel
+                if (needResize) {
+                    vo.resizePanel()
+                }
+
+                return true
             }
 
             //core
+            let r = false
             await core()
+                .then((res) => {
+                    r = res
+                })
                 .catch((err) => {
                     console.log(err)
                 })
 
+            return r
         },
 
-        dispose: function() {
+        refreshDebounce: function() {
             let vo = this
 
-            //使用setTimeout讓記憶體脫勾, 避免被computed視為連動
-            setTimeout(() => {
+            //check
+            if (vo.disposed) {
+                return
+            }
 
-                //check
-                if (vo.ev === null) {
-                    return
-                }
+            //syncRunning
+            if (vo.syncRunning) {
+                vo.syncPending = true
+            }
 
-                //dispose
-                let fun = get(vo, 'ev.dispose')
+            let run = () => {
+                vo.refreshLatest()
+                    .catch((err) => {
+                        console.log(err)
+                    })
+            }
+
+            //run
+            if (vo.ev === null) {
+                run() //首次初始化(ev尚未建立)立即執行, 後續變更才debounce節流
+            }
+            else {
+                vo.dbcRefresh(run)
+            }
+
+        },
+
+        refreshLatest: async function() {
+            let vo = this
+
+            //check disposed
+            if (vo.disposed) {
+                return
+            }
+
+            //check syncRunning
+            if (vo.syncRunning) {
+                vo.syncPending = true
+                return
+            }
+            vo.syncRunning = true
+
+            //refreshCore
+            try {
+                do {
+
+                    //check disposed
+                    if (vo.disposed) {
+                        return
+                    }
+                    vo.syncPending = false
+
+                    //nid
+                    let nid = ++vo.nidRefresh
+
+                    //refreshCore
+                    let success = await vo.refreshCore(nid)
+
+                    //save optTemp
+                    if (success !== false && !vo.syncPending && nid === vo.nidRefresh && vo.ev !== null) {
+                        vo.optTemp = cloneDeep(vo.opt)
+                    }
+
+                } while (vo.syncPending)
+            }
+            finally {
+                vo.syncRunning = false
+            }
+
+        },
+
+        dispose: function(immediate = false) {
+            let vo = this
+            let ev = vo.ev
+
+            //check ev
+            if (ev === null) {
+                return
+            }
+
+            let disposeCore = () => {
+                let fun = get(ev, 'dispose')
                 if (isfun(fun)) {
-                    vo.ev.dispose()
-                    vo.ev = null
+                    ev.dispose()
+                    if (vo.ev === ev) {
+                        vo.ev = null
+                    }
                     // console.log('dispose')
                 }
+            }
 
-            }, 1)
+            //disposeCore
+            if (immediate) {
+                disposeCore()
+                return
+            }
+
+            //使用setTimeout讓記憶體脫勾, 避免被computed視為連動
+            setTimeout(disposeCore, 1)
 
         },
 
@@ -1443,12 +1604,18 @@ export default {
 
         setMeshColor: function(m, km, c) {
             let vo = this
-            vo.ev.setMeshColor(km, c)
+            let fun = get(vo, 'ev.setMeshColor')
+            if (isfun(fun)) {
+                fun(km, c)
+            }
         },
 
         toggleMeshVisible: function(m, km) {
             let vo = this
-            vo.ev.setMeshVisible(km, !m.visible)
+            let fun = get(vo, 'ev.setMeshVisible')
+            if (isfun(fun)) {
+                fun(km, !m.visible)
+            }
         },
 
         strUpperHead: function(c) {
