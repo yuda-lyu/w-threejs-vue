@@ -29,9 +29,13 @@ let addStl = async(ev, url, opt = {}) => {
     //loader
     let loader = new STLLoader()
     let geometry = await loader.loadAsync(url, (xhr) => {
-        let prog = (xhr.loaded / xhr.total) * 100
-        ev.emit('loading', {
+        let loaded = xhr.loaded || 0
+        let total = xhr.total || 0
+        let prog = total > 0 ? (loaded / total) * 100 : null
+        ev.emit('prog', {
             url,
+            loaded,
+            total,
             prog,
         })
     })

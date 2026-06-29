@@ -29,7 +29,7 @@ let addVtp = async(ev, url, opt = {}) => {
 
     let polyData = await loadVtpAsPolyData(url, {
         onProgress: (msg) => {
-            ev.emit('loading', msg)
+            ev.emit('prog', msg)
         },
     })
 

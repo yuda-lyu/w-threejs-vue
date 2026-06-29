@@ -1,143 +1,138 @@
 <template>
-    <div :style="`width:${widthInp}px; height:${heightInp}px;`">
+    <div
+        :style="`position:relative; width:${widthInp}px; height:${heightInp}px;`"
+        :loading="loading"
+    >
 
-        <div style="position:relative; width:0px; height:0px;" v-if="loading">
-            <div style="position:absolute; top:0px; left:0px;">
-                <WIconLoading></WIconLoading>
-            </div>
-        </div>
+        <!-- 圖台區 -->
+        <div
+            ref="panel"
+            :style="`width:${widthInp}px; height:${heightInp}px; opacity:${loading?0:1};`"
+            v-domresize
+            @domresize="resizePanel"
+        ></div>
 
-        <div style="position:relative;">
+        <!-- 輔助區 -->
+        <!-- 須使用pointer-events:none吃掉事件, 才能點擊選單區透明區域 -->
+        <div
+            :style="`position:absolute; top:0px; left:0px; pointer-events:none;`"
+            v-if="!loading"
+        >
 
-            <div
-                ref="panel"
-                :style="`position:relative; width:${widthInp}px; height:${heightInp}px; opacity:${loading?0:1};`"
-                v-domresize
-                @domresize="resizePanel"
-            ></div>
+            <div :style="`padding:${space+menuYShiftInp}px ${space}px ${space}px ${space}px; display:flex; align-items:flex-start;`">
 
-            <!-- 須使用pointer-events:none吃掉事件, 才能點擊選單區透明區域 -->
-            <div
-                :style="`position:absolute; top:0px; left:0px; pointer-events:none;`"
-                v-if="!loading"
-            >
+                <!-- 設定區 -->
+                <!-- 須使用pointer-events:auto恢復子元素接收事件, 才能點擊與捲動選單 -->
+                <WPanelScrolly
+                    :style="`width:${panelItemsIconSize}px; height:${panelItemsHeight}px; pointer-events:auto;`"
+                    :bar-opacity="0"
+                    :bar-opacity-hover="0.8"
+                >
 
-                <div :style="`padding:${space+menuYShiftInp}px ${space}px ${space}px ${space}px; display:flex; align-items:flex-start;`">
+                    <WGroupIconCheck
+                        :items="useItems"
+                        :dir="'vertical'"
+                        :iconColor="'#aaa'"
+                        :iconColorHover="'#ccc'"
+                        :iconColorFocus="'#ccc'"
+                        :iconColorActive="'#fff'"
+                        :backgroundColor="'#000'"
+                        :backgroundColorHover="'#111'"
+                        :backgroundColorFocus="'#111'"
+                        :backgroundColorActive="'#444'"
+                        :seplineColor="'#333'"
+                        :tooltipTextFontSize="'0.7rem'"
+                        :value="itemsSelects"
+                        _input="updateItem"
+                        @click="ckItem"
+                    ></WGroupIconCheck>
 
-                    <!-- 設定區 -->
-                    <!-- 須使用pointer-events:auto恢復子元素接收事件, 才能點擊與捲動選單 -->
-                    <WPanelScrolly
-                        :style="`width:${panelItemsIconSize}px; height:${panelItemsHeight}px; pointer-events:auto;`"
-                        :bar-opacity="0"
-                        :bar-opacity-hover="0.8"
-                    >
+                </WPanelScrolly>
 
-                        <WGroupIconCheck
-                            :items="useItems"
-                            :dir="'vertical'"
-                            :iconColor="'#aaa'"
-                            :iconColorHover="'#ccc'"
-                            :iconColorFocus="'#ccc'"
-                            :iconColorActive="'#fff'"
-                            :backgroundColor="'#000'"
-                            :backgroundColorHover="'#111'"
-                            :backgroundColorFocus="'#111'"
-                            :backgroundColorActive="'#444'"
-                            :seplineColor="'#333'"
-                            :tooltipTextFontSize="'0.7rem'"
-                            :value="itemsSelects"
-                            _input="updateItem"
-                            @click="ckItem"
-                        ></WGroupIconCheck>
+                <template v-if="useLegend">
 
-                    </WPanelScrolly>
+                    <div :style="`padding-left:${space}px;`"></div>
 
-                    <template v-if="useLegend">
+                    <!-- 圖例區 -->
+                    <!-- 須使用pointer-events:none吃掉事件, 才能點擊選單區透明區域 -->
+                    <div :style="`padding:5px; border-radius:4px; background:${useLegendBackgroundColor}; pointer-events:auto;`">
+                        <div :style="`${useLegendHeight}`">
 
-                        <div :style="`padding-left:${space}px;`"></div>
+                            <div
+                                :style="``"
+                                :key="'km-'+km"
+                                v-for="(m,km) in meshs"
+                            >
 
-                        <!-- 圖例區 -->
-                        <!-- 須使用pointer-events:none吃掉事件, 才能點擊選單區透明區域 -->
-                        <div :style="`padding:5px; border-radius:4px; background:${useLegendBackgroundColor}; pointer-events:auto;`">
-                            <div :style="`${useLegendHeight}`">
+                                <div style="display:flex; align-items:center; padding:3px;">
 
-                                <div
-                                    :style="``"
-                                    :key="'km-'+km"
-                                    v-for="(m,km) in meshs"
-                                >
+                                    <WIcon
+                                        style="cursor:pointer;"
+                                        :icon="m.visible?mdiEyeOutline:mdiEyeOffOutline"
+                                        :color="'#ccc'"
+                                        :colorHover="'#ddd'"
+                                        :size="20"
+                                        @click="toggleMeshVisible(m,km)"
+                                    ></WIcon>
 
-                                    <div style="display:flex; align-items:center; padding:3px;">
+                                    <div style="padding-left:5px;"></div>
 
-                                        <WIcon
-                                            style="cursor:pointer;"
-                                            :icon="m.visible?mdiEyeOutline:mdiEyeOffOutline"
-                                            :color="'#ccc'"
-                                            :colorHover="'#ddd'"
-                                            :size="20"
-                                            @click="toggleMeshVisible(m,km)"
-                                        ></WIcon>
+                                    <WColorSelect
+                                        :colorBlockBorderColor="'#888'"
+                                        :showColorText="false"
+                                        _colorTextColor="'#ddd'"
+                                        :panelBackgroundColor="'#111'"
+                                        :toolBackgroundColor="'#222'"
+                                        :menuIconColor="'#666'"
+                                        :menuIconColorHover="'#777'"
+                                        :menuIconColorActive="'#ddd'"
+                                        :borderColor="'#333'"
+                                        :borderColorHover="'#333'"
+                                        :borderColorActive="'#444'"
+                                        :backgroundColor="'#111'"
+                                        :menuBackgroundColor="'#111'"
+                                        :menuBackgroundColorHover="'#222'"
+                                        :menuBackgroundColorActive="'#333'"
+                                        :menuTextColor="'#b2b2b2'"
+                                        :menuTextColorHover="'#ccc'"
+                                        :menuTextColorActive="'#ddd'"
+                                        :menuTextFontSize="'0.75rem'"
+                                        :inputBorderColor="'#444'"
+                                        :inputBorderColorHover="'#555'"
+                                        :inputBorderColorActive="'#666'"
+                                        :inputBackgroundColor="'#000'"
+                                        :inputBackgroundColorHover="'#111'"
+                                        :inputBackgroundColorActive="'#222'"
+                                        :inputTextColor="'#999'"
+                                        :inputLabelColor="'#888'"
+                                        :barProgColor="'#888'"
+                                        :barProgBackgroundColor="'#222'"
+                                        :barSliderBackgroundColor="'#ccc'"
+                                        :barSliderBackgroundColorHover="'#ddd'"
+                                        :btnTextColor="'#eee'"
+                                        :btnTextColorHover="'#fff'"
+                                        :btnTextColorActive="'#fff'"
+                                        :btnBackgroundColor="'#444'"
+                                        :btnBackgroundColorHover="'#555'"
+                                        :btnBackgroundColorActive="'#555'"
+                                        :value="getMeshColor(m)"
+                                        @input="(c)=>{setMeshColor(m,km,c)}"
+                                    ></WColorSelect>
 
-                                        <div style="padding-left:5px;"></div>
+                                    <div style="padding-left:5px;"></div>
 
-                                        <WColorSelect
-                                            :colorBlockBorderColor="'#888'"
-                                            :showColorText="false"
-                                            _colorTextColor="'#ddd'"
-                                            :panelBackgroundColor="'#111'"
-                                            :toolBackgroundColor="'#222'"
-                                            :menuIconColor="'#666'"
-                                            :menuIconColorHover="'#777'"
-                                            :menuIconColorActive="'#ddd'"
-                                            :borderColor="'#333'"
-                                            :borderColorHover="'#333'"
-                                            :borderColorActive="'#444'"
-                                            :backgroundColor="'#111'"
-                                            :menuBackgroundColor="'#111'"
-                                            :menuBackgroundColorHover="'#222'"
-                                            :menuBackgroundColorActive="'#333'"
-                                            :menuTextColor="'#b2b2b2'"
-                                            :menuTextColorHover="'#ccc'"
-                                            :menuTextColorActive="'#ddd'"
-                                            :menuTextFontSize="'0.75rem'"
-                                            :inputBorderColor="'#444'"
-                                            :inputBorderColorHover="'#555'"
-                                            :inputBorderColorActive="'#666'"
-                                            :inputBackgroundColor="'#000'"
-                                            :inputBackgroundColorHover="'#111'"
-                                            :inputBackgroundColorActive="'#222'"
-                                            :inputTextColor="'#999'"
-                                            :inputLabelColor="'#888'"
-                                            :barProgColor="'#888'"
-                                            :barProgBackgroundColor="'#222'"
-                                            :barSliderBackgroundColor="'#ccc'"
-                                            :barSliderBackgroundColorHover="'#ddd'"
-                                            :btnTextColor="'#eee'"
-                                            :btnTextColorHover="'#fff'"
-                                            :btnTextColorActive="'#fff'"
-                                            :btnBackgroundColor="'#444'"
-                                            :btnBackgroundColorHover="'#555'"
-                                            :btnBackgroundColorActive="'#555'"
-                                            :value="getMeshColor(m)"
-                                            @input="(c)=>{setMeshColor(m,km,c)}"
-                                        ></WColorSelect>
-
-                                        <div style="padding-left:5px;"></div>
-
-                                        <div :style="`color:${m.labelTextColor}; font-size:${m.labelTextFontSize}; font-family:${m.labelTextFontFamily};`">
-                                            {{m.labelText}}
-                                        </div>
-
+                                    <div :style="`color:${m.labelTextColor}; font-size:${m.labelTextFontSize}; font-family:${m.labelTextFontFamily};`">
+                                        {{m.labelText}}
                                     </div>
 
                                 </div>
 
                             </div>
+
                         </div>
+                    </div>
 
-                    </template>
-
-                </div>
+                </template>
 
             </div>
 
@@ -172,7 +167,6 @@ import strleft from 'wsemi/src/strleft.mjs'
 import strdelleft from 'wsemi/src/strdelleft.mjs'
 import oc from 'wsemi/src/color.mjs'
 import domResize from 'w-component-vue/src/js/domResize.mjs'
-import WIconLoading from 'w-component-vue/src/components/WIconLoading.vue'
 import WPanelScrolly from 'w-component-vue/src/components/WPanelScrolly.vue'
 import WGroupIconCheck from 'w-component-vue/src/components/WGroupIconCheck.vue'
 import WIcon from 'w-component-vue/src/components/WIcon.vue'
@@ -314,7 +308,6 @@ export default {
         domresize: domResize(),
     },
     components: {
-        WIconLoading,
         WPanelScrolly,
         WGroupIconCheck,
         WIcon,
@@ -1034,8 +1027,9 @@ export default {
                     return
                 }
 
-                //show loading
+                //show and emit loading
                 vo.loading = true
+                vo.$emit('loading', true)
 
                 //optPlot3d
                 let optUsed = cloneDeep(vo.opt)
@@ -1093,8 +1087,9 @@ export default {
                     //save applied opt
                     vo.optTemp = cloneDeep(optUsed)
 
-                    //hide loading
+                    //hide and emit loading
                     vo.loading = false
+                    vo.$emit('loading', false)
 
                     //resolveInit
                     resolveInit()
@@ -1111,8 +1106,9 @@ export default {
                     }
                     // console.log('error', err)
 
-                    //reset
+                    //reset and emit loading
                     vo.loading = false
+                    vo.$emit('loading', false)
 
                     //emit
                     vo.$emit('error', err)
@@ -1124,12 +1120,12 @@ export default {
 
                 //on
                 ev.on('init', handleInit)
-                ev.on('loading', (msg) => {
+                ev.on('prog', (msg) => {
                     if (vo.disposed || nid !== vo.nidInit) {
                         return
                     }
-                    // console.log('loading', msg)
-                    vo.$emit('loading', msg)
+                    // console.log('prog', msg)
+                    vo.$emit('prog', msg)
                 })
                 ev.on('error', handleError)
                 ev.on('dispose', () => {
@@ -1190,8 +1186,9 @@ export default {
                         return
                     }
 
-                    //reset
+                    //reset and emit loading
                     vo.loading = false
+                    vo.$emit('loading', false)
 
                     //emit
                     vo.$emit('error', err)
