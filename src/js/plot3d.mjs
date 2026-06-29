@@ -2780,6 +2780,9 @@ async function plot3d(items, opt = {}) {
         //stop
         stop = true
 
+        //disposePick(移除點擊偵測監聽)
+        disposePick()
+
         //disposeGroup
         disposeGroup(scene, group)
 
@@ -2893,6 +2896,94 @@ async function plot3d(items, opt = {}) {
         //render
         render()
 
+    }
+
+    //mesh pick(點擊物件偵測, 命中對象泛稱target, 可能為Mesh/Points/Line等)
+    let raycaster = new THREE.Raycaster()
+    let pickPointerDown = null //pointerdown起點, 用於辨別click與drag
+    let pickDomTarget = rendererLabels.domElement //與controls同層, 接收指標事件
+    let findMeshIndexByObject = (obj) => {
+        let o = obj
+        while (o) {
+            let ind = meshs.indexOf(o)
+            if (ind >= 0) {
+                return ind
+            }
+            o = o.parent
+        }
+        return -1
+    }
+    let onPickPointerDown = (e) => {
+        pickPointerDown = { x: e.clientX, y: e.clientY }
+    }
+    let onPickPointerCancel = () => {
+        pickPointerDown = null //指標取消時清空起點, 避免下次pointerup誤判
+    }
+    let onPickPointerUp = (e) => {
+
+        //check
+        if (disposed || camera === null || renderer === null) {
+            return
+        }
+        if (pickPointerDown === null) {
+            return
+        }
+
+        //辨別click與drag(移動量過大視為拖曳, 不觸發點擊)
+        let dx = e.clientX - pickPointerDown.x
+        let dy = e.clientY - pickPointerDown.y
+        pickPointerDown = null
+        if (Math.sqrt(dx * dx + dy * dy) > 5) {
+            return
+        }
+
+        //ndc, 以webgl canvas為基準計算正規化座標
+        let rect = renderer.domElement.getBoundingClientRect()
+        if (rect.width === 0 || rect.height === 0) {
+            return
+        }
+        let ndc = {
+            x: ((e.clientX - rect.left) / rect.width) * 2 - 1,
+            y: -((e.clientY - rect.top) / rect.height) * 2 + 1,
+        }
+
+        //raycast(隱藏mesh由three自動略過)
+        raycaster.setFromCamera(ndc, camera)
+        let intersects = raycaster.intersectObjects(meshs, true)
+        if (size(intersects) === 0) {
+            return
+        }
+
+        //ind
+        let it = intersects[0]
+        let ind = findMeshIndexByObject(it.object)
+        if (ind < 0) {
+            return
+        }
+
+        //target, 被點擊命中的物件
+        let target = get(meshs, ind)
+
+        //emit
+        ev.emit('click-mesh', {
+            index: ind,
+            name: get(target, 'name', ''),
+            color: get(target, 'color', ''),
+            visible: get(target, 'visible', true),
+            point: { x: it.point.x, y: it.point.y, z: it.point.z },
+        })
+
+    }
+    pickDomTarget.addEventListener('pointerdown', onPickPointerDown)
+    pickDomTarget.addEventListener('pointerup', onPickPointerUp)
+    pickDomTarget.addEventListener('pointercancel', onPickPointerCancel)
+    let disposePick = () => {
+        if (pickDomTarget) {
+            pickDomTarget.removeEventListener('pointerdown', onPickPointerDown)
+            pickDomTarget.removeEventListener('pointerup', onPickPointerUp)
+            pickDomTarget.removeEventListener('pointercancel', onPickPointerCancel)
+            pickDomTarget = null
+        }
     }
 
     //save

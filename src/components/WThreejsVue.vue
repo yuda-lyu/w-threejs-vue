@@ -1158,6 +1158,13 @@ export default {
                     // console.log('config-change')
                     vo.refreshControlState()
                 })
+                ev.on('click-mesh', (msg) => {
+                    if (vo.disposed || nid !== vo.nidInit) {
+                        return
+                    }
+                    // console.log('click-mesh', msg)
+                    vo.$emit('click-mesh', msg)
+                })
 
                 //check
                 if (isfun(ev.getReady) && ev.getReady()) {
