@@ -2947,16 +2947,29 @@ async function plot3d(items, opt = {}) {
             y: -((e.clientY - rect.top) / rect.height) * 2 + 1,
         }
 
-        //raycast(隱藏mesh由three自動略過)
+        //raycast(three的Raycaster不檢查visible, 隱藏mesh仍會被命中, 須自行過濾)
         raycaster.setFromCamera(ndc, camera)
         let intersects = raycaster.intersectObjects(meshs, true)
         if (size(intersects) === 0) {
             return
         }
 
-        //ind
-        let it = intersects[0]
-        let ind = findMeshIndexByObject(it.object)
+        //ind, 取最近的「可見」命中(intersects已按距離排序; 隱藏區塊略過, 且不遮擋其後方可見區塊)
+        let it = null
+        let ind = -1
+        for (let v of intersects) {
+            let i = findMeshIndexByObject(v.object)
+            if (i < 0) {
+                continue
+            }
+            let m = get(meshs, i)
+            if (m && m.visible === false) {
+                continue //隱藏區塊略過
+            }
+            it = v
+            ind = i
+            break
+        }
         if (ind < 0) {
             return
         }
