@@ -1,6 +1,6 @@
 {
   "name": "w-threejs-vue",
-  "version": "1.0.30",
+  "version": "1.0.31",
   "main": "dist/w-threejs-vue.umd.js",
   "dependencies": {
     "@kitware/vtk.js": "^36.2.1",
@@ -8,9 +8,9 @@
     "camera-controls": "^3.1.2",
     "three": "^0.185.0",
     "url": "^0.11.4",
-    "w-component-vue": "^2.4.80",
+    "w-component-vue": "^2.4.81",
     "w-jsonview-tree": "^1.0.33",
-    "wsemi": "^1.8.68"
+    "wsemi": "^1.8.70"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^5.0.8",
