@@ -1,16 +1,15 @@
 {
   "name": "w-threejs-vue",
-  "version": "1.0.35",
+  "version": "1.0.36",
   "main": "dist/w-threejs-vue.umd.js",
   "dependencies": {
     "@kitware/vtk.js": "^36.2.1",
-    "@mdi/js": "^7.4.47",
     "camera-controls": "^3.1.2",
     "three": "^0.185.0",
     "url": "^0.11.4",
-    "w-component-vue": "^2.4.86",
-    "w-jsonview-tree": "^1.0.34",
-    "wsemi": "^1.8.77"
+    "w-component-vue": "^2.5.1",
+    "w-jsonview-tree": "^1.0.35",
+    "wsemi": "^1.8.78"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^5.0.8",
@@ -24,7 +23,7 @@
     "eslint-plugin-promise": "^6.1.1",
     "eslint-plugin-vue": "^9.10.0",
     "vue": "^2.7.16",
-    "w-package-tools": "^1.1.13",
+    "w-package-tools": "^1.1.14",
     "w-package-tools-e2e": "^1.0.0"
   },
   "scripts": {
