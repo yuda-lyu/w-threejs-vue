@@ -21,7 +21,7 @@ let opt = {
     <script src="https://cdn.jsdelivr.net/npm/lodash/lodash.min.js"></script>
 
     <!-- wsemi -->
-    <script src="https://cdn.jsdelivr.net/npm/wsemi/dist/wsemi.umd.min.js"></script>
+    <script src="https://yuda-lyu.github.io/wsemi/dist/wsemi.umd.js"></script>
 
     `,
     newVue: ``,
