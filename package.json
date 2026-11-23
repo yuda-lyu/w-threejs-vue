@@ -1,6 +1,6 @@
 {
   "name": "w-threejs-vue",
-  "version": "1.0.83",
+  "version": "1.0.84",
   "main": "dist/w-threejs-vue.umd.js",
   "dependencies": {
     "@kitware/vtk.js": "^38.0.9",
@@ -24,7 +24,7 @@
     "eslint-plugin-vue": "^9.10.0",
     "vue": "^2.7.16",
     "w-package-tools": "^1.1.29",
-    "w-package-tools-e2e": "^1.0.47"
+    "w-package-tools-e2e": "^1.0.48"
   },
   "scripts": {
     "serve": "vue-cli-service serve",
