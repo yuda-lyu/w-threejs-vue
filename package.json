@@ -1,9 +1,9 @@
 {
   "name": "w-threejs-vue",
-  "version": "1.0.88",
+  "version": "1.0.89",
   "main": "dist/w-threejs-vue.umd.js",
   "dependencies": {
-    "@kitware/vtk.js": "^38.0.11",
+    "@kitware/vtk.js": "^38.0.12",
     "camera-controls": "^3.1.2",
     "three": "^0.187.0",
     "url": "^0.11.4",
